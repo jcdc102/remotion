@@ -1,7 +1,8 @@
 import { Composition } from "remotion";
 import { Calaveritas } from "./Calaveritas";
 import { DURACION, FPS } from "./estructura8/datos";
-import { Estructura8 } from "./estructura8/Estructura8";
+import { DURACION_ALINEACION } from "./estructura8/alineacion/Alineacion";
+import { Estructura8, type TemaEstructura8 } from "./estructura8/Estructura8";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -17,8 +18,11 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="Estructura8"
         component={Estructura8}
-        defaultProps={{ tema: "bateria" as const }}
+        defaultProps={{ tema: "alineacion" as TemaEstructura8 }}
         durationInFrames={DURACION * FPS}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: (props.tema === "alineacion" ? DURACION_ALINEACION : DURACION) * FPS,
+        })}
         fps={FPS}
         width={1080}
         height={1920}

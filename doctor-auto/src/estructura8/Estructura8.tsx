@@ -26,6 +26,7 @@ import { Fondo, Grano, PapelPicado, PetalosCayendo, Veladoras, Vineta } from "./
 import { Bucle, Cuerpo, Gancho, Introduccion, Llamado, TarjetaLogo } from "./Piezas";
 import { Subtitulos } from "./Subtitulos";
 import { TemaBateria } from "./bateria/Bateria";
+import { TemaAlineacion } from "./alineacion/Alineacion";
 
 const VOZ = staticFile("estructura8/voz.mp3");
 const sfx = (nombre: string) => staticFile(`estructura8/sfx/${nombre}.wav`);
@@ -195,7 +196,7 @@ const DiaDeMuertos: React.FC = () => {
       </Track>
 
       <Mascota />
-      <Subtitulos lineas={piezas.flatMap((p) => p.lineas)} desde={0} hasta={T_LOGO} colorResaltado="#ffd60a" arriba={950} alto={200} tamano={80} izquierda={70} derecha={70} />
+      <Subtitulos lineas={piezas.flatMap((p) => p.lineas)} desde={0} hasta={T_LOGO} colorResaltado="#ffd60a" arriba={950} alto={200} tamano={80} izquierda={70} derecha={70} sostenerFinal={false} />
 
       <Sequence name="Tarjeta logo" from={desde(T_LOGO, fps)} durationInFrames={desde(2, fps)}>
         <TarjetaLogo />
@@ -258,8 +259,11 @@ const DiaDeMuertos: React.FC = () => {
   );
 };
 
-export type TemaEstructura8 = "dia-de-muertos" | "bateria";
+export type TemaEstructura8 = "dia-de-muertos" | "bateria" | "alineacion";
 
 // Estructura8: misma estructura de 8 piezas con distintos temas.
-export const Estructura8: React.FC<{ tema: TemaEstructura8 }> = ({ tema }) =>
-  tema === "bateria" ? <TemaBateria /> : <DiaDeMuertos />;
+export const Estructura8: React.FC<{ tema: TemaEstructura8 }> = ({ tema }) => {
+  if (tema === "bateria") return <TemaBateria />;
+  if (tema === "alineacion") return <TemaAlineacion />;
+  return <DiaDeMuertos />;
+};

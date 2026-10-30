@@ -106,3 +106,13 @@ const resultado = {
 };
 writeFileSync(salida, JSON.stringify(resultado, null, 2) + "\n");
 for (const p of resultado.piezas) console.log(p.id, p.inicio, "→", p.fin, JSON.stringify(p.habla));
+
+// Aviso: voz de una pieza más larga que su ventana en el guion (no se acelera).
+for (const [i, p] of resultado.piezas.entries()) {
+  if (p.habla.length === 0) continue;
+  const voz = p.habla[p.habla.length - 1][1] - p.habla[0][0];
+  const ventana = piezas[i].fin - piezas[i].inicio;
+  if (voz > ventana) {
+    console.log(`AVISO: la voz de la pieza ${p.id} dura ${voz.toFixed(2)} s y su ventana es de ${ventana} s (se pasa ${(voz - ventana).toFixed(2)} s).`);
+  }
+}

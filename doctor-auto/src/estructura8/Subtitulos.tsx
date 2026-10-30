@@ -14,13 +14,16 @@ export const Subtitulos: React.FC<{
   tamano: number;
   izquierda: number;
   derecha: number;
-}> = ({ lineas, desde, hasta, colorResaltado, arriba, alto, tamano, izquierda, derecha }) => {
+  sostenerFinal: boolean;
+}> = ({ lineas, desde, hasta, colorResaltado, arriba, alto, tamano, izquierda, derecha, sostenerFinal }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = frame / fps;
   if (t < desde || t >= hasta) return null;
   const i = lineas.findIndex(
-    (l, k) => t >= l.inicio && t < Math.min(lineas[k + 1]?.inicio ?? Infinity, l.fin + 0.9),
+    (l, k) =>
+      t >= l.inicio &&
+      t < Math.min(lineas[k + 1]?.inicio ?? Infinity, sostenerFinal && k === lineas.length - 1 ? Infinity : l.fin + 0.9),
   );
   if (i < 0) return null;
   const linea = lineas[i];

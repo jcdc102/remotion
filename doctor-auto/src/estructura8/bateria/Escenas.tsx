@@ -28,7 +28,7 @@ const resorte = (frame: number, fps: number, momento: number, inicio: number, da
   spring({ frame: frame - Math.round((momento - inicio) * fps), fps, config: { damping } });
 
 // Escenario de íconos: 300–590 px (16%–31%), sin texto.
-const Escenario: React.FC<{ children: React.ReactNode; transform?: string }> = ({ children, transform }) => (
+export const Escenario: React.FC<{ children: React.ReactNode; transform?: string }> = ({ children, transform }) => (
   <div
     style={{
       position: "absolute",
@@ -48,7 +48,7 @@ const Escenario: React.FC<{ children: React.ReactNode; transform?: string }> = (
 );
 
 // Texto principal: 590–830 px (31%–43%).
-const ZonaTexto: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => (
+export const ZonaTexto: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => (
   <div
     style={{
       position: "absolute",
@@ -68,7 +68,7 @@ const ZonaTexto: React.FC<{ children: React.ReactNode; style?: React.CSSProperti
   </div>
 );
 
-const Chip: React.FC<{ numero: number; texto: string; entrada: number; activo: boolean }> = ({ numero, texto, entrada, activo }) => (
+export const Chip: React.FC<{ numero: number; texto: string; entrada: number; activo: boolean }> = ({ numero, texto, entrada, activo }) => (
   <div
     style={{
       display: "flex",

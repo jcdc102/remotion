@@ -33,3 +33,8 @@ f -f lavfi -i "aevalsrc='0.9*(random(0)*2-1)*exp(-120*t)+0.6*sin(2*PI*1800*t)*ex
 f -f lavfi -i "aevalsrc='0.45*sin(2*PI*120*(1-exp(-2*t))/2*10)*(1+0.5*sin(2*PI*60*t))*exp(-3*t)':s=48000:d=0.9" -ac 2 $D/luces.wav
 # Ding suave.
 f -f lavfi -i "aevalsrc='0.5*(sin(2*PI*1320*t)+0.4*sin(2*PI*2640*t)+0.15*sin(2*PI*3960*t))*exp(-4*t)*min(1,t*200)':s=48000:d=1.2" -ac 2 $D/ding.wav
+# --- Tema "alineacion" ---
+# Chirrido suave de llanta: tono agudo con vibrato y ruido.
+f -f lavfi -i "aevalsrc='(0.25*sin(2*PI*(2300*t+40*sin(2*PI*18*t)))+0.12*(random(0)*2-1))*min(1,t*8)*max(0,1-t/1.2)':s=48000:d=1.2" -af "bandpass=f=2400:w=1.5,volume=2" -ac 2 $D/chirrido.wav
+# Tic tac: clics alternados (agudo y grave) cada 0.5 s.
+f -f lavfi -i "aevalsrc='0.8*sin(2*PI*(2600-1000*lt(mod(t,1),0.5))*t)*exp(-180*mod(t,0.5))':s=48000:d=2" -ac 2 $D/tictac.wav

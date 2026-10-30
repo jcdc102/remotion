@@ -7,9 +7,14 @@ Proyecto de Remotion con dos composiciones verticales (1080×1920, 30 fps):
   - `bateria` (por defecto): `src/estructura8/bateria/guion.json`, voz en
     `public/estructura8/bateria/voz.mp3`, mascota en `public/estructura8/bateria/`.
   - `dia-de-muertos`: `src/estructura8/guion.json`, voz en `public/estructura8/voz.mp3`.
+  - `alineacion` (40 s): `src/estructura8/alineacion/guion.json`, voz en
+    `public/estructura8/alineacion/voz.mp3`. Sin tarjeta final de logo
+    (`tarjetaFinal: false`): termina con la pieza 8 y un fundido de 5 fotogramas;
+    la marca de agua queda visible todo el video.
 - **Calaveritas** (16 s): primera versión corta.
 
-Videos renderizados: `Estructura8-bateria.mp4` y `Estructura8.mp4` (Día de Muertos).
+Videos renderizados: `Estructura8-alineacion.mp4`, `Estructura8-bateria.mp4` y
+`Estructura8.mp4` (Día de Muertos).
 
 ## Uso
 
@@ -23,7 +28,9 @@ npx remotion render Estructura8 out/muertos.mp4 --props='{"tema":"dia-de-muertos
 ## Cambiar el guion o la voz
 
 1. Edita `src/estructura8/guion.json` o reemplaza `public/estructura8/voz.mp3`.
-2. Vuelve a sincronizar: `node scripts/sincronizar.mjs bateria` (o sin argumento para `dia-de-muertos`).
+2. Vuelve a sincronizar: `node scripts/sincronizar.mjs <tema>` (`bateria`, `alineacion`,
+   o sin argumento para `dia-de-muertos`). Si la voz de una pieza dura más que su
+   ventana en el guion, el script lo avisa (no acelera la voz).
    Detecta los silencios de la voz con ffmpeg y elige el inicio de cada pieza;
    si no hay silencios suficientes, escala los tiempos del JSON. El resultado
    queda en `src/estructura8/sincronia.json`.

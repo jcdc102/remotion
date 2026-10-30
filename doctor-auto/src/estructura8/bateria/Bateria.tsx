@@ -116,8 +116,8 @@ export const TemaBateria: React.FC = () => {
       <MascotaAnimada />
 
       {/* Subtítulos a la izquierda de la mascota (44%–59%); en el llamado, centrados (40%–47%). */}
-      <Subtitulos lineas={lineas} desde={0} hasta={cta.inicio} colorResaltado={ROJO_CLARO} arriba={845} alto={290} tamano={64} izquierda={70} derecha={480} />
-      <Subtitulos lineas={lineas} desde={cta.inicio} hasta={T_LOGO} colorResaltado={ROJO_CLARO} arriba={755} alto={140} tamano={54} izquierda={70} derecha={70} />
+      <Subtitulos lineas={lineas} desde={0} hasta={cta.inicio} colorResaltado={ROJO_CLARO} arriba={845} alto={290} tamano={64} izquierda={70} derecha={480} sostenerFinal={false} />
+      <Subtitulos lineas={lineas} desde={cta.inicio} hasta={T_LOGO} colorResaltado={ROJO_CLARO} arriba={755} alto={140} tamano={54} izquierda={70} derecha={70} sostenerFinal={false} />
 
       <Sequence name="Tarjeta logo" from={desde(T_LOGO, fps)} durationInFrames={desde(2, fps)}>
         <TarjetaLogo />

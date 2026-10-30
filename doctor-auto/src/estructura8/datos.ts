@@ -191,10 +191,13 @@ export const piezas: Pieza[] = construirPiezas(guion, sincronia);
 export const piezaPorTipo = (tipo: TipoPieza, n = 0) =>
   piezas.filter((p) => p.tipo === tipo)[n];
 
-// Momento en que se dice una palabra de "resaltar" dentro de una pieza.
-export const momentoDe = (p: Pieza, palabra: string) => {
-  const w = p.palabras.find((x) => normalizar(x.texto) === normalizar(palabra));
-  return w ? w.inicio : p.inicio;
+// Momento en que se dice una palabra o frase de "resaltar" dentro de una pieza.
+export const momentoDe = (p: Pieza, frase: string) => {
+  const partes = frase.split(/\s+/).map(normalizar).filter(Boolean);
+  for (let i = 0; i + partes.length <= p.palabras.length; i++) {
+    if (partes.every((x, k) => normalizar(p.palabras[i + k].texto) === x)) return p.palabras[i].inicio;
+  }
+  return p.inicio;
 };
 
 // Inicio del último tramo con voz de la pieza (donde se dice el "aviso").
