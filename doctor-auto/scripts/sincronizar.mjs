@@ -7,8 +7,12 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 
-const audio = "public/estructura8/voz.mp3";
-const guion = JSON.parse(readFileSync("src/estructura8/guion.json", "utf8"));
+// Uso: node scripts/sincronizar.mjs [tema]   (tema: dia-de-muertos | bateria)
+const tema = process.argv[2] ?? "dia-de-muertos";
+const carpeta = tema === "dia-de-muertos" ? "" : `${tema}/`;
+const audio = `public/estructura8/${carpeta}voz.mp3`;
+const salida = `src/estructura8/${carpeta}sincronia.json`;
+const guion = JSON.parse(readFileSync(`src/estructura8/${carpeta}guion.json`, "utf8"));
 const piezas = guion.piezas;
 
 const duracion = Number(
@@ -28,40 +32,58 @@ for (const { s, e } of silencios) {
 }
 if (duracion - cursor > 0.05) habla.push([cursor, duracion]);
 
-// Cada pieza debe tener una velocidad de habla (letras por segundo hablado)
-// parecida a la media. Se eligen los 7 silencios que minimizan la desviación
-// de esas velocidades; así las pausas dramáticas no desplazan el reparto.
-const letras = piezas.map((p) => p.texto.replace(/[^\p{L}\p{N}]/gu, "").length);
-const habladoAntes = (t) => habla.reduce((a, [x, y]) => a + Math.max(0, Math.min(y, t) - x), 0);
-const hablado = habladoAntes(duracion);
-const media = letras.reduce((a, b) => a + b, 0) / hablado;
-const internos = silencios.filter((x) => x.e < duracion);
-// Puntos de corte posibles: inicio, cada silencio interno y final.
-const puntos = [0, ...internos.map((x) => habladoAntes(x.s)), hablado];
-const centros = [0, ...internos.map((x) => (x.s + x.e) / 2), duracion];
+// Asignación global: cada tramo con voz recibe palabras completas y seguidas
+// del guion, buscando que todos los tramos tengan una velocidad parecida
+// (sílabas por segundo). Una pieza solo puede empezar al inicio de un tramo.
+const silabas = (w) => Math.max(1, (w.toLocaleLowerCase("es").match(/[aeiouáéíóúü]+/g) ?? []).length);
+const palabras = piezas.flatMap((p, k) =>
+  p.texto.split(/\s+/).filter(Boolean).map((w, i) => ({ w, pieza: k, primera: i === 0 })),
+);
+const n = palabras.length;
+const m = habla.length;
+const acum = [0];
+for (const x of palabras) acum.push(acum[acum.length - 1] + silabas(x.w));
+const hablado = habla.reduce((a, [x, y]) => a + (y - x), 0);
+const media = acum[n] / hablado;
+// Índices de palabra donde empieza cada pieza (menos la primera).
+const iniciosPieza = new Set(palabras.map((x, i) => (x.primera && i > 0 ? i : -1)).filter((i) => i > 0));
+const cruzaPieza = (a, b) => {
+  for (let i = a + 1; i < b; i++) if (iniciosPieza.has(i)) return true;
+  return false;
+};
 
 let cortes;
-const n = piezas.length;
-if (internos.length >= n - 1) {
-  const costoPieza = (i, a, b) => {
-    const t = puntos[b] - puntos[a];
-    return t <= 0 ? Infinity : Math.log(letras[i] / t / media) ** 2;
+let tramoDePieza = null;
+if (m <= n) {
+  const costo = (j, a, b) => {
+    if (cruzaPieza(a, b)) return Infinity;
+    const ritmo = (acum[b] - acum[a]) / (habla[j][1] - habla[j][0]);
+    const puntuacion = /[,.;:?!…]$/.test(palabras[b - 1].w) ? -0.2 : 0;
+    return Math.log(ritmo / media) ** 2 + puntuacion;
   };
-  const m = puntos.length - 1;
-  const costo = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(Infinity));
-  const previo = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(-1));
-  costo[0][0] = 0;
-  for (let i = 1; i <= n; i++) {
-    for (let b = i; b <= m; b++) {
-      for (let a = i - 1; a < b; a++) {
-        const c = costo[i - 1][a] + costoPieza(i - 1, a, b);
-        if (c < costo[i][b]) { costo[i][b] = c; previo[i][b] = a; }
+  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(Infinity));
+  const previo = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(-1));
+  dp[0][0] = 0;
+  for (let j = 1; j <= m; j++) {
+    for (let b = j; b <= n; b++) {
+      for (let a = j - 1; a < b; a++) {
+        const c = dp[j - 1][a] + costo(j - 1, a, b);
+        if (c < dp[j][b]) { dp[j][b] = c; previo[j][b] = a; }
       }
     }
   }
-  const indices = [];
-  for (let i = n, b = m; i > 0; i--) { b = previo[i][b]; indices.unshift(b); }
-  cortes = indices.slice(1).map((k) => centros[k]);
+  if (Number.isFinite(dp[m][n])) {
+    const limitesPalabra = [n];
+    for (let j = m, b = n; j > 0; j--) { b = previo[j][b]; limitesPalabra.unshift(b); }
+    // Tramo en el que empieza cada pieza.
+    tramoDePieza = piezas.map((_, k) => limitesPalabra.findIndex((w) => w < n && palabras[w].pieza === k));
+  }
+}
+if (tramoDePieza && tramoDePieza.every((j) => j >= 0)) {
+  cortes = tramoDePieza.slice(1).map((j) => {
+    const anterior = silencios.find((x) => Math.abs(x.e - habla[j][0]) < 1e-6);
+    return anterior ? (anterior.s + anterior.e) / 2 : habla[j][0];
+  });
   console.log("Modo: silencios");
 } else {
   const escala = duracion / guion.duracionSegundos;
@@ -82,5 +104,5 @@ const resultado = {
     return { id: p.id, inicio: Number(inicio.toFixed(3)), fin: Number(fin.toFixed(3)), habla: tramos };
   }),
 };
-writeFileSync("src/estructura8/sincronia.json", JSON.stringify(resultado, null, 2) + "\n");
+writeFileSync(salida, JSON.stringify(resultado, null, 2) + "\n");
 for (const p of resultado.piezas) console.log(p.id, p.inicio, "→", p.fin, JSON.stringify(p.habla));

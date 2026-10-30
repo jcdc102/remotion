@@ -61,7 +61,7 @@ export const Gancho: React.FC<{ p: Pieza }> = ({ p }) => {
   return (
     <AbsoluteFill>
       <ZonaPantalla style={{ transform: `translate(${s}px, ${s * 0.6}px) scale(${2.2 - 1.2 * golpe})`, opacity: golpe }}>
-        <TextoPantalla texto={p.pantalla ?? ""} resaltar={p.resaltar} color="#ffd60a" tamano={118} />
+        <TextoPantalla texto={p.pantalla ?? ""} resaltar={p.resaltar} color="#ffd60a" colorResaltado="#ffd60a" tamano={118} />
       </ZonaPantalla>
     </AbsoluteFill>
   );
@@ -296,7 +296,7 @@ export const Bucle: React.FC<{ p: Pieza; orden: number }> = ({ p, orden }) => {
         </div>
       ) : null}
       <ZonaPantalla style={{ transform: `scale(${entrada * pulso})` }}>
-        <TextoPantalla texto={p.pantalla ?? ""} resaltar={p.resaltar} color="#ffffff" tamano={112} />
+        <TextoPantalla texto={p.pantalla ?? ""} resaltar={p.resaltar} color="#ffffff" colorResaltado="#ffd60a" tamano={112} />
       </ZonaPantalla>
     </AbsoluteFill>
   );

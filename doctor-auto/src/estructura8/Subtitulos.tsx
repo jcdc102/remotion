@@ -1,16 +1,24 @@
 // Subtítulos de 3 a 7 palabras por línea, con resaltado palabra por palabra.
-// Zona: entre el 50% y el 60% de la altura (nunca en el 15% superior ni el 25% inferior).
+// La posición la decide cada tema (siempre entre el 30% y el 60% de la altura).
 import { useCurrentFrame, useVideoConfig, spring } from "remotion";
-import { piezas, type Linea } from "./datos";
+import type { Linea } from "./datos";
 import { FUENTE, Palabra } from "./Texto";
 
-const lineas: Linea[] = piezas.flatMap((p) => p.lineas);
-
-export const Subtitulos: React.FC<{ hasta: number }> = ({ hasta }) => {
+export const Subtitulos: React.FC<{
+  lineas: Linea[];
+  desde: number;
+  hasta: number;
+  colorResaltado: string;
+  arriba: number;
+  alto: number;
+  tamano: number;
+  izquierda: number;
+  derecha: number;
+}> = ({ lineas, desde, hasta, colorResaltado, arriba, alto, tamano, izquierda, derecha }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = frame / fps;
-  if (t >= hasta) return null;
+  if (t < desde || t >= hasta) return null;
   const i = lineas.findIndex(
     (l, k) => t >= l.inicio && t < Math.min(lineas[k + 1]?.inicio ?? Infinity, l.fin + 0.9),
   );
@@ -21,16 +29,16 @@ export const Subtitulos: React.FC<{ hasta: number }> = ({ hasta }) => {
     <div
       style={{
         position: "absolute",
-        left: 70,
-        right: 70,
-        top: 950,
-        height: 200,
+        left: izquierda,
+        right: derecha,
+        top: arriba,
+        height: alto,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
         fontFamily: FUENTE,
-        fontSize: 80,
+        fontSize: tamano,
         lineHeight: 1.1,
         transform: `scale(${0.85 + 0.15 * entrada})`,
       }}
@@ -44,6 +52,7 @@ export const Subtitulos: React.FC<{ hasta: number }> = ({ hasta }) => {
             activa={t >= w.inicio && t < w.fin}
             dicha={t >= w.inicio}
             color="#ffffff"
+            colorResaltado={colorResaltado}
             grosor={13}
           />
         ))}

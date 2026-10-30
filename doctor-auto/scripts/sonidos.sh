@@ -24,3 +24,12 @@ f -f lavfi -i "aevalsrc='0.9*sin(2*PI*48*t)*exp(-14*t)+0.7*sin(2*PI*44*(t-0.28))
 f -f lavfi -i "aevalsrc='0.5*(random(0)*2-1)*exp(-60*t)+0.4*gte(t,0.1)*(sin(2*PI*2093*(t-0.1))+0.7*sin(2*PI*2637*(t-0.1))+0.4*sin(2*PI*4186*(t-0.1)))*exp(-3*(t-0.1))':s=48000:d=1.3" -ac 2 $D/caja.wav
 # Pop: tono que baja rápido.
 f -f lavfi -i "aevalsrc='0.7*sin(2*PI*(300*t+60*(1-exp(-40*t))*10))*exp(-25*t)':s=48000:d=0.25" -ac 2 $D/pop.wav
+# --- Tema "bateria" ---
+# Arranque lento: motor de arranque que batalla ("rrr-rrr-rrr" que se va frenando).
+f -f lavfi -i "aevalsrc='0.6*(2*mod(t*(70-25*t),1)-1)*pow(0.5+0.5*sin(2*PI*(5-1.8*t)*t),2)*min(1,t*20)*exp(-0.6*t)':s=48000:d=1.6" -af "lowpass=f=1800,volume=1.4" -ac 2 $D/arranque.wav
+# Clic: chasquido seco del solenoide.
+f -f lavfi -i "aevalsrc='0.9*(random(0)*2-1)*exp(-120*t)+0.6*sin(2*PI*1800*t)*exp(-90*t)':s=48000:d=0.3" -ac 2 $D/clic.wav
+# Apagado de luces: zumbido eléctrico que baja y se corta.
+f -f lavfi -i "aevalsrc='0.45*sin(2*PI*120*(1-exp(-2*t))/2*10)*(1+0.5*sin(2*PI*60*t))*exp(-3*t)':s=48000:d=0.9" -ac 2 $D/luces.wav
+# Ding suave.
+f -f lavfi -i "aevalsrc='0.5*(sin(2*PI*1320*t)+0.4*sin(2*PI*2640*t)+0.15*sin(2*PI*3960*t))*exp(-4*t)*min(1,t*200)':s=48000:d=1.2" -ac 2 $D/ding.wav

@@ -17,7 +17,18 @@ type PiezaGuion = {
   icono?: string;
   aviso?: string;
   boton?: string;
+  chips?: string[];
+  mascota?: { pose: string; animacion: string; globo?: string };
 };
+
+export type Guion = {
+  titulo: string;
+  tema: string;
+  duracionSegundos: number;
+  fps: number;
+  piezas: unknown[];
+};
+type Sincronia = { duracionAudio: number; piezas: { id: number; inicio: number; fin: number; habla: number[][] }[] };
 
 export type Palabra = {
   texto: string;
@@ -145,17 +156,37 @@ const agrupar = (palabras: Palabra[]): Palabra[][] => {
   return lineas;
 };
 
-export const piezas: Pieza[] = (guion.piezas as PiezaGuion[]).map((p, i) => {
-  const sinc = sincronia.piezas[i];
-  const conTiempos = { ...p, inicio: sinc.inicio, fin: sinc.fin };
-  const palabras = repartir(conTiempos, sinc.habla);
-  const lineas = agrupar(palabras).map((ws) => ({
-    palabras: ws,
-    inicio: ws[0].inicio,
-    fin: ws[ws.length - 1].fin,
-  }));
-  return { ...conTiempos, habla: sinc.habla, palabras, lineas };
-});
+// Marca como resaltadas las palabras (o frases de varias palabras) de "resaltar".
+const marcarFrases = (palabras: Palabra[], resaltar: string[]) => {
+  for (const frase of resaltar) {
+    const partes = frase.split(/\s+/).map(normalizar).filter(Boolean);
+    if (partes.length < 2) continue;
+    for (let i = 0; i + partes.length <= palabras.length; i++) {
+      if (partes.every((x, k) => normalizar(palabras[i + k].texto) === x)) {
+        for (let k = 0; k < partes.length; k++) palabras[i + k].resaltada = true;
+      }
+    }
+  }
+  return palabras;
+};
+
+export const construirPiezas = (g: Guion, s: Sincronia): Pieza[] =>
+  (g.piezas as PiezaGuion[]).map((p, i) => {
+    const sinc = s.piezas[i];
+    const conTiempos = { ...p, inicio: sinc.inicio, fin: sinc.fin };
+    const palabras = marcarFrases(repartir(conTiempos, sinc.habla), p.resaltar);
+    const lineas = agrupar(palabras).map((ws) => ({
+      palabras: ws,
+      inicio: ws[0].inicio,
+      fin: ws[ws.length - 1].fin,
+    }));
+    return { ...conTiempos, habla: sinc.habla, palabras, lineas };
+  });
+
+export const porTipo = (lista: Pieza[], tipo: TipoPieza, n = 0) =>
+  lista.filter((p) => p.tipo === tipo)[n];
+
+export const piezas: Pieza[] = construirPiezas(guion, sincronia);
 
 export const piezaPorTipo = (tipo: TipoPieza, n = 0) =>
   piezas.filter((p) => p.tipo === tipo)[n];

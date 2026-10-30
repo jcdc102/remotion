@@ -17,6 +17,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="Estructura8"
         component={Estructura8}
+        defaultProps={{ tema: "bateria" as const }}
         durationInFrames={DURACION * FPS}
         fps={FPS}
         width={1080}
