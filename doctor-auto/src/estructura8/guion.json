@@ -1,0 +1,29 @@
+{
+  "titulo": "Calaveritas del taller",
+  "tema": "dia-de-muertos",
+  "duracionSegundos": 42,
+  "fps": 30,
+  "piezas": [
+    { "id": 1, "tipo": "gancho", "inicio": 0, "fin": 3,
+      "texto": "La calaca ya vio tu auto.", "pantalla": "LA CALACA YA VIO TU AUTO", "resaltar": ["CALACA"] },
+    { "id": 2, "tipo": "introduccion", "inicio": 3, "fin": 7,
+      "texto": "Tres calaveritas de piezas olvidadas. La última duele.",
+      "lapidas": ["bateria", "luz-motor", "aceite"], "resaltar": ["última"] },
+    { "id": 3, "tipo": "cuerpo", "inicio": 7, "fin": 15,
+      "texto": "A la batería nadie la revisó, y un lunes frío ya no arrancó. Si arranca lento, ya te avisó.",
+      "icono": "bateria", "aviso": "Si arranca lento, ya te avisó", "resaltar": ["revisó", "arrancó", "avisó"] },
+    { "id": 4, "tipo": "bucle", "inicio": 15, "fin": 18,
+      "texto": "Pero la siguiente es peor.", "pantalla": "PERO LA SIGUIENTE ES PEOR 😱", "resaltar": ["peor"] },
+    { "id": 5, "tipo": "cuerpo", "inicio": 18, "fin": 26,
+      "texto": "La luz de motor se prendió con razón, y su dueño la tapó con un cartón. Si parpadea, es urgente.",
+      "icono": "luz-motor", "aviso": "Si parpadea, es urgente", "resaltar": ["razón", "cartón", "urgente"] },
+    { "id": 6, "tipo": "bucle", "inicio": 26, "fin": 29,
+      "texto": "Y la última sale cara.", "pantalla": "Y LA ÚLTIMA SALE CARA 💸", "resaltar": ["cara"] },
+    { "id": 7, "tipo": "cuerpo", "inicio": 29, "fin": 37,
+      "texto": "Al aceite lo dejaron sin cambiar, y la calaca vino a cobrar. Cambiarlo a tiempo casi siempre sale más barato.",
+      "icono": "aceite", "aviso": "Cámbialo a tiempo, casi siempre sale más barato", "resaltar": ["cambiar", "cobrar", "barato"] },
+    { "id": 8, "tipo": "cta", "inicio": 37, "fin": 42,
+      "texto": "Comenta qué pieza ignoras y le hacemos su calaverita. O agenda tu revisión.",
+      "boton": "Comenta qué pieza ignoras 👇", "resaltar": ["Comenta", "calaverita"] }
+  ]
+}
