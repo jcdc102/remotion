@@ -33,15 +33,15 @@ npx remotion render Estructura8 out/muertos.mp4 --props='{"tema":"dia-de-muertos
 ## Mascota (tema bateria)
 
 `public/estructura8/bateria/mascota.png` es la imagen original con fondo verde.
-**Por ahora es una mascota provisional**: reemplázala por la imagen real y
-vuelve a quitar el fondo y a renderizar. Para quitar el fondo:
+Para quitar el fondo:
 
 ```bash
 python3 scripts/quitar-fondo.py public/estructura8/bateria/mascota.png public/estructura8/bateria/mascota-transparente.png
 ```
 
-El script toma el verde de los bordes, lo vuelve transparente, quita el reflejo
-verde del contorno e informa cuántos píxeles verdes quedan (debe ser 0).
+El script toma el verde de los bordes y vuelve transparente todo lo que es
+dominantemente verde (los grises, blancos y rojos del personaje quedan opacos),
+quita el reflejo verde del contorno e informa cuántos píxeles verdes quedan (debe ser 0).
 El campo `mascota.pose` del guion elige la imagen (`POSES` en `src/estructura8/Mascota.tsx`);
 por ahora solo existe `pulgar`.
 

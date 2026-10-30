@@ -3,7 +3,7 @@
 Uso: python3 scripts/quitar-fondo.py entrada.png salida.png
 
 - Toma el color de llave de los bordes de la imagen.
-- Calcula la transparencia por distancia de croma (Cb/Cr), con borde suave.
+- Calcula la transparencia según cuánto domina el verde (borde suave).
 - Quita el reflejo verde ("spill") en la franja del contorno.
 - Recorta a lo visible y avisa si quedan píxeles verdes.
 """
@@ -17,19 +17,13 @@ img = np.asarray(Image.open(entrada).convert("RGB")).astype(np.float32)
 alto, ancho, _ = img.shape
 
 
-def croma(rgb):
-    r, g, b = rgb[..., 0], rgb[..., 1], rgb[..., 2]
-    cb = -0.168736 * r - 0.331264 * g + 0.5 * b
-    cr = 0.5 * r - 0.418688 * g - 0.081312 * b
-    return cb, cr
-
-
 borde = np.concatenate([img[0], img[-1], img[:, 0], img[:, -1]])
 llave = np.median(borde, axis=0)
-cb, cr = croma(img)
-cbk, crk = croma(llave[None, None, :])
-dist = np.sqrt((cb - cbk) ** 2 + (cr - crk) ** 2)
-alfa = np.clip((dist - 28) / (60 - 28), 0, 1)
+# "Verdor": cuánto domina el verde sobre el rojo y el azul. Los grises, blancos,
+# rojos y la piel tienen verdor 0 o negativo, así que quedan totalmente opacos.
+verdor = img[..., 1] - np.maximum(img[..., 0], img[..., 2])
+verdor_llave = max(1.0, float(llave[1] - max(llave[0], llave[2])))
+alfa = 1 - np.clip((verdor - 0.25 * verdor_llave) / (0.4 * verdor_llave), 0, 1)
 
 # Encoge 1 px el borde para eliminar el halo y suaviza la orilla.
 mascara = Image.fromarray((alfa * 255).astype(np.uint8))
