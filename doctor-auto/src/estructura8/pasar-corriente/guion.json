@@ -5,6 +5,7 @@
   "tarjetaFinal": false,
   "marcaDeAgua": "doctor auto",
   "pausaEntreClipsSegundos": 0.4,
+  "bpm": 120,
   "piezas": [
     { "id": 1, "tipo": "gancho", "clips": [
       { "id": "c01", "archivo": "c01.mp3", "texto": "Pasar corriente mal puede sacar chispas. Literal.", "resaltar": ["chispas"], "pantalla": "¿TU AUTO NO ARRANCA? NO CONECTES LAS PINZAS ASÍ", "pantallaResaltar": ["ASÍ"], "visual": "chispa-entre-pinzas", "sfx": "whoosh-chispazo", "mascota": { "pose": "pulgar", "animacion": "entra-rebote", "globo": "¡Ojo!" } } ] },
