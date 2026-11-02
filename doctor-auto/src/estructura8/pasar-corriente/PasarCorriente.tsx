@@ -189,7 +189,10 @@ const BarraProgreso: React.FC = () => {
 // ---------- Efectos de sonido ----------
 type Efecto = { nombre: string; archivo: string; t: number; dur: number; motivo: string };
 const efecto = (nombre: string, archivo: string, t: number, dur: number, motivo: string): Efecto => ({ nombre, archivo, t, dur, motivo });
-const D = { whoosh: 0.55, chispazo: 0.48, clac: 0.26, pop: 0.25, clic: 0.12, "tic-tac": 0.9, "motor-enciende": 1.8, "arranque-motor": 2, ding: 0.9 };
+const D = {
+  whoosh: 0.55, chispazo: 0.48, clac: 0.26, pop: 0.25, clic: 0.12, "tic-tac": 0.9, "motor-enciende": 1.8, "arranque-motor": 2, ding: 0.9,
+  rebote: 0.5, zumbido: 0.9, trinquete: 0.35, foco: 0.37, aterriza: 0.15, cable: 0.4, error: 0.34, check: 0.4, encendido: 0.62, carga: 0.9, conteo: 0.8,
+};
 const EFECTOS: Efecto[] = [
   efecto("Whoosh gancho", "whoosh", c01.inicio + 0.3, D.whoosh, "0.3 s después del inicio del clip"),
   // Ligado a palabra: la chispa grande sale cuando se dice "chispas".
@@ -217,9 +220,46 @@ const WHOOSH_CORTE = guion.piezas
   .filter((c) => !c.sfx.startsWith("whoosh"))
   .map((c) => efecto(`Whoosh corte ${c.id}`, "whoosh", c.inicio, D.whoosh, "corte de pieza"));
 
+// Efectos adicionales, cada uno ligado a un momento de la animación de su clip.
+const momentosLlaves = ["apaga", "freno", "todo"].map((w) => dentro(c03, momentoEnClip(c03, w), 0.5));
+const EXTRAS: Efecto[] = [
+  // c01: la mascota entra con rebote y las pinzas zumban antes de la chispa.
+  efecto("Rebote mascota", "rebote", c01.inicio + 0.35, D.rebote, "la mascota toca el piso al entrar"),
+  efecto("Zumbido pinzas", "zumbido", Math.max(c01.inicio + 0.4, T_CHISPA - D.zumbido), D.zumbido, "las pinzas se acercan hasta la chispa"),
+  // c03: freno de mano (trinquete) y luces que se apagan (foco), con su palabra.
+  efecto("Freno de mano", "trinquete", momentosLlaves[1], D.trinquete, "palabra «freno»"),
+  efecto("Foco se apaga", "foco", momentosLlaves[2], D.foco, "palabra «todo»"),
+  // c04: cada pinza al acomodarse en su lugar.
+  ...[0, 1, 2, 3].map((k) =>
+    efecto(`Pinza ${k + 1} se acomoda`, "aterriza", c04.inicio + c04.duracion * 0.8 * ((1 + 0.08 * k) / 1.25), D.aterriza, "la pinza llega a su lugar"),
+  ),
+  // c05a–c05d: el cable se desliza desde el primer fotograma del clip.
+  ...c05.map((c, k) => efecto(`Cable ${k + 1}`, "cable", c.inicio + 0.05, D.cable, "el cable empieza a moverse")),
+  // c05d: "X" roja sobre el negativo y palomita verde en el metal.
+  efecto("Error X", "error", c05[3].inicio + 0.12, D.error, "aparece la X roja"),
+  efecto("Palomita", "check", T_CIERRE[3] + 0.05, D.check, "aparece la palomita verde"),
+  // c07a: zumbido de las ondas de energía; c07b: faros y tablero que se encienden.
+  efecto("Ondas de energía", "zumbido", c07a.inicio + 0.2, D.zumbido, "empiezan las ondas"),
+  efecto("Encendido", "encendido", T_ENCIENDE[0], D.encendido, "se encienden faros y tablero"),
+  // c07d: el odómetro cuenta y la batería se llena.
+  efecto("Odómetro", "conteo", c07d.inicio + 0.05, D.conteo, "el odómetro empieza a contar"),
+  efecto("Carga", "carga", c07d.inicio + 0.2, D.carga, "la batería se llena"),
+];
+
 const vozActiva = (t: number) => clips.some((c) => t >= c.voz[0] && t <= c.voz[1]);
 // Efectos a 0.3; bajan a 0.15 mientras suena la voz.
 const volumenEfecto = (inicio: number) => (f: number) => (vozActiva(inicio + f / FPS) ? 0.15 : 0.3);
+
+// Reparte los efectos en pistas para que ninguno se encime con otro en la misma pista.
+const repartirEnPistas = (lista: Efecto[]) => {
+  const pistas: Efecto[][] = [];
+  for (const e of [...lista].sort((a, b) => a.t - b.t)) {
+    const libre = pistas.find((p) => p[p.length - 1].t + p[p.length - 1].dur <= e.t);
+    if (libre) libre.push(e);
+    else pistas.push([e]);
+  }
+  return pistas;
+};
 
 const PistaEfectos: React.FC<{ nombre: string; lista: Efecto[] }> = ({ nombre, lista }) => (
   <Track name={nombre}>
@@ -260,9 +300,9 @@ export const TemaPasarCorriente: React.FC = () => {
         </Sequence>
       ) : null}
 
-      <PistaEfectos nombre="Efectos" lista={EFECTOS} />
-      <PistaEfectos nombre="Efectos 2" lista={[chispaCorta]} />
-      <PistaEfectos nombre="Whoosh de corte" lista={WHOOSH_CORTE} />
+      {repartirEnPistas([...EFECTOS, chispaCorta, ...WHOOSH_CORTE, ...EXTRAS]).map((lista, k) => (
+        <PistaEfectos key={k} nombre={`Efectos ${k + 1}`} lista={lista} />
+      ))}
     </AbsoluteFill>
   );
 };
