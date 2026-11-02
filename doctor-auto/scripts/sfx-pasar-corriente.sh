@@ -52,3 +52,18 @@ for x in rebote zumbido trinquete foco aterriza cable error check encendido carg
   ganancia=$(awk -v p="$pico" 'BEGIN{printf "%.2f", -6 - p}')
   f -i "$D/$x.wav" -af "volume=${ganancia}dB" "$D/$x.tmp.wav" && mv "$D/$x.tmp.wav" "$D/$x.wav"
 done
+# --- Pack de movimiento ---
+# Tres whoosh distintos (uno por tipo de transición) y un swipe para los wipes.
+f -f lavfi -i "anoisesrc=d=0.4:c=pink:a=0.9" -af "highpass=f=600,lowpass=f=4000,afade=in:d=0.18,afade=out:st=0.18:d=0.22" -ar 48000 -ac 2 $D/whoosh-a.wav
+f -f lavfi -i "anoisesrc=d=0.45:c=brown:a=0.9" -af "bandpass=f=500:w=1.4,afade=in:d=0.2,afade=out:st=0.2:d=0.25,aecho=0.5:0.3:30:0.2" -ar 48000 -ac 2 $D/whoosh-b.wav
+f -f lavfi -i "aevalsrc='0.4*sin(2*PI*(90*t+200*t*t))':s=48000:d=0.45" -f lavfi -i "anoisesrc=d=0.45:c=pink:a=0.5" -filter_complex "[1]bandpass=f=900:w=1.5[n];[0][n]amix=inputs=2,afade=in:d=0.25,afade=out:st=0.25:d=0.2" -ac 2 $D/whoosh-c.wav
+f -f lavfi -i "anoisesrc=d=0.3:c=white:a=0.9" -af "highpass=f=2500,afade=in:d=0.04,afade=out:st=0.08:d=0.22" -ar 48000 -ac 2 $D/swipe.wav
+# hit: impacto grave (bombo + cuerpo).
+f -f lavfi -i "aevalsrc='0.9*sin(2*PI*(45*t+70*(1-exp(-30*t))/30*10))*exp(-7*t)+0.25*(random(0)*2-1)*exp(-60*t)':s=48000:d=0.7" -af "lowpass=f=2500" -ac 2 $D/hit.wav
+# riser: subida de 1.5 s (tono que sube + ruido que crece).
+f -f lavfi -i "aevalsrc='(0.3*sin(2*PI*(200*t+260*t*t))+0.15*(random(0)*2-1))*pow(t/1.5,2)':s=48000:d=1.5" -af "highpass=f=150,afade=out:st=1.42:d=0.08" -ac 2 $D/riser.wav
+for x in whoosh-a whoosh-b whoosh-c swipe hit riser; do
+  pico=$(ffmpeg -nostdin -i "$D/$x.wav" -af volumedetect -f null - 2>&1 | sed -n 's/.*max_volume: \(-*[0-9.]*\) dB.*/\1/p')
+  ganancia=$(awk -v p="$pico" 'BEGIN{printf "%.2f", -6 - p}')
+  f -i "$D/$x.wav" -af "volume=${ganancia}dB" "$D/$x.tmp.wav" && mv "$D/$x.tmp.wav" "$D/$x.wav"
+done

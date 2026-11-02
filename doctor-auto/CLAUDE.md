@@ -47,3 +47,51 @@ Solo voz y efectos de sonido. Sin música; la música de tendencia se agrega en 
 
 ## Entrega
 Antes de renderizar el video completo, renderiza un solo fotograma (still) del gancho y otro del cuerpo 1 y muéstramelos para aprobar el estilo. Luego renderiza el MP4, guárdalo en la rama doctor-auto y envíalo.
+
+---
+
+## PACK DE MOVIMIENTO (aplica a TODOS los videos)
+
+> Sustituye la regla anterior de "sin música": ahora la música (musica.mp3) se mezcla dentro de Remotion.
+
+Objetivo: que el video se sienta energético, llamativo y premium, nunca estático. Todo cambio visual lleva un sonido, y ningún efecto debe tapar los subtítulos ni la mascota.
+
+### Texto cinético
+- Cada palabra de los subtítulos entra con un resorte corto: spring con damping 12 y stiffness 200, subiendo desde 20 px abajo y de 0.8 a 1 de escala.
+- La palabra resaltada va sobre una cápsula roja redondeada que se dibuja de izquierda a derecha en 6 fotogramas y la palabra hace un golpe de zoom a 1.15 y vuelve a 1.
+- Títulos grandes (gancho y bucles): letras en Anton que entran una por una con 2 fotogramas de retraso, con un leve temblor al caer.
+- Números y datos clave (3 a 6 años, 20 min, 10,000 km): pantalla casi completa por 1 segundo, con cuenta rápida desde 0 hasta el número.
+
+### Cámara y gráficos
+- Zoom lento constante (de 1.0 a 1.06) durante cada clip, y un "punch-in" de 1.0 a 1.12 en 4 fotogramas cuando aparece el dato importante.
+- Fondo con degradado rojo a #151515 que se mueve despacio, con formas geométricas grandes (@remotion/shapes) y ruido sutil (@remotion/noise) en movimiento. Sin fondos planos quietos.
+- Profundidad: sombra suave bajo cada elemento gráfico, y los íconos entran con rebote y un pequeño giro.
+- Dibujos de líneas (pinzas, flechas, cables) que se "dibujan solos" con stroke-dashoffset.
+- Desenfoque de movimiento (@remotion/motion-blur, CameraMotionBlur) en las transiciones rápidas, si el render lo soporta sin volverse muy lento.
+
+### Transiciones
+- Usa TransitionSeries de @remotion/transitions entre bloques. Rota entre slide, wipe, flip y un zoom-through. Nunca la misma dos veces seguidas.
+- Duración de cada transición: 8 a 12 fotogramas (menos de 0.4 s).
+- Cada transición lleva un whoosh distinto.
+- Evita destellos de blanco puro y parpadeos rápidos (más de 3 por segundo).
+
+### Mascota con más vida
+- Respira siempre: balanceo de 1 a 2% de escala y rotación de 1 a 2 grados, aunque no hable.
+- Entradas y salidas con rebote o "pop". Cuando hace una pregunta o se asusta, se agranda a 1.15 y tiembla 6 fotogramas.
+- Sus globos de diálogo aparecen con resorte y llevan un sonido de pop.
+
+### Ritmo con la música
+- Si guion.json trae el campo "bpm", calcula el pulso: un latido cada (60 / bpm) segundos.
+- En cada latido, la mascota y el fondo hacen un pulso suave de 1.0 a 1.03. No muevas el texto con el pulso para que se siga leyendo.
+
+### Sonido
+Capas: voz, efectos y música, mezcladas dentro de Remotion.
+- Voz: volumen 1.0, siempre al frente.
+- Música (musica.mp3, en loop con fundido de entrada de 0.5 s y salida de 1 s): volumen base 0.12. Mientras suena la voz, baja a 0.07 con una transición de 5 fotogramas; en los silencios entre clips sube de nuevo a 0.12. En el primer segundo del gancho y en el último segundo del CTA puede subir a 0.2.
+- Efectos: volumen entre 0.35 y 0.5, un poco por debajo de la voz.
+- Cada elemento que entra en pantalla tiene su sonido: whoosh en transiciones, pop en íconos y globos, "swipe" en wipes, impacto grave ("hit") en el gancho y en los números grandes, riser (subida) de 1 a 2 s antes de cada bucle abierto, clac metálico al conectar piezas, "ding" en cada dato correcto, tic-tac en preguntas.
+- Evita que dos efectos suenen exactamente al mismo tiempo; desfásalos 2 o 3 fotogramas.
+- Pico final: no mayor a -1 dB. Si hay clipping, baja música y efectos, no la voz.
+
+### Revisión antes de entregar
+Renderiza dos fotogramas (gancho y un cuerpo) y un tramo de 5 s con audio para que yo apruebe movimiento y mezcla. Después renderiza el video completo.

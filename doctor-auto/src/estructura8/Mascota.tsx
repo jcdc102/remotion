@@ -35,7 +35,8 @@ export const Mascota: React.FC<{
   fuente: string;
   espejoCompleto: boolean;
   globoArriba: number;
-}> = ({ pose, animacion, globo, frameLocal, t, boca, ancla, anclaAnterior, objetivo, colorAcento, fuente, espejoCompleto, globoArriba }) => {
+  pulso: number;
+}> = ({ pose, animacion, globo, frameLocal, t, boca, ancla, anclaAnterior, objetivo, colorAcento, fuente, espejoCompleto, globoArriba, pulso }) => {
   const { fps } = useVideoConfig();
   const u = frameLocal / fps;
   const resorte = (retraso: number, damping: number) =>
@@ -49,10 +50,11 @@ export const Mascota: React.FC<{
 
   // Balanceo con la voz (siempre un poco; más fuerte en "habla").
   const fuerzaVoz = animacion === "habla" ? 1 : 0.4;
-  let giro = Math.sin(t * 9) * boca * 6 * fuerzaVoz;
+  // Respira siempre: 1.5% de escala y 1.5° de rotación, aunque no hable.
+  let giro = Math.sin(t * 9) * boca * 6 * fuerzaVoz + Math.sin(t * 1.7) * 1.5;
   let dy = -boca * 14 * fuerzaVoz + Math.sin(t * 2.2) * 5;
   let dx = 0;
-  let escala = 1 + boca * 0.03 * fuerzaVoz;
+  let escala = (1 + boca * 0.03 * fuerzaVoz + Math.sin(t * 2.2) * 0.015) * pulso;
   let espejo = 1;
   let vuelta = 0;
 
@@ -68,10 +70,13 @@ export const Mascota: React.FC<{
       vuelta = -38 * resorte(0.1, 12);
     }
   }
+  // Susto o pregunta: se agranda a 1.15 y tiembla 6 fotogramas.
+  if (animacion === "susto" || animacion === "duda") {
+    escala *= 1 + 0.15 * resorte(0, 12);
+    if (frameLocal >= 0 && frameLocal < 6) dx += Math.sin(frameLocal * 2.6) * 10;
+  }
   if (animacion === "susto") {
-    const decae = Math.max(0, 1 - u / 1.4);
-    dx += Math.sin(u * 60) * 16 * decae;
-    dy += -Math.abs(Math.sin(u * 30)) * 18 * decae;
+    dy += -Math.abs(Math.sin(u * 30)) * 10 * Math.max(0, 1 - u / 0.8);
   }
   if (animacion === "duda") {
     giro += -11 * resorte(0, 12);

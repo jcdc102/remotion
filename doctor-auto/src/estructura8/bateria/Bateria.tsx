@@ -61,6 +61,7 @@ const MascotaAnimada: React.FC = () => {
       fuente={FUENTE}
       espejoCompleto
       globoArriba={812}
+      pulso={1}
     />
   );
 };

@@ -58,6 +58,8 @@ for (const c of clips) {
 const ids = Object.keys(resultado.clips);
 const total = ids.reduce((a, id) => a + resultado.clips[id].duracion, 0) + resultado.pausaEntreClipsSegundos * (ids.length - 1);
 resultado.totalSegundos = Number(total.toFixed(3));
+// Música opcional (pack de movimiento): se usa si existe public/musica.mp3.
+resultado.musica = existsSync("public/musica.mp3");
 writeFileSync(`${carpeta}/duraciones.json`, JSON.stringify(resultado, null, 2) + "\n");
 const faltan = ids.filter((id) => resultado.clips[id].estimado);
 console.log(`Total: ${total.toFixed(2)} s (${Math.ceil(total * guion.fps)} fotogramas)`);
