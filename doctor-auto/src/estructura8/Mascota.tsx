@@ -14,9 +14,13 @@ export type AnimacionMascota =
   | "pulgar-final"
   | "grande-centro";
 
-// Imagen por pose. Mientras solo exista "pulgar", toda pose usa esa imagen.
+// Imagen por pose (campo "pose" del guion). Si una pose no existe, se usa "pulgar".
+// Las poses nuevas se generaron con ElevenLabs a partir de mascota.png.
 const POSES: Record<string, string> = {
   pulgar: "estructura8/bateria/mascota-transparente.png",
+  senala: "estructura8/poses/mascota-senala-transparente.png",
+  susto: "estructura8/poses/mascota-susto-transparente.png",
+  duda: "estructura8/poses/mascota-duda-transparente.png",
 };
 
 export type Ancla = { x: number; abajo: number; alto: number };

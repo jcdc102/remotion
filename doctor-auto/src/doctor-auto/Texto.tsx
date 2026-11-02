@@ -160,10 +160,19 @@ export const TituloDA: React.FC<{ texto: string; resaltar: string[]; tamano: num
   return (
     <div style={{ fontFamily: ANTON, fontSize: tamano, lineHeight: 1.12, textAlign: "center", color: "#fff", textTransform: "uppercase" }}>
       {texto.split(/\s+/).map((w, i) => {
+        const primera = indice;
         const letras = [...w].map(letra);
-        return esResaltada(w, resaltar) ? (
-          <Capsula key={i} texto={w} golpe={golpe} dibujo={1} />
-        ) : (
+        if (esResaltada(w, resaltar)) {
+          // La cápsula entra en su turno (cuando le tocaría a su primera letra) y se dibuja en 6 fotogramas.
+          const local = frame - primera * 2;
+          const entra = spring({ frame: local, fps, config: { damping: 12, stiffness: 200 } });
+          return (
+            <span key={i} style={{ display: "inline-block", opacity: local < 0 ? 0 : 1, transform: `scale(${0.6 + 0.4 * entra})` }}>
+              <Capsula texto={w} golpe={golpe} dibujo={Math.min(1, Math.max(0, local / 6))} />
+            </span>
+          );
+        }
+        return (
           <span key={i} style={{ display: "inline-block", margin: "0 0.12em", ...(esEmoji(w) ? {} : borde(tamano * 0.1)) }}>
             {letras}
           </span>

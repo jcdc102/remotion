@@ -9,7 +9,7 @@ import { AbsoluteFill, Img, interpolate, Sequence, spring, staticFile, Track, us
 import { ANTON, DEGRADADO, POPPINS, PESO_POPPINS, ROJO_DA } from "../../doctor-auto/constantes";
 import { Anillo, Rafaga, Sticker } from "../../doctor-auto/Emociones";
 import { FondoMovimiento, pulsoBpm } from "../../doctor-auto/Fondo";
-import { SubtitulosDA } from "../../doctor-auto/Texto";
+import { SubtitulosDA, TituloDA } from "../../doctor-auto/Texto";
 import { presentacion, ROTACION, SONIDO_TRANSICION } from "../../doctor-auto/transiciones";
 import { Mascota, type Ancla } from "../Mascota";
 import { sacudida, TarjetaLogo } from "../Piezas";
@@ -228,12 +228,20 @@ const Escena: React.FC<{ c: Clip; t: number; primeroDelBloque: boolean }> = ({ c
   }
   // Los íconos entran con rebote y un pequeño giro (solo al empezar un bloque).
   const rebote = primeroDelBloque ? resorte(t, c.inicio - 0.05, 9) : 1;
+  // Con título en pantalla (gancho), el panel se encoge hacia arriba (352–600 px)
+  // para dejar el título entre el 32% y el 45% de la altura.
+  const conTitulo = Boolean(c.pantalla);
   return (
     <AbsoluteFill>
+      {conTitulo ? (
+        <div style={{ position: "absolute", left: 70, right: 70, top: 612, height: 250, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <TituloDA texto={c.pantalla ?? ""} resaltar={c.pantallaResaltar ?? []} tamano={78} golpe={1 + 0.15 * Math.sin(Math.min(1, Math.max(0, (t - c.inicio - 1.2) / 0.3)) * Math.PI)} />
+        </div>
+      ) : null}
       <AbsoluteFill
         style={{
-          transform: `scale(${camara(c, t) * (0.85 + 0.15 * rebote)}) rotate(${(1 - rebote) * -4}deg)`,
-          transformOrigin: "540px 560px",
+          transform: `${conTitulo ? "translateY(-4px) scale(0.6)" : ""} scale(${camara(c, t) * (0.85 + 0.15 * rebote)}) rotate(${(1 - rebote) * -4}deg)`,
+          transformOrigin: conTitulo ? "540px 352px" : "540px 560px",
           filter: "drop-shadow(0 22px 26px rgba(0,0,0,0.55))",
         }}
       >

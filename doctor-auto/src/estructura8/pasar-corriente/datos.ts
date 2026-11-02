@@ -11,6 +11,8 @@ export type ClipGuion = {
   texto: string;
   resaltar: string[];
   visual?: string;
+  pantalla?: string; // título grande en pantalla (gancho)
+  pantallaResaltar?: string[];
   aviso?: string;
   boton?: string;
   sfx: string;

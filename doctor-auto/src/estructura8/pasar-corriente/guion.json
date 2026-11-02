@@ -7,20 +7,20 @@
   "pausaEntreClipsSegundos": 0.4,
   "piezas": [
     { "id": 1, "tipo": "gancho", "clips": [
-      { "id": "c01", "archivo": "c01.mp3", "texto": "Pasar corriente mal puede sacar chispas. Literal.", "resaltar": ["chispas"], "visual": "chispa-entre-pinzas", "sfx": "whoosh-chispazo", "mascota": { "pose": "pulgar", "animacion": "entra-rebote", "globo": "¡Ojo!" } } ] },
+      { "id": "c01", "archivo": "c01.mp3", "texto": "Pasar corriente mal puede sacar chispas. Literal.", "resaltar": ["chispas"], "pantalla": "¿TU AUTO NO ARRANCA? NO CONECTES LAS PINZAS ASÍ", "pantallaResaltar": ["ASÍ"], "visual": "chispa-entre-pinzas", "sfx": "whoosh-chispazo", "mascota": { "pose": "pulgar", "animacion": "entra-rebote", "globo": "¡Ojo!" } } ] },
     { "id": 2, "tipo": "introduccion", "clips": [
       { "id": "c02", "archivo": "c02.mp3", "texto": "Te explico las cuatro pinzas en orden.", "resaltar": ["cuatro pinzas"], "visual": "dos-autos-numeros", "sfx": "pop-por-numero", "mascota": { "pose": "pulgar", "animacion": "habla" } } ] },
     { "id": 3, "tipo": "cuerpo", "clips": [
       { "id": "c03", "archivo": "c03.mp3", "texto": "Antes: apaga los dos autos, freno de mano y todo apagado.", "resaltar": ["apaga", "freno de mano"], "visual": "llaves-freno-luces", "aviso": "Revisa el manual de tu auto: el orden puede variar", "sfx": "clic-llave", "mascota": { "pose": "pulgar", "animacion": "voltea" } } ] },
     { "id": 4, "tipo": "bucle", "clips": [
-      { "id": "c04", "archivo": "c04.mp3", "texto": "Pero el orden de las pinzas es lo que importa.", "resaltar": ["orden"], "visual": "pinzas-giran-y-se-ordenan", "sfx": "whoosh", "mascota": { "pose": "pulgar", "animacion": "susto" } } ] },
+      { "id": "c04", "archivo": "c04.mp3", "texto": "Pero el orden de las pinzas es lo que importa.", "resaltar": ["orden"], "visual": "pinzas-giran-y-se-ordenan", "sfx": "whoosh", "mascota": { "pose": "susto", "animacion": "susto" } } ] },
     { "id": 5, "tipo": "cuerpo", "clips": [
       { "id": "c05a", "archivo": "c05a.mp3", "texto": "Roja al positivo de la muerta.", "resaltar": ["positivo", "muerta"], "visual": "pinza-roja-1", "sfx": "clac", "mascota": { "pose": "pulgar", "animacion": "habla" } },
       { "id": "c05b", "archivo": "c05b.mp3", "texto": "Otra roja al positivo de la buena.", "resaltar": ["positivo", "buena"], "visual": "pinza-roja-2", "sfx": "clac", "mascota": { "pose": "pulgar", "animacion": "habla" } },
       { "id": "c05c", "archivo": "c05c.mp3", "texto": "Negra al negativo de la buena.", "resaltar": ["negativo", "buena"], "visual": "pinza-negra-3", "sfx": "clac", "mascota": { "pose": "pulgar", "animacion": "habla" } },
-      { "id": "c05d", "archivo": "c05d.mp3", "texto": "Última negra, a metal sin pintar del motor muerto.", "resaltar": ["metal sin pintar"], "visual": "pinza-negra-4-metal-x-palomita", "aviso": "Pinzas sin tocarse entre sí", "sfx": "clac-chispa-corta", "mascota": { "pose": "pulgar", "animacion": "flecha-senala", "globo": "Lejos de la batería" } } ] },
+      { "id": "c05d", "archivo": "c05d.mp3", "texto": "Última negra, a metal sin pintar del motor muerto.", "resaltar": ["metal sin pintar"], "visual": "pinza-negra-4-metal-x-palomita", "aviso": "Pinzas sin tocarse entre sí", "sfx": "clac-chispa-corta", "mascota": { "pose": "senala", "animacion": "flecha-senala", "globo": "Lejos de la batería" } } ] },
     { "id": 6, "tipo": "bucle", "clips": [
-      { "id": "c06", "archivo": "c06.mp3", "texto": "Pero falta lo más delicado.", "resaltar": ["delicado"], "visual": "reloj-interrogacion", "sfx": "tic-tac", "mascota": { "pose": "pulgar", "animacion": "duda", "globo": "?" } } ] },
+      { "id": "c06", "archivo": "c06.mp3", "texto": "Pero falta lo más delicado.", "resaltar": ["delicado"], "visual": "reloj-interrogacion", "sfx": "tic-tac", "mascota": { "pose": "duda", "animacion": "duda", "globo": "?" } } ] },
     { "id": 7, "tipo": "cuerpo", "clips": [
       { "id": "c07a", "archivo": "c07a.mp3", "texto": "Arranca el bueno y espera unos minutos.", "resaltar": ["bueno", "minutos"], "visual": "motor-bueno-ondas", "sfx": "motor-enciende", "mascota": { "pose": "pulgar", "animacion": "habla" } },
       { "id": "c07b", "archivo": "c07b.mp3", "texto": "Luego arranca el tuyo.", "resaltar": ["tuyo"], "visual": "auto-muerto-enciende", "sfx": "arranque-motor", "mascota": { "pose": "pulgar", "animacion": "habla" } },
