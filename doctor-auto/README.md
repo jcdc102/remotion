@@ -4,7 +4,7 @@ Proyecto de Remotion con dos composiciones verticales (1080×1920, 30 fps):
 
 - **Estructura8** (42 s): 8 piezas (gancho, introducción, cuerpo 1, bucle,
   cuerpo 2, bucle, cuerpo 3, llamado a la acción). El prop `tema` elige el guion:
-  - `bateria` (por defecto): `src/estructura8/bateria/guion.json`, voz en
+  - `bateria`: `src/estructura8/bateria/guion.json`, voz en
     `public/estructura8/bateria/voz.mp3`, mascota en `public/estructura8/bateria/`.
   - `dia-de-muertos`: `src/estructura8/guion.json`, voz en `public/estructura8/voz.mp3`.
   - `alineacion` (40 s): `src/estructura8/alineacion/guion.json`, voz en
