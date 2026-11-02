@@ -18,4 +18,7 @@ const CHROMIUM_LOCAL =
   "/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell";
 if (existsSync(CHROMIUM_LOCAL)) {
   Config.setBrowserExecutable(CHROMIUM_LOCAL);
+  // El proxy del entorno en la nube intercepta HTTPS con su propio certificado;
+  // sin esto el navegador no puede descargar las fuentes de Google Fonts.
+  Config.setChromiumIgnoreCertificateErrors(true);
 }

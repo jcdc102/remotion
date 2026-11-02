@@ -1,5 +1,7 @@
 // Íconos SVG del tema "bateria". Paleta: rojo, blanco y gris oscuro.
-export const ROJO = "#D32F2F";
+import { ROJO_DA } from "../../doctor-auto/constantes";
+
+export const ROJO = ROJO_DA;
 export const ROJO_CLARO = "#FF6B6B";
 export const GRIS = "#263238";
 export const GRIS_MEDIO = "#455A64";

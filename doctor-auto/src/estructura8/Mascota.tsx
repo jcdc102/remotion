@@ -2,7 +2,7 @@
 // Animaciones: entra-rebote, habla, voltea, susto, flecha-senala, duda,
 // pulgar-final y grande-centro. "globo" muestra un globo de diálogo.
 import { Img, interpolate, spring, staticFile, useVideoConfig } from "remotion";
-import { estiloBorde, FUENTE } from "./Texto";
+import { estiloBorde } from "./Texto";
 
 export type AnimacionMascota =
   | "entra-rebote"
@@ -32,7 +32,10 @@ export const Mascota: React.FC<{
   anclaAnterior: Ancla;
   objetivo: { x: number; y: number };
   colorAcento: string;
-}> = ({ pose, animacion, globo, frameLocal, t, boca, ancla, anclaAnterior, objetivo, colorAcento }) => {
+  fuente: string;
+  espejoCompleto: boolean;
+  globoArriba: number;
+}> = ({ pose, animacion, globo, frameLocal, t, boca, ancla, anclaAnterior, objetivo, colorAcento, fuente, espejoCompleto, globoArriba }) => {
   const { fps } = useVideoConfig();
   const u = frameLocal / fps;
   const resorte = (retraso: number, damping: number) =>
@@ -51,12 +54,19 @@ export const Mascota: React.FC<{
   let dx = 0;
   let escala = 1 + boca * 0.03 * fuerzaVoz;
   let espejo = 1;
+  let vuelta = 0;
 
   if (animacion === "entra-rebote") {
     dy += (1 - resorte(0.05, 7)) * 760;
   }
   if (animacion === "voltea") {
-    espejo = interpolate(resorte(0.1, 12), [0, 1], [1, -1]);
+    // Giro hacia el contenido (izquierda). Con espejoCompleto se refleja la
+    // imagen; si no, solo gira en 3D para no invertir el logo de la gorra.
+    if (espejoCompleto) {
+      espejo = interpolate(resorte(0.1, 12), [0, 1], [1, -1]);
+    } else {
+      vuelta = -38 * resorte(0.1, 12);
+    }
   }
   if (animacion === "susto") {
     const decae = Math.max(0, 1 - u / 1.4);
@@ -125,12 +135,12 @@ export const Mascota: React.FC<{
       >
         <Img
           src={staticFile(POSES[pose] ?? POSES.pulgar)}
-          style={{ height: alto, width: "auto", transform: `scaleX(${espejo})` }}
+          style={{ height: alto, width: "auto", transform: `perspective(900px) rotateY(${vuelta}deg) scaleX(${espejo})` }}
         />
       </div>
       {animacion === "susto" ? (
         <>
-          <div style={{ position: "absolute", left: x + ancho * 0.18, top: cabeza - 120 * signo, fontFamily: FUENTE, fontSize: 150, color: colorAcento, transform: `scale(${signo}) rotate(${Math.sin(u * 20) * 8}deg)`, ...estiloBorde(16) }}>
+          <div style={{ position: "absolute", left: x + ancho * 0.18, top: cabeza - 120 * signo, fontFamily: fuente, fontSize: 150, color: colorAcento, transform: `scale(${signo}) rotate(${Math.sin(u * 20) * 8}deg)`, ...estiloBorde(16) }}>
             !
           </div>
           {[0, 1].map((k) => {
@@ -144,17 +154,17 @@ export const Mascota: React.FC<{
         </>
       ) : null}
       {animacion === "duda" ? (
-        <div style={{ position: "absolute", left: x + ancho * 0.2, top: cabeza - 140 + Math.sin(u * 4) * 10, fontFamily: FUENTE, fontSize: 140, color: "#fff", transform: `scale(${signo}) rotate(14deg)`, ...estiloBorde(16) }}>
+        <div style={{ position: "absolute", left: x + ancho * 0.2, top: cabeza - 140 + Math.sin(u * 4) * 10, fontFamily: fuente, fontSize: 140, color: "#fff", transform: `scale(${signo}) rotate(14deg)`, ...estiloBorde(16) }}>
           ?
         </div>
       ) : null}
       {globo ? (
-        // Globo de diálogo sobre la cabeza, pegado a la derecha (42%–48% de la altura).
+        // Globo de diálogo sobre la cabeza, pegado a la derecha (dentro del 30%–60% de la altura).
         <div
           style={{
             position: "absolute",
             right: 70,
-            top: 812,
+            top: globoArriba,
             maxWidth: 480,
             transform: `scale(${globoEntrada})`,
             transformOrigin: "90% 100%",
@@ -162,7 +172,7 @@ export const Mascota: React.FC<{
             border: "7px solid #000",
             borderRadius: 34,
             padding: "14px 28px",
-            fontFamily: FUENTE,
+            fontFamily: fuente,
             fontSize: 54,
             lineHeight: 1.05,
             color: "#111",

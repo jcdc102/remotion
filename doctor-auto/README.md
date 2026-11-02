@@ -11,9 +11,14 @@ Proyecto de Remotion con dos composiciones verticales (1080×1920, 30 fps):
     `public/estructura8/alineacion/voz.mp3`. Sin tarjeta final de logo
     (`tarjetaFinal: false`): termina con la pieza 8 y un fundido de 5 fotogramas;
     la marca de agua queda visible todo el video.
+  - `pasar-corriente` (por defecto): `src/estructura8/pasar-corriente/guion.json`, con un
+    clip de voz por línea en `public/audio/` (c01.mp3 … c08.mp3). La duración es la suma
+    de los clips más 0.4 s entre cada uno (`duraciones.json`).
+
+Reglas de marca para todos los videos: `CLAUDE.md`. Colores y fuentes: `src/doctor-auto/constantes.ts`.
 - **Calaveritas** (16 s): primera versión corta.
 
-Videos renderizados: `Estructura8-alineacion.mp4`, `Estructura8-bateria.mp4` y
+Videos renderizados: `Estructura8-pasar-corriente.mp4`, `Estructura8-alineacion.mp4`, `Estructura8-bateria.mp4` y
 `Estructura8.mp4` (Día de Muertos).
 
 ## Uso
@@ -36,6 +41,15 @@ npx remotion render Estructura8 out/muertos.mp4 --props='{"tema":"dia-de-muertos
    queda en `src/estructura8/sincronia.json`.
 3. Las palabras se reparten de forma uniforme dentro de cada tramo con voz para
    el resaltado palabra por palabra.
+
+## Voz por clips (tema pasar-corriente)
+
+1. Si llega una sola toma, `sh scripts/cortar-voz.sh` la corta en los 14 clips (a la mitad de cada pausa).
+2. `node scripts/medir-clips.mjs` mide cada clip con ffprobe y silencedetect y escribe `duraciones.json`.
+3. Renderiza y limita los picos a -1.5 dB sin bajar la voz:
+   `sh scripts/limitar-picos.sh out/video.mp4 out/video-final.mp4`.
+
+Efectos de este tema: `sh scripts/sfx-pasar-corriente.sh` (en `public/sfx/`).
 
 ## Mascota (tema bateria)
 

@@ -5,16 +5,17 @@ import { useAudioData, visualizeAudio } from "@remotion/media-utils";
 import { AbsoluteFill, Img, interpolate, Sequence, staticFile, Track, useCurrentFrame, useVideoConfig } from "remotion";
 import { construirPiezas, momentoDe, porTipo, type Guion, type Pieza } from "../datos";
 import { Mascota, type Ancla } from "../Mascota";
-import { Grano, Vineta } from "../Mundo";
-import { Subtitulos } from "../Subtitulos";
-import { FondoBateria } from "../bateria/Escenas";
-import { ROJO, ROJO_CLARO } from "../bateria/Iconos";
+import { ANTON, DEGRADADO, FONDO, ROJO_DA } from "../../doctor-auto/constantes";
+import { SubtitulosDA } from "../../doctor-auto/Texto";
+import { TarjetaLogo } from "../Piezas";
 import { Bucle, Cuerpo, Gancho, Introduccion, Llamado, momentoAviso } from "./Escenas";
 import guion from "./guion.json";
 import sincronia from "./sincronia.json";
 
 const piezas = construirPiezas(guion as Guion, sincronia);
-export const DURACION_ALINEACION = guion.duracionSegundos;
+// Si tarjetaFinal es true se agregan 2 s de tarjeta con el logo al final.
+const TARJETA = guion.tarjetaFinal ? 2 : 0;
+export const DURACION_ALINEACION = guion.duracionSegundos + TARJETA;
 const VOZ = staticFile("estructura8/alineacion/voz.mp3");
 const sfx = (nombre: string) => staticFile(`estructura8/sfx/${nombre}.wav`);
 
@@ -56,7 +57,10 @@ const MascotaAnimada: React.FC = () => {
       ancla={anclaDe(p)}
       anclaAnterior={indice > 0 ? anclaDe(piezas[indice - 1]) : anclaDe(p)}
       objetivo={{ x: 770, y: 450 }}
-      colorAcento={ROJO}
+      colorAcento={ROJO_DA}
+      fuente={ANTON}
+      espejoCompleto={false}
+      globoArriba={812}
     />
   );
 };
@@ -67,7 +71,7 @@ const BarraProgreso: React.FC = () => {
   const avance = interpolate(frame / fps, [0, DURACION_ALINEACION], [0, 1], { extrapolateRight: "clamp" });
   return (
     <div style={{ position: "absolute", left: 80, right: 80, top: 292, height: 8, borderRadius: 4, background: "rgba(255,255,255,0.15)" }}>
-      <div style={{ width: `${avance * 100}%`, height: "100%", borderRadius: 4, background: `linear-gradient(90deg, ${ROJO}, #fff)` }} />
+      <div style={{ width: `${avance * 100}%`, height: "100%", borderRadius: 4, background: DEGRADADO }} />
     </div>
   );
 };
@@ -77,7 +81,7 @@ const MarcaDeAgua: React.FC = () => (
   <Img
     src={staticFile("logo-doctor-auto.png")}
     alt={guion.marcaDeAgua}
-    style={{ position: "absolute", left: 80, top: 312, height: 44, opacity: 0.55 }}
+    style={{ position: "absolute", left: 80, top: 314, height: 34, opacity: 0.55 }}
   />
 );
 
@@ -97,9 +101,8 @@ export const TemaAlineacion: React.FC = () => {
   const lineas = piezas.flatMap((p) => p.lineas);
   return (
     <AbsoluteFill>
-      <FondoBateria />
-      <BarraProgreso />
-      <MarcaDeAgua />
+      <AbsoluteFill style={{ background: FONDO }} />
+      <AbsoluteFill style={{ background: "radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.5) 100%)" }} />
 
       <Track name="Piezas">
         <Sequence name="1 Gancho" from={desde(gancho.inicio, fps)} durationInFrames={dur(gancho)}>
@@ -129,20 +132,34 @@ export const TemaAlineacion: React.FC = () => {
       </Track>
 
       <MascotaAnimada />
+      <BarraProgreso />
+      <MarcaDeAgua />
 
       {/* Subtítulos a la izquierda de la mascota (44%–59%); en el llamado, centrados (39%–47%)
           y el último se queda hasta el final. */}
-      <Subtitulos lineas={lineas} desde={0} hasta={cta.inicio} colorResaltado={ROJO_CLARO} arriba={845} alto={290} tamano={64} izquierda={70} derecha={480} sostenerFinal={false} />
-      <Subtitulos lineas={lineas} desde={cta.inicio} hasta={Infinity} colorResaltado={ROJO_CLARO} arriba={755} alto={140} tamano={54} izquierda={70} derecha={70} sostenerFinal />
+      <SubtitulosDA lineas={lineas} desde={0} hasta={cta.inicio} arriba={845} alto={290} tamano={56} izquierda={70} derecha={480} sostenerFinal={false} />
+      <SubtitulosDA lineas={lineas} desde={cta.inicio} hasta={Infinity} arriba={755} alto={140} tamano={50} izquierda={70} derecha={70} sostenerFinal />
 
-      <Vineta />
-      <Grano />
-      <Fundido />
+      {guion.tarjetaFinal ? (
+        <Sequence name="Tarjeta logo" from={desde(guion.duracionSegundos, fps)} durationInFrames={desde(TARJETA, fps)}>
+          <TarjetaLogo />
+        </Sequence>
+      ) : (
+        <Fundido />
+      )}
 
       {/* La voz original viene casi a 0 dB; se baja un poco para dejar margen a los efectos. */}
       <Audio src={VOZ} volume={0.85} />
 
       {/* Efectos de sonido (generados con scripts/sonidos.sh). Sin música. */}
+      {/* Transiciones: corte seco con whoosh al empezar cada pieza (2 a 8). */}
+      <Track name="Whoosh de corte">
+        {piezas.slice(1).map((p) => (
+          <Sequence key={p.id} name={`Whoosh pieza ${p.id}`} from={desde(p.inicio, fps)} durationInFrames={desde(0.6, fps)}>
+            <Audio src={sfx("whoosh")} volume={0.55} />
+          </Sequence>
+        ))}
+      </Track>
       <Track name="Efectos">
         {/* Pieza 1: whoosh al entrar el gancho */}
         <Sequence name="Whoosh" from={0} durationInFrames={desde(0.6, fps)}>

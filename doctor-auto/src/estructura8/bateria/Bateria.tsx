@@ -7,6 +7,7 @@ import { Mascota, type Ancla } from "../Mascota";
 import { Grano, Vineta } from "../Mundo";
 import { TarjetaLogo } from "../Piezas";
 import { Subtitulos } from "../Subtitulos";
+import { FUENTE } from "../Texto";
 import guion from "./guion.json";
 import sincronia from "./sincronia.json";
 import { Bucle, Cuerpo, FondoBateria, Gancho, Introduccion, Llamado } from "./Escenas";
@@ -57,6 +58,9 @@ const MascotaAnimada: React.FC = () => {
       anclaAnterior={i > 0 ? anclaDe(piezas[i - 1]) : anclaDe(p)}
       objetivo={{ x: 770, y: 450 }}
       colorAcento={ROJO}
+      fuente={FUENTE}
+      espejoCompleto
+      globoArriba={812}
     />
   );
 };

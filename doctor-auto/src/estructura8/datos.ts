@@ -61,7 +61,7 @@ export const esResaltada = (palabra: string, resaltar: string[]) =>
 // Asigna las palabras a los tramos con voz (entre pausas) buscando que cada
 // tramo tenga una velocidad de habla parecida y que los cortes caigan en la
 // puntuación. Dentro de cada tramo reparte las palabras de forma uniforme.
-const repartir = (p: PiezaGuion, habla: number[][]): Palabra[] => {
+export const repartirEnTramos = (p: { texto: string; resaltar: string[]; inicio: number; fin: number }, habla: number[][]): Palabra[] => {
   const palabras = p.texto.split(/\s+/).filter(Boolean);
   const pesos = palabras.map((w) => normalizar(w).length + 1);
   const tramos = habla.length > 0 && habla.length <= palabras.length ? habla : [[p.inicio, p.fin]];
@@ -115,7 +115,7 @@ const repartir = (p: PiezaGuion, habla: number[][]): Palabra[] => {
 };
 
 // Líneas de 3 a 7 palabras, cortando en la puntuación cuando se puede.
-const agrupar = (palabras: Palabra[]): Palabra[][] => {
+export const agrupar = (palabras: Palabra[]): Palabra[][] => {
   const frases: Palabra[][] = [];
   let actual: Palabra[] = [];
   for (const w of palabras) {
@@ -157,7 +157,7 @@ const agrupar = (palabras: Palabra[]): Palabra[][] => {
 };
 
 // Marca como resaltadas las palabras (o frases de varias palabras) de "resaltar".
-const marcarFrases = (palabras: Palabra[], resaltar: string[]) => {
+export const marcarFrases = (palabras: Palabra[], resaltar: string[]) => {
   for (const frase of resaltar) {
     const partes = frase.split(/\s+/).map(normalizar).filter(Boolean);
     if (partes.length < 2) continue;
@@ -174,7 +174,7 @@ export const construirPiezas = (g: Guion, s: Sincronia): Pieza[] =>
   (g.piezas as PiezaGuion[]).map((p, i) => {
     const sinc = s.piezas[i];
     const conTiempos = { ...p, inicio: sinc.inicio, fin: sinc.fin };
-    const palabras = marcarFrases(repartir(conTiempos, sinc.habla), p.resaltar);
+    const palabras = marcarFrases(repartirEnTramos(conTiempos, sinc.habla), p.resaltar);
     const lineas = agrupar(palabras).map((ws) => ({
       palabras: ws,
       inicio: ws[0].inicio,

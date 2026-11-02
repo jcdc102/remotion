@@ -3,9 +3,9 @@
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { momentoDe, type Pieza } from "../datos";
 import { sacudida } from "../Piezas";
-import { estiloBorde, FUENTE, TextoPantalla } from "../Texto";
-import { Chip, Escenario, ZonaTexto } from "../bateria/Escenas";
-import { GloboComentario, ROJO, ROJO_CLARO } from "../bateria/Iconos";
+import { Escenario, ZonaTexto } from "../bateria/Escenas";
+import { ANTON, DEGRADADO, GRIS, POPPINS, PESO_POPPINS } from "../../doctor-auto/constantes";
+import { TituloDA } from "../../doctor-auto/Texto";
 import { AutoCenital, CorteYVolante, LlantaDesgaste, OdometroCalendarioManometro, Reloj } from "./Iconos";
 
 const limitar = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
@@ -17,6 +17,44 @@ const useTiempo = (p: Pieza) => {
 };
 const resorte = (frame: number, fps: number, momento: number, inicio: number, damping = 12) =>
   spring({ frame: frame - Math.round((momento - inicio) * fps), fps, config: { damping } });
+
+// Chip de señal: activo con el degradado rojo, inactivo en gris oscuro.
+const Chip: React.FC<{ numero: number; texto: string; entrada: number; activo: boolean }> = ({ numero, texto, entrada, activo }) => (
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: 16,
+      padding: "8px 30px 8px 10px",
+      borderRadius: 50,
+      background: activo ? DEGRADADO : "#262626",
+      boxShadow: "0 10px 20px rgba(0,0,0,0.45)",
+      transform: `translateX(${(1 - entrada) * -900}px)`,
+      fontFamily: POPPINS,
+      fontWeight: PESO_POPPINS,
+      fontSize: 46,
+      color: activo ? "#fff" : GRIS,
+    }}
+  >
+    <div
+      style={{
+        width: 56,
+        height: 56,
+        borderRadius: 28,
+        background: "#fff",
+        color: "#151515",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: ANTON,
+        fontSize: 36,
+      }}
+    >
+      {numero}
+    </div>
+    {texto}
+  </div>
+);
 
 // El aviso aparece en los últimos 2.6 s de la pieza (al menos 1.5 s después de empezar).
 export const momentoAviso = (p: Pieza) => Math.max(p.inicio + 1.5, p.fin - 2.6);
@@ -30,9 +68,7 @@ const Franja: React.FC<{ texto: string; entrada: number }> = ({ texto, entrada }
       right: 0,
       top: 610,
       minHeight: 200,
-      background: ROJO,
-      borderTop: "6px solid #fff",
-      borderBottom: "6px solid #fff",
+      background: DEGRADADO,
       boxShadow: "0 18px 40px rgba(0,0,0,0.5)",
       display: "flex",
       alignItems: "center",
@@ -47,11 +83,11 @@ const Franja: React.FC<{ texto: string; entrada: number }> = ({ texto, entrada }
         marginRight: 140,
         padding: "18px 0",
         textAlign: "center",
-        fontFamily: FUENTE,
-        fontSize: 58,
-        lineHeight: 1.1,
+        fontFamily: POPPINS,
+        fontWeight: PESO_POPPINS,
+        fontSize: 52,
+        lineHeight: 1.2,
         color: "#fff",
-        ...estiloBorde(10),
       }}
     >
       {texto}
@@ -71,7 +107,7 @@ export const Gancho: React.FC<{ p: Pieza }> = ({ p }) => {
         <LlantaDesgaste tamano={280} marca={0.5 + 0.5 * Math.sin(t * 7)} giro={t * 1.5} />
       </Escenario>
       <ZonaTexto style={{ transform: `translate(${s}px, 0) scale(${1.8 - 0.8 * texto})`, opacity: texto }}>
-        <TextoPantalla texto={p.pantalla ?? ""} resaltar={p.resaltar} color="#fff" colorResaltado={ROJO_CLARO} tamano={100} />
+        <TituloDA texto={p.pantalla ?? ""} resaltar={p.resaltar} tamano={112} golpe={1 + 0.2 * (1 - resorte(frame, fps, momentoDe(p, p.resaltar[0]), p.inicio, 9))} />
       </ZonaTexto>
     </AbsoluteFill>
   );
@@ -157,7 +193,7 @@ export const Bucle: React.FC<{ p: Pieza; orden: number }> = ({ p, orden }) => {
         {orden === 0 ? <LlantaDesgaste tamano={250} marca={lupa} giro={t * 0.6} /> : <Reloj tamano={250} t={t} />}
       </Escenario>
       <ZonaTexto style={{ transform: `scale(${entrada * pulso})` }}>
-        <TextoPantalla texto={p.pantalla ?? ""} resaltar={p.resaltar} color="#fff" colorResaltado={ROJO_CLARO} tamano={74} />
+        <TituloDA texto={p.pantalla ?? ""} resaltar={p.resaltar} tamano={86} golpe={1 + 0.2 * (1 - resorte(frame, fps, p.inicio + 0.3, p.inicio, 9))} />
       </ZonaTexto>
     </AbsoluteFill>
   );
@@ -185,7 +221,26 @@ export const Llamado: React.FC<{ p: Pieza }> = ({ p }) => {
           transform: `scale(${boton}) rotate(${meneo}deg)`,
         }}
       >
-        <GloboComentario texto={p.boton ?? ""} fuente={FUENTE} />
+        <div style={{ position: "relative" }}>
+          <div
+            style={{
+              background: DEGRADADO,
+              borderRadius: 46,
+              padding: "16px 46px 22px",
+              fontFamily: ANTON,
+              fontSize: 76,
+              lineHeight: 1.1,
+              color: "#fff",
+              whiteSpace: "nowrap",
+              boxShadow: "0 18px 40px rgba(0,0,0,0.55)",
+            }}
+          >
+            {p.boton}
+          </div>
+          <svg width={70} height={50} style={{ position: "absolute", left: 70, bottom: -40 }}>
+            <path d="M0 0 L60 0 L8 46 Z" fill="#9b2020" />
+          </svg>
+        </div>
       </div>
     </AbsoluteFill>
   );
