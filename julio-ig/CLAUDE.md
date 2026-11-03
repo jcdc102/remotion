@@ -13,6 +13,16 @@
 - Texto entre el 15% superior y el 25% inferior libres (interfaz de Instagram).
 - Datos verificables únicamente; nada de «según la psicología» ni citas sin fuente.
 
+## Datos y fuentes (regla obligatoria)
+- Cada dato se verifica antes de usarlo y se anota en `fuentes.md`, con la fuente y la fecha en que se revisó.
+- Orden de preferencia de las fuentes:
+  1. Investigación académica revisada por pares: PASOS, Redalyc, SciELO, Dialnet, el repositorio de la UdeG (riudg.udg.mx) y otras revistas indexadas.
+  2. Estadística oficial: INEGI, DataTur/Sectur, ONU Turismo, UNESCO, INAH.
+  3. Los medios sólo sirven para encontrar el dato; después se confirma en la fuente 1 o 2.
+- La fuente va en pantalla en el reel («Fuente: INEGI, 2026»).
+- Si un dato no se puede confirmar, no se usa.
+- Julio estudia en el CUCosta (UdeG, Puerto Vallarta). La Dra. María de los Ángeles Huízar Sánchez, investigadora y maestra suya, publica sobre turismo y patrimonio en Puerto Vallarta: su trabajo es una fuente prioritaria para temas locales. Se cita su artículo publicado; no se le atribuyen opiniones. Antes de etiquetarla, Julio le pide permiso.
+
 ## Líneas de contenido (6 por semana, lunes a sábado)
 - 🌅 Frases (lun, mié, sáb): frase original en español sobre video propio de playa o atardecer. Nunca «según la psicología» ni citas sin fuente.
 - 🎓 «Turismo explicado» (mar y jue), con episodios numerados: tipos de turismo, planificación turística, datos con fuente en pantalla y recomendaciones de profesional.
