@@ -12,3 +12,9 @@
   títulos en Playfair Display y texto en Poppins. Arriba: barra de progreso y «@julio.chaidez1 · tips de viaje».
 - Texto entre el 15% superior y el 25% inferior libres (interfaz de Instagram).
 - Datos verificables únicamente; nada de «según la psicología» ni citas sin fuente.
+
+## Líneas de contenido (6 por semana, lunes a sábado)
+- 🌅 Frases (lun, mié, sáb): frase original en español sobre video propio de playa o atardecer. Nunca «según la psicología» ni citas sin fuente.
+- 🎓 «Turismo explicado» (mar y jue), con episodios numerados: tipos de turismo, planificación turística, datos con fuente en pantalla y recomendaciones de profesional.
+- ✈️ Tips de viaje (vie): consejos prácticos y verificables.
+- «Siempre explorando»: descartada por ahora.
