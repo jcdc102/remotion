@@ -38,6 +38,29 @@ const ESCENAS = [
 ];
 export const DURACION_VUELOS = 1089;
 
+// Efectos (scripts/sonidos.sh): [fotograma absoluto, archivo, volumen], en el momento de cada animación.
+const SONIDOS: [number, string, number][] = [
+  [0, "whoosh", 0.5], // avión
+  [30, "tachar", 0.45],
+  [48, "pop", 0.5],
+  [80, "whoosh", 0.4], // escena 1
+  [87, "pop", 0.4],
+  [195, "ding", 0.4], // día barato
+  [305, "whoosh", 0.4], // escena 2
+  [312, "pop", 0.4],
+  [392, "notificacion", 0.5],
+  [450, "whoosh", 0.4], // escena 3
+  [457, "pop", 0.4],
+  [580, "pop", 0.45], // pin AICM
+  [620, "pop", 0.45], // pin AIFA
+  [635, "ding", 0.3], // vs
+  [690, "whoosh", 0.4], // escena 4
+  [697, "pop", 0.4],
+  [930, "golpe", 0.55], // maleta
+  [1006, "whoosh", 0.4], // cierre
+  [1021, "guardar", 0.5],
+];
+
 // Zonas: texto entre y=330 y y=860; visual entre y=880 y y=1400. Libres el 15% superior y el 25% inferior.
 const ZONA_TEXTO = 330;
 const ZONA_VISUAL = 930;
@@ -523,6 +546,21 @@ export const VuelosBaratos: React.FC = () => {
     <AbsoluteFill>
       <Fondo />
       <Audio src={staticFile("voz-vuelos.mp3")} />
+      <Audio
+        src={staticFile("musica-vuelos.mp3")}
+        volume={(f) =>
+          0.14 *
+          interpolate(f, [0, 15, DURACION_VUELOS - 45, DURACION_VUELOS], [0, 1, 1, 0], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+          })
+        }
+      />
+      {SONIDOS.map(([desde, archivo, volumen], i) => (
+        <Sequence key={i} from={desde} durationInFrames={45}>
+          <Audio src={staticFile(`sfx/${archivo}.wav`)} volume={volumen} />
+        </Sequence>
+      ))}
       {piezas.map((Pieza, i) => {
         const e = ESCENAS[i];
         const ultima = i === piezas.length - 1;
