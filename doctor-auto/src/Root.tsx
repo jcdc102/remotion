@@ -3,6 +3,7 @@ import { Calaveritas } from "./Calaveritas";
 import { DURACION, FPS } from "./estructura8/datos";
 import { DURACION_ALINEACION } from "./estructura8/alineacion/Alineacion";
 import { DURACION_PASAR_CORRIENTE } from "./estructura8/pasar-corriente/datos";
+import { DURACION_RUIDOS } from "./estructura8/ruidos/Ruidos";
 import { Estructura8, type TemaEstructura8 } from "./estructura8/Estructura8";
 
 export const RemotionRoot: React.FC = () => {
@@ -19,12 +20,12 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="Estructura8"
         component={Estructura8}
-        defaultProps={{ tema: "pasar-corriente" as TemaEstructura8 }}
+        defaultProps={{ tema: "ruidos" as TemaEstructura8 }}
         durationInFrames={DURACION * FPS}
         calculateMetadata={({ props }) => ({
           // pasar-corriente: la duración sale de la suma de los clips de voz + pausas.
           durationInFrames: Math.ceil(
-            (props.tema === "pasar-corriente" ? DURACION_PASAR_CORRIENTE : props.tema === "alineacion" ? DURACION_ALINEACION : DURACION) * FPS,
+            (props.tema === "ruidos" ? DURACION_RUIDOS : props.tema === "pasar-corriente" ? DURACION_PASAR_CORRIENTE : props.tema === "alineacion" ? DURACION_ALINEACION : DURACION) * FPS,
           ),
         })}
         fps={FPS}

@@ -6,13 +6,17 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
-const carpeta = "src/estructura8/pasar-corriente";
+// Uso: node scripts/medir-clips.mjs [tema]   (por defecto: pasar-corriente)
+const tema = process.argv[2] ?? "pasar-corriente";
+const carpeta = `src/estructura8/${tema}`;
+// pasar-corriente guarda sus clips en public/audio/; los demás temas, en public/audio/<tema>/.
+const carpetaAudio = tema === "pasar-corriente" ? "public/audio" : `public/audio/${tema}`;
 const guion = JSON.parse(readFileSync(`${carpeta}/guion.json`, "utf8"));
 const clips = guion.piezas.flatMap((p) => p.clips);
 const resultado = { pausaEntreClipsSegundos: guion.pausaEntreClipsSegundos, clips: {} };
 
 for (const c of clips) {
-  const ruta = `public/audio/${c.archivo}`;
+  const ruta = `${carpetaAudio}/${c.archivo}`;
   if (!existsSync(ruta)) {
     const palabras = c.texto.split(/\s+/).length;
     const duracion = Number((0.35 + palabras * 0.36).toFixed(3));
