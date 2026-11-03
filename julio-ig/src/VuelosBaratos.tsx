@@ -340,6 +340,7 @@ const Cierre: React.FC = () => {
 export const VuelosBaratos: React.FC = () => (
   <Reel
     duracion={DURACION_VUELOS}
+    fondo={null}
     etiqueta="tips de viaje"
     voz="voz-vuelos.mp3"
     musica="musica-vuelos.mp3"

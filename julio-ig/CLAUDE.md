@@ -10,6 +10,7 @@
 - Al final, limitar picos a -1.5 dB: `alimiter=limit=0.84`.
 - Colores de atardecer (noche #0E1B2E, morado #3A1F4A, coral #FF6B5B, naranja #FFA552, crema #FFF4E6),
   títulos en Playfair Display y texto en Poppins. Arriba: barra de progreso y «@julio.chaidez1» (con « · tips de viaje» en los tips).
+- **Estilo visual (desde el reel de turistificación):** nada de fondo de un solo color. Fondo `<Mundo>` (`src/mundo.tsx`): paisaje animado de la bahía al atardecer, con sol que baja, nubes, aves, montañas y mar con olas. Cada escena lleva una ilustración animada de lo que se dice (calles, casas, torres, mapas, planos, gráficos), con emojis (Noto Color Emoji) como íconos, y pastillas con los datos clave.
 - Las piezas comunes (fondo, encabezado, texto animado, tarjeta visual, voz, música y efectos) están en `src/comun.tsx` (`<Reel>`); cada video sólo define sus escenas.
 - Texto entre el 15% superior y el 25% inferior libres (interfaz de Instagram).
 - Datos verificables únicamente; nada de «según la psicología» ni citas sin fuente.

@@ -188,16 +188,18 @@ const Escena: React.FC<{ dur: number; children: React.ReactNode }> = ({ dur, chi
 };
 
 // Un reel completo: fondo, voz, música, efectos, escenas y encabezado.
+// fondo: un fondo propio (por ejemplo <Mundo />); con null se usa el degradado de atardecer.
 export const Reel: React.FC<{
   duracion: number;
+  fondo: React.ReactNode | null;
   etiqueta: string | null;
   voz: string;
   musica: string;
   sonidos: [number, string, number][];
   escenas: { desde: number; dur: number; Pieza: React.FC }[];
-}> = ({ duracion, etiqueta, voz, musica, sonidos, escenas }) => (
+}> = ({ duracion, fondo, etiqueta, voz, musica, sonidos, escenas }) => (
   <AbsoluteFill>
-    <Fondo duracion={duracion} />
+    {fondo ?? <Fondo duracion={duracion} />}
     <Audio src={staticFile(voz)} />
     <Audio
       src={staticFile(musica)}
