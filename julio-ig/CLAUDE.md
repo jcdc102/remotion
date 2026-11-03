@@ -6,10 +6,11 @@
   volumen 0.14, entrada de 0.5 s y salida de 1.5 s.
 - **Siempre con efectos de sonido** (`sh scripts/sonidos.sh` los genera en `public/sfx/`), uno por animación:
   whoosh en cada cambio de escena, pop en números y pines, ding cuando algo sale bien, etc.
-- Voz: el clon «Julio» de ElevenLabs. Las escenas se alinean con las pausas de la voz (ffmpeg silencedetect).
+- Voz: el clon «Julio» de ElevenLabs. Antes de usarla, normalizarla con `loudnorm=I=-16:TP=-1.5:LRA=11`, porque cada toma sale con distinto volumen. Las escenas se alinean con las pausas de la voz (ffmpeg silencedetect).
 - Al final, limitar picos a -1.5 dB: `alimiter=limit=0.84`.
 - Colores de atardecer (noche #0E1B2E, morado #3A1F4A, coral #FF6B5B, naranja #FFA552, crema #FFF4E6),
-  títulos en Playfair Display y texto en Poppins. Arriba: barra de progreso y «@julio.chaidez1 · tips de viaje».
+  títulos en Playfair Display y texto en Poppins. Arriba: barra de progreso y «@julio.chaidez1 · <línea>» (por ejemplo «tips de viaje» o «turismo explicado #2»).
+- Las piezas comunes (fondo, encabezado, texto animado, tarjeta visual, voz, música y efectos) están en `src/comun.tsx` (`<Reel>`); cada video sólo define sus escenas.
 - Texto entre el 15% superior y el 25% inferior libres (interfaz de Instagram).
 - Datos verificables únicamente; nada de «según la psicología» ni citas sin fuente.
 
