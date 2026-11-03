@@ -15,8 +15,16 @@ Estados: ✅ confirmado en fuente primaria · 🟡 confirmado sólo en medios qu
 ## Investigación sobre Puerto Vallarta (Dra. María de los Ángeles Huízar Sánchez, UdeG)
 - Baños Francia, J. A., Huízar Sánchez, M. A. y López Ramos, J. L. (2020). «Políticas de gestión turística, transformación urbana y patrimonio en Puerto Vallarta, México». *PatryTer*, 3(6), 51-65. Trata la pérdida de patrimonio arquitectónico en el centro histórico. [Redalyc](https://www.redalyc.org/journal/6040/604065750006/604065750006.pdf)
 - Huízar Sánchez, M. A., López Ramos, J. L. y Baños Francia, J. A. (2020). «La modernización de Puerto Vallarta: ¿Renovación urbana o turistificación asistida?». *PASOS, Revista de Turismo y Patrimonio Cultural*, 18(5), 831-842. DOI: 10.25145/j.pasos.2020.18.059. [Repositorio ULL](https://riull.ull.es/xmlui/handle/915/22021) (CC BY-NC-ND 4.0).
-  - 🟡 Según el resumen: la turistificación se impulsa por el desarrollo inmobiliario, que transforma viviendas y comercios para favorecer al visitante. Metodología mixta: discursos oficiales de modernización, percepción de residentes en diarios locales y conteo de comercios. Casos: Zona Romántica y Marina Vallarta; menciona Versalles con creciente demanda turística. Resultado: se corroboran la turistificación y la gentrificación, sobre todo en la Zona Romántica.
-  - Pendiente: leer el PDF completo (mdc.ulpgc.es está bloqueado en la nube) para confirmar con citas textuales y páginas.
+  - ✅ Leído completo (PDF de 12 páginas, recibido en 2019 y publicado en diciembre de 2020). Datos con página:
+    - p. 831: «el auge de las plataformas digitales que ofrecen hospedaje como Airbnb y Booking, cuya oferta ha crecido en forma exponencial en un destino carente de regulación».
+    - p. 836: metodología: análisis de usos de suelo de 19 manzanas de la Zona Romántica, con levantamiento y clasificación de 305 negocios comerciales, vivienda permanente y alquiler turístico.
+    - p. 839: en esas 19 manzanas, 305 espacios comerciales: 38 conjuntos de departamentos turísticos, 33 restaurantes, 24 bares, 24 tiendas de artesanías y souvenirs, 15 spas y masajes, 15 boutiques, 14 galerías de arte, 11 joyerías y 10 estéticas, más gimnasios e inmobiliarias.
+    - p. 839: sólo 75 viviendas residenciales de uno y dos niveles. Comercios para residentes: «una carnicería, una tortillería, una ferretería y dos tiendas de abarrotes».
+    - p. 839: «aproximadamente el 70% de la actividad comercial de la Zona Romántica se dirige al consumo del turista».
+    - p. 840: en Versalles y en El Pitillal «se advierten los primeros signos de gentrificación y turistificación».
+    - p. 840: la red de drenaje y agua potable «ya colapsó y generó importantes daños al Estero el Salado y contaminación del agua de la bahía».
+    - p. 841: conclusión: el proyecto de ciudad debe incluir a todos sus residentes y considerar «las características de identidad, patrimonio y necesidades de sus pobladores, y no únicamente los caprichos o demandas del mercado».
+    - p. 836-837: Puerto Vallarta obtuvo el título de ciudad el 31 de mayo de 1968, con 17,740 habitantes y 55,451 visitantes ese año (citando a Munguía, 2003).
 
 ## Conceptos
 | Dato | Estado | Fuente |
