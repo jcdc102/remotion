@@ -34,7 +34,8 @@ export const AutoLateral: React.FC<{
   dy?: number;
   escala?: number;
   colorOnda?: string;
-}> = ({ zona, fase, numeros, dx = 0, dy = 0, escala = 1, colorOnda = ROJO_DA }) => (
+  giroRueda?: number;
+}> = ({ zona, fase, numeros, dx = 0, dy = 0, escala = 1, colorOnda = ROJO_DA, giroRueda = 0 }) => (
   <g transform={`translate(${dx} ${dy}) scale(${escala})`}>
     <ellipse cx={500} cy={430} rx={380} ry={16} fill="#000" opacity={0.35} />
     {/* carrocería */}
@@ -48,6 +49,11 @@ export const AutoLateral: React.FC<{
       <g key={cx}>
         <circle cx={cx} cy={365} r={62} fill={HULE} stroke="#fff" strokeWidth={5} />
         <circle cx={cx} cy={365} r={30} fill={METAL} stroke="#555" strokeWidth={4} />
+        <g transform={`rotate(${giroRueda} ${cx} 365)`}>
+          {[0, 72, 144, 216, 288].map((a) => (
+            <rect key={a} x={cx - 4} y={338} width={8} height={24} rx={3} fill="#555" transform={`rotate(${a} ${cx} 365)`} />
+          ))}
+        </g>
       </g>
     ))}
     {zona !== null ? (

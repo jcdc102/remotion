@@ -15,15 +15,13 @@ import { presentacion, ROTACION, SONIDO_TRANSICION } from "../../doctor-auto/tra
 import { Mascota, type Ancla } from "../Mascota";
 import { PANEL } from "../pasar-corriente/Diagrama";
 import duraciones from "./duraciones.json";
+import { AUTO, CalleNocturna, Onomatopeya, Radiografia, zonaEnPantalla } from "./Mundo";
 import guionJson from "./guion.json";
 import {
   DiscoBalata,
   DistanciaFrenado,
-  FrenoAlerta,
-  PanelAuto,
   PoleasBanda,
   Suspension,
-  TopeRebote,
   TresPiezas,
   VelocimetroBalero,
   VolanteJunta,
@@ -115,8 +113,147 @@ const DatoGrande: React.FC<{ t: number }> = ({ t }) => {
   );
 };
 
-const camara = (c: Clip, t: number) => {
-  const lento = 1 + 0.06 * local(c, t);
+// ---------- Escenas a pantalla completa ----------
+const facil = (x: number) => 1 - (1 - x) ** 3;
+// Clips que empiezan con la cámara "entrando" a una zona del auto antes del primer plano.
+const ZOOM_A_ZONA: Record<string, number> = { c03a: 0, c03c: 1, c05a: 2, c07a: 4 };
+const ONOMATOPEYAS: Record<string, { texto: string; x: number; y: number; giro: number }> = {
+  c01: { texto: "¡RRRIIICH!", x: 380, y: 470, giro: -8 },
+  c03a: { texto: "¡IIIIIH!", x: 760, y: 430, giro: 7 },
+  c03c: { texto: "CLIC CLIC", x: 740, y: 420, giro: -6 },
+  c04: { texto: "¡PUM!", x: 720, y: 470, giro: 8 },
+  c05a: { texto: "¡CLONC!", x: 760, y: 430, giro: -7 },
+  c05c: { texto: "ZZZUUUM", x: 560, y: 450, giro: -5 },
+  c07a: { texto: "¡RRRIIICH!", x: 720, y: 420, giro: 6 },
+};
+const DUR_ZOOM = 0.45;
+
+// Etiquetas con línea que señalan cada zona del auto (introducción).
+const Etiquetas: React.FC<{ chips: string[]; vis: number[] }> = ({ chips, vis }) => (
+  <svg width={1080} height={1920} style={{ position: "absolute", inset: 0 }}>
+    {chips.map((txt, k) => {
+      const z = zonaEnPantalla(k);
+      const lx = 120 + k * 175;
+      const ly = k % 2 === 0 ? 350 : 425;
+      const v = vis[k] ?? 0;
+      return (
+        <g key={txt} opacity={v > 0.01 ? 1 : 0}>
+          <path d={`M${lx + 90} ${ly + 46} L${z.x} ${z.y - 30}`} stroke="#fff" strokeWidth={3} strokeDasharray="400" strokeDashoffset={400 * (1 - v)} />
+          <g transform={`translate(${lx} ${ly}) scale(${v})`}>
+            <rect x={-10} y={-4} width={200} height={50} rx={25} fill={ROJO_DA} stroke="#fff" strokeWidth={3} />
+            <text x={90} y={30} textAnchor="middle" fontFamily={POPPINS} fontWeight={PESO_POPPINS} fontSize={22} fill="#fff">
+              {`${k + 1}. ${txt}`}
+            </text>
+          </g>
+        </g>
+      );
+    })}
+  </svg>
+);
+
+const primerPlano = (c: Clip, t: number): React.ReactNode => {
+  const p = local(c, t);
+  switch (c.visual) {
+    case "zona-motor-banda-vibra":
+      return <PoleasBanda t={t} vibra={1} grietas={0} />;
+    case "banda-con-grietas":
+      return <PoleasBanda t={t} vibra={0.3} grietas={interpolate(p, [0.05, 0.75], [0, 1], limitar)} />;
+    case "volante-girado-rueda-clics":
+      return <VolanteJunta giro={resorte(t, c.inicio, 12)} clic={t < T_JUNTA ? t - c.inicio : 0} junta={resorte(t, T_JUNTA, 11)} />;
+    case "zona-suspension-golpe": {
+      const golpe = Math.max(0, 1 - (t - c.inicio - DUR_ZOOM) / 0.35);
+      return <Suspension compresion={Math.min(1, golpe) * 0.9} golpe={Math.min(1, golpe)} />;
+    }
+    case "bujes-rotula-amortiguador-en-secuencia":
+      return <TresPiezas a={resorte(t, T_PIEZAS[0], 9)} b={resorte(t, T_PIEZAS[1], 9)} c={resorte(t, T_PIEZAS[2], 9)} />;
+    case "velocimetro-sube-balero-corte":
+      return <VelocimetroBalero vel={0.9} balero={resorte(t, T_BALERO, 10)} t={t} />;
+    case "zona-freno-disco-balata":
+      return <DiscoBalata grosor={0.25} chispas={0} ondas={1} t={t} />;
+    case "balata-acabada-chispas":
+      return <DiscoBalata grosor={interpolate(t, [c.inicio, T_METAL], [0.25, 0], limitar)} chispas={t >= T_METAL ? 1 : 0} ondas={0} t={t} />;
+    case "distancia-de-frenado-dos-autos":
+      return <DistanciaFrenado p={interpolate(p, [0.05, 0.8], [0, 1], limitar)} />;
+    case "dato-grande-10000-km":
+      return <DiscoBalata grosor={1} chispas={0} ondas={0} t={t} />;
+    default:
+      return null;
+  }
+};
+
+// Escena de calle según el clip (gancho, introducción, bucles, zumbido y CTA).
+const calle = (c: Clip, t: number) => {
+  const l = t - c.inicio;
+  const base = { t, faseOnda: (t * 1.6) % 1, numeros: [] as number[], rebote: 0, alarma: 0, tope: null as number | null, autoX: 0 };
+  switch (c.id) {
+    case "c01":
+      return <CalleNocturna {...base} vel={260} zona={4} />;
+    case "c02": {
+      const vis = T_NUM.map((tn) => resorte(t, tn, 9));
+      return (
+        <>
+          <CalleNocturna {...base} vel={260 * Math.max(0, 1 - l / 0.8)} zona={null} numeros={vis} />
+          <Etiquetas chips={c.chips ?? []} vis={vis} />
+        </>
+      );
+    }
+    case "c04": {
+      const topeX = 1250 - l * 520;
+      const golpeDe = (rx: number) => Math.max(0, 1 - Math.abs(topeX - rx) / 90);
+      const rebote = -46 * Math.max(golpeDe(AUTO.x + 690 * AUTO.escala), golpeDe(AUTO.x + 300 * AUTO.escala));
+      return <CalleNocturna {...base} vel={520} zona={null} rebote={rebote} tope={topeX} />;
+    }
+    case "c05c":
+      return <CalleNocturna {...base} vel={260 + 700 * Math.min(1, l / 1.5)} zona={3} faseOnda={(t * 3) % 1} />;
+    case "c06":
+      return <CalleNocturna {...base} vel={120} zona={4} alarma={Math.min(1, l / 0.3)} />;
+    default:
+      return <CalleNocturna {...base} vel={0} zona={null} numeros={[1, 1, 1, 1, 1]} />;
+  }
+};
+
+const Escena: React.FC<{ c: Clip; t: number; primeroDelBloque: boolean }> = ({ c, t }) => {
+  const l = t - c.inicio;
+  const conTitulo = Boolean(c.pantalla);
+  const ono = ONOMATOPEYAS[c.id];
+  const tOno = c.ruidoAntesDeLaVoz ? c.inicio + 0.05 : c.inicio + 0.02;
+  const zonaZoom = ZOOM_A_ZONA[c.id];
+  const enZoom = zonaZoom !== undefined && l < DUR_ZOOM;
+  const plano = primerPlano(c, t);
+  const usaCalle = plano === null || enZoom || (c.id === "c05c" && t < T_BALERO);
+  let fondo: React.ReactNode;
+  if (enZoom) {
+    const z = zonaEnPantalla(zonaZoom);
+    const k = facil(Math.max(0, l) / DUR_ZOOM);
+    fondo = (
+      <AbsoluteFill style={{ transform: `scale(${1 + 2.4 * k})`, transformOrigin: `${z.x}px ${z.y}px` }}>
+        <CalleNocturna t={t} vel={200} zona={zonaZoom} faseOnda={(t * 2) % 1} numeros={[]} rebote={0} alarma={0} tope={null} autoX={0} />
+      </AbsoluteFill>
+    );
+  } else if (usaCalle) {
+    fondo = calle(c, t);
+  } else {
+    const inicioPP = zonaZoom !== undefined ? c.inicio + DUR_ZOOM : c.id === "c05c" ? T_BALERO : c.inicio;
+    fondo = (
+      <Radiografia t={t} entrada={resorte(t, inicioPP - 0.05, 12)}>
+        {plano}
+      </Radiografia>
+    );
+  }
+  if (c.boton) {
+    const boton = resorte(t, c.inicio + 0.3, 9);
+    return (
+      <AbsoluteFill>
+        {fondo}
+        <div style={{ position: "absolute", left: 0, right: 0, top: 738, display: "flex", justifyContent: "center", transform: `scale(${boton})` }}>
+          <div style={{ background: DEGRADADO, borderRadius: 46, padding: "14px 44px 20px", fontFamily: ANTON, fontSize: 70, color: "#fff", whiteSpace: "nowrap", boxShadow: "0 18px 40px rgba(0,0,0,0.55)" }}>
+            {c.boton}
+          </div>
+        </div>
+      </AbsoluteFill>
+    );
+  }
+  // Punch-in de cámara (1.0 → 1.12 en 4 fotogramas) cuando entra un ruido o el dato grande.
   const punch = Math.max(
     1,
     ...T_PUNCH.map((k) => {
@@ -125,85 +262,15 @@ const camara = (c: Clip, t: number) => {
       return f <= 4 ? 1 + 0.12 * (f / 4) : 1 + 0.12 * (1 - (f - 4) / 12);
     }),
   );
-  return lento * punch;
-};
-
-const visualDe = (c: Clip, t: number): React.ReactNode => {
-  const p = local(c, t);
-  switch (c.visual) {
-    case "auto-lateral-ondas-sonido":
-      return <PanelAuto zona={4} fase={(t * 1.6) % 1} numeros={[]} chips={null} chipsVisibles={[]} />;
-    case "auto-lateral-5-zonas-numeradas": {
-      const vis = T_NUM.map((tn) => resorte(t, tn, 9));
-      return <PanelAuto zona={null} fase={0} numeros={vis} chips={c.chips ?? null} chipsVisibles={vis} />;
-    }
-    case "zona-motor-banda-vibra":
-      return <PoleasBanda t={t} vibra={1} grietas={0} />;
-    case "banda-con-grietas":
-      return <PoleasBanda t={t} vibra={0.3} grietas={interpolate(p, [0.05, 0.75], [0, 1], limitar)} />;
-    case "volante-girado-rueda-clics":
-      return <VolanteJunta giro={resorte(t, c.inicio, 12)} clic={t < T_JUNTA ? (t - c.inicio) : 0} junta={resorte(t, T_JUNTA, 11)} />;
-    case "auto-pasa-tope-rebota":
-      return <TopeRebote p={p} />;
-    case "zona-suspension-golpe": {
-      const golpe = Math.max(0, 1 - (t - c.inicio) / 0.35);
-      return <Suspension compresion={golpe * 0.9 + 0.1 * Math.abs(Math.sin((t - c.inicio) * 9)) * Math.max(0, 1 - p * 2)} golpe={golpe} />;
-    }
-    case "bujes-rotula-amortiguador-en-secuencia":
-      return <TresPiezas a={resorte(t, T_PIEZAS[0], 9)} b={resorte(t, T_PIEZAS[1], 9)} c={resorte(t, T_PIEZAS[2], 9)} />;
-    case "velocimetro-sube-balero-corte":
-      return <VelocimetroBalero vel={interpolate(t, [c.inicio, T_BALERO], [0.05, 0.9], limitar)} balero={resorte(t, T_BALERO, 10)} t={t} />;
-    case "freno-alerta-roja-late":
-      return <FrenoAlerta t={t} />;
-    case "zona-freno-disco-balata":
-      return <DiscoBalata grosor={0.25} chispas={0} ondas={1} t={t} />;
-    case "balata-acabada-chispas":
-      return <DiscoBalata grosor={interpolate(t, [c.inicio, T_METAL], [0.25, 0], limitar)} chispas={t >= T_METAL ? 1 : 0} ondas={0} t={t} />;
-    case "distancia-de-frenado-dos-autos":
-      return <DistanciaFrenado p={interpolate(p, [0.05, 0.8], [0, 1], limitar)} />;
-    case "dato-grande-10000-km":
-      // Balata nueva (verde) detrás del dato grande.
-      return <DiscoBalata grosor={1} chispas={0} ondas={0} t={t} />;
-    default:
-      return <PanelAuto zona={null} fase={0} numeros={[]} chips={null} chipsVisibles={[]} />;
-  }
-};
-
-const Escena: React.FC<{ c: Clip; t: number; primeroDelBloque: boolean }> = ({ c, t, primeroDelBloque }) => {
-  const rebote = primeroDelBloque ? resorte(t, c.inicio - 0.05, 9) : 1;
-  const conTitulo = Boolean(c.pantalla);
-  if (c.boton) {
-    // CTA: el auto más chico arriba y el botón de comentario.
-    const boton = resorte(t, c.inicio + 0.3, 9);
-    return (
-      <AbsoluteFill>
-        <div style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0, transform: "scale(0.62)", transformOrigin: "540px 330px" }}>
-          <PanelAuto zona={null} fase={0} numeros={[1, 1, 1, 1, 1]} chips={null} chipsVisibles={[]} />
-        </div>
-        <div style={{ position: "absolute", left: 0, right: 0, top: 640, display: "flex", justifyContent: "center", transform: `scale(${boton})` }}>
-          <div style={{ background: DEGRADADO, borderRadius: 46, padding: "14px 44px 20px", fontFamily: ANTON, fontSize: 70, color: "#fff", whiteSpace: "nowrap", boxShadow: "0 18px 40px rgba(0,0,0,0.55)" }}>
-            {c.boton}
-          </div>
-        </div>
-      </AbsoluteFill>
-    );
-  }
   return (
     <AbsoluteFill>
+      <AbsoluteFill style={{ transform: `scale(${punch})`, transformOrigin: "540px 600px" }}>{fondo}</AbsoluteFill>
       {conTitulo ? (
-        <div style={{ position: "absolute", left: 70, right: 70, top: 612, height: 250, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <TituloDA texto={c.pantalla ?? ""} resaltar={c.pantallaResaltar ?? []} tamano={78} golpe={1} />
+        <div style={{ position: "absolute", left: 60, right: 60, top: 730, height: 150, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <TituloDA texto={c.pantalla ?? ""} resaltar={c.pantallaResaltar ?? []} tamano={70} golpe={1} />
         </div>
       ) : null}
-      <AbsoluteFill
-        style={{
-          transform: `${conTitulo ? "translateY(-4px) scale(0.6)" : ""} scale(${camara(c, t) * (0.85 + 0.15 * rebote)}) rotate(${(1 - rebote) * -4}deg)`,
-          transformOrigin: conTitulo ? "540px 352px" : "540px 560px",
-          filter: "drop-shadow(0 22px 26px rgba(0,0,0,0.55))",
-        }}
-      >
-        {visualDe(c, t)}
-      </AbsoluteFill>
+      {ono ? <Onomatopeya texto={ono.texto} x={ono.x} y={ono.y} t={t} t0={tOno} vida={0.9} giro={ono.giro} /> : null}
       {c.id === "c07d" ? <DatoGrande t={t} /> : null}
       {c.aviso ? <Franja texto={c.aviso} /> : null}
     </AbsoluteFill>
@@ -421,7 +488,7 @@ export const TemaRuidos: React.FC = () => {
       <Img src={staticFile("logo-doctor-auto.png")} alt={guion.marcaDeAgua} style={{ position: "absolute", left: 80, top: 308, height: 30, opacity: 0.55 }} />
 
       <SubtitulosDA lineas={lineas} desde={0} hasta={c08.inicio} arriba={885} alto={265} tamano={52} izquierda={70} derecha={520} sostenerFinal={false} />
-      <SubtitulosDA lineas={lineas} desde={c08.inicio} hasta={Infinity} arriba={790} alto={130} tamano={48} izquierda={70} derecha={70} sostenerFinal />
+      <SubtitulosDA lineas={lineas} desde={c08.inicio} hasta={Infinity} arriba={850} alto={80} tamano={46} izquierda={70} derecha={70} sostenerFinal />
 
       {/* Voz: cada clip en su momento exacto (después del ruido previo si lo hay), volumen 1.0. */}
       <Track name="Voz">

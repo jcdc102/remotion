@@ -105,3 +105,14 @@ Todos los videos llevan efectos de sonido, aunque el guion no los pida o el camp
 - Usar primero los efectos de Mixkit del usuario (public/sfx/mk-*.wav); si falta uno, generarlo con ffmpeg o síntesis y guardarlo en public/sfx/.
 - Volumen de efectos entre 0.35 y 0.5 (por debajo de la voz); dos efectos nunca al mismo tiempo (desfase de 2–3 fotogramas).
 - Antes de entregar: revisar que no haya un cambio visual sin sonido y que el pico final no pase de -1 dB.
+
+---
+
+## DISEÑO BASE (aprobado): ESCENAS ANIMADAS A PANTALLA COMPLETA
+
+Nada de "fondo de un color con la información enfrente".
+- Cada pieza ocurre en un mundo ilustrado y en movimiento que ocupa toda la pantalla (ejemplo: ciudad nocturna con parallax, calle mojada con reflejos, el auto manejando).
+- Cuando se habla de una pieza, la cámara entra a esa zona del auto y corta a un primer plano tipo "radiografía" a pantalla completa (rejilla técnica en movimiento, línea de escaneo, marcos de HUD).
+- Onomatopeyas animadas para cada ruido o golpe; etiquetas con líneas que señalan las partes.
+- La mitad de abajo también se mueve (piso, reflejos, banqueta), oscurecida un poco detrás de subtítulos y mascota para que se lean.
+- Referencia: src/estructura8/ruidos/Mundo.tsx y Ruidos.tsx.

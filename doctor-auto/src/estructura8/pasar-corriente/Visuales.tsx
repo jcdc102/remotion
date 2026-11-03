@@ -1,20 +1,28 @@
 // Visuales sueltos (fuera del diagrama de los dos autos). Todos se dibujan en el
 // mismo panel gris oscuro y reciben "p" = avance dentro de su animación (0..1).
+import { createContext, useContext } from "react";
 import { ANTON, ROJO_DA } from "../../doctor-auto/constantes";
 import { Reloj } from "../alineacion/Iconos";
 import { Chispa, PANEL, Pinza, VISTA } from "./Diagrama";
 
-const Panel: React.FC<{ children: React.ReactNode; transform?: string }> = ({ children, transform }) => (
-  <svg
-    width={PANEL.ancho}
-    height={PANEL.alto}
-    viewBox={VISTA}
-    style={{ position: "absolute", left: PANEL.x, top: PANEL.y, transform, overflow: "hidden", borderRadius: 27 }}
-  >
-    <rect x={0} y={0} width={940} height={460} rx={30} fill="#2A2A2A" />
-    {children}
-  </svg>
-);
+// Por defecto el dibujo va en un panel gris; un tema puede usarlo a pantalla
+// completa y sin fondo con <EstiloPanel.Provider>.
+export const EstiloPanel = createContext({ fondo: true, x: PANEL.x, y: PANEL.y, ancho: PANEL.ancho, alto: PANEL.alto });
+
+const Panel: React.FC<{ children: React.ReactNode; transform?: string }> = ({ children, transform }) => {
+  const e = useContext(EstiloPanel);
+  return (
+    <svg
+      width={e.ancho}
+      height={e.alto}
+      viewBox={VISTA}
+      style={{ position: "absolute", left: e.x, top: e.y, transform, overflow: e.fondo ? "hidden" : "visible", borderRadius: e.fondo ? 27 : 0 }}
+    >
+      {e.fondo ? <rect x={0} y={0} width={940} height={460} rx={30} fill="#2A2A2A" /> : null}
+      {children}
+    </svg>
+  );
+};
 
 // c01: dos pinzas que se acercan y sacan una chispa grande al tocarse.
 export const ChispaEntrePinzas: React.FC<{ acerca: number; chispa: number; temblor: number }> = ({ acerca, chispa, temblor }) => {
