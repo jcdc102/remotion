@@ -1,7 +1,7 @@
 import { Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { Bloque, C, Reel, SANS, SERIF, useEntrada, Visual, ZONA_VISUAL } from "./comun";
 
-// 🎓 Turismo explicado #2. Datos: Huízar Sánchez, López Ramos y Baños Francia (2020), PASOS 18(5), pp. 839-840.
+// Turistificación en Puerto Vallarta. Datos: Huízar Sánchez, López Ramos y Baños Francia (2020), PASOS 18(5), pp. 839-840.
 // Escenas alineadas con las pausas de public/voz-turistificacion.mp3 (44,4 s).
 export const DURACION_TURISTIFICACION = 1350;
 
@@ -336,7 +336,7 @@ const Cierre: React.FC = () => {
         ))}
       </div>
       <div style={{ position: "absolute", left: 0, right: 0, top: ZONA_VISUAL + 290, textAlign: "center", fontFamily: SANS, fontWeight: 600, fontSize: 32, color: C.crema, opacity: 0.8 * globo }}>
-        🎓 Turismo explicado #2 · Sígueme para entender el turismo
+        Sígueme para entender el turismo
       </div>
     </>
   );
@@ -345,7 +345,7 @@ const Cierre: React.FC = () => {
 export const Turistificacion: React.FC = () => (
   <Reel
     duracion={DURACION_TURISTIFICACION}
-    etiqueta="turismo explicado #2"
+    etiqueta={null}
     voz="voz-turistificacion.mp3"
     musica="musica-turistificacion.mp3"
     sonidos={SONIDOS}

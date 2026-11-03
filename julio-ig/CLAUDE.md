@@ -9,7 +9,7 @@
 - Voz: el clon «Julio» de ElevenLabs. Antes de usarla, normalizarla con `loudnorm=I=-16:TP=-1.5:LRA=11`, porque cada toma sale con distinto volumen. Las escenas se alinean con las pausas de la voz (ffmpeg silencedetect).
 - Al final, limitar picos a -1.5 dB: `alimiter=limit=0.84`.
 - Colores de atardecer (noche #0E1B2E, morado #3A1F4A, coral #FF6B5B, naranja #FFA552, crema #FFF4E6),
-  títulos en Playfair Display y texto en Poppins. Arriba: barra de progreso y «@julio.chaidez1 · <línea>» (por ejemplo «tips de viaje» o «turismo explicado #2»).
+  títulos en Playfair Display y texto en Poppins. Arriba: barra de progreso y «@julio.chaidez1» (con « · tips de viaje» en los tips).
 - Las piezas comunes (fondo, encabezado, texto animado, tarjeta visual, voz, música y efectos) están en `src/comun.tsx` (`<Reel>`); cada video sólo define sus escenas.
 - Texto entre el 15% superior y el 25% inferior libres (interfaz de Instagram).
 - Datos verificables únicamente; nada de «según la psicología» ni citas sin fuente.
@@ -26,6 +26,6 @@
 
 ## Líneas de contenido (6 por semana, lunes a sábado)
 - 🌅 Frases (lun, mié, sáb): frase original en español sobre video propio de playa o atardecer. Nunca «según la psicología» ni citas sin fuente.
-- 🎓 «Turismo explicado» (mar y jue), con episodios numerados: tipos de turismo, planificación turística, datos con fuente en pantalla y recomendaciones de profesional.
+- 🎓 Turismo (mar y jue), sin etiqueta «Turismo explicado #N» en pantalla (Julio la quitó): tipos de turismo, planificación turística, datos con fuente en pantalla y recomendaciones de profesional.
 - ✈️ Tips de viaje (vie): consejos prácticos y verificables.
 - «Siempre explorando»: descartada por ahora.

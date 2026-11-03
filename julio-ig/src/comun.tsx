@@ -101,7 +101,7 @@ const Fondo: React.FC<{ duracion: number }> = ({ duracion }) => {
   );
 };
 
-const Encabezado: React.FC<{ duracion: number; etiqueta: string }> = ({ duracion, etiqueta }) => {
+const Encabezado: React.FC<{ duracion: number; etiqueta: string | null }> = ({ duracion, etiqueta }) => {
   const frame = useCurrentFrame();
   const avance = frame / duracion;
   return (
@@ -110,7 +110,7 @@ const Encabezado: React.FC<{ duracion: number; etiqueta: string }> = ({ duracion
         <div style={{ width: `${avance * 100}%`, height: "100%", borderRadius: 3, background: `linear-gradient(90deg, ${C.naranja}, ${C.coral})` }} />
       </div>
       <div style={{ position: "absolute", left: 80, top: 288, fontFamily: SANS, fontWeight: 500, fontSize: 26, color: C.crema, opacity: 0.6 }}>
-        @julio.chaidez1 · {etiqueta}
+        @julio.chaidez1{etiqueta ? ` · ${etiqueta}` : null}
       </div>
     </>
   );
@@ -190,7 +190,7 @@ const Escena: React.FC<{ dur: number; children: React.ReactNode }> = ({ dur, chi
 // Un reel completo: fondo, voz, música, efectos, escenas y encabezado.
 export const Reel: React.FC<{
   duracion: number;
-  etiqueta: string;
+  etiqueta: string | null;
   voz: string;
   musica: string;
   sonidos: [number, string, number][];
