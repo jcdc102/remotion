@@ -3,12 +3,15 @@ import {
   Easing,
   interpolate,
   Sequence,
+  staticFile,
   spring,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
 import { loadFont as cargarSerif } from "@remotion/google-fonts/PlayfairDisplay";
 import { loadFont as cargarSans } from "@remotion/google-fonts/Poppins";
+import { Audio } from "@remotion/media";
+
 
 const { fontFamily: SERIF } = cargarSerif("normal", { weights: ["700", "800"], subsets: ["latin"] });
 const { fontFamily: SANS } = cargarSans("normal", { weights: ["500", "600"], subsets: ["latin"] });
@@ -24,16 +27,16 @@ const C = {
   tarjeta: "rgba(255,244,230,0.08)",
 };
 
-// Escenas en fotogramas (30 fps).
+// Escenas en fotogramas (30 fps), alineadas con las pausas de public/voz-vuelos.mp3 (35,8 s).
 const ESCENAS = [
-  { desde: 0, dur: 90 },
-  { desde: 90, dur: 150 },
-  { desde: 240, dur: 120 },
-  { desde: 360, dur: 150 },
-  { desde: 510, dur: 150 },
-  { desde: 660, dur: 90 },
+  { desde: 0, dur: 85 },
+  { desde: 85, dur: 225 },
+  { desde: 310, dur: 145 },
+  { desde: 455, dur: 240 },
+  { desde: 695, dur: 316 },
+  { desde: 1011, dur: 78 },
 ];
-export const DURACION_VUELOS = 750;
+export const DURACION_VUELOS = 1089;
 
 // Zonas: texto entre y=330 y y=860; visual entre y=880 y y=1400. Libres el 15% superior y el 25% inferior.
 const ZONA_TEXTO = 330;
@@ -143,7 +146,14 @@ const Avion: React.FC<{ tam: number; color: string }> = ({ tam, color }) => (
   </svg>
 );
 
-const Bloque: React.FC<{ n: number | null; titulo: string; texto: string | null; resaltar: string[] | null }> = ({ n, titulo, texto, resaltar }) => {
+const Bloque: React.FC<{ n: number | null; titulo: string; texto: string | null; resaltar: string[] | null; tTitulo: number; tTexto: number }> = ({
+  n,
+  titulo,
+  texto,
+  resaltar,
+  tTitulo,
+  tTexto,
+}) => {
   const insignia = useEntrada(0, 10);
   return (
     <div style={{ position: "absolute", left: 80, right: 80, top: ZONA_TEXTO + 40, display: "flex", flexDirection: "column", gap: 28 }}>
@@ -167,8 +177,8 @@ const Bloque: React.FC<{ n: number | null; titulo: string; texto: string | null;
           {n}
         </div>
       ) : null}
-      <Palabras texto={titulo} tam={78} fuente={SERIF} peso={800} retraso={4} resaltar={resaltar} color={C.crema} />
-      {texto ? <Palabras texto={texto} tam={42} fuente={SANS} peso={500} retraso={14} resaltar={null} color="rgba(255,244,230,0.85)" /> : null}
+      <Palabras texto={titulo} tam={78} fuente={SERIF} peso={800} retraso={tTitulo} resaltar={resaltar} color={C.crema} />
+      {texto ? <Palabras texto={texto} tam={42} fuente={SANS} peso={500} retraso={tTexto} resaltar={null} color="rgba(255,244,230,0.85)" /> : null}
     </div>
   );
 };
@@ -205,7 +215,7 @@ const Gancho: React.FC = () => {
   const barato = useEntrada(48, 9);
   return (
     <>
-      <Bloque n={null} titulo="Deja de pagar de más por tus vuelos" texto={null} resaltar={["vuelos"]} />
+      <Bloque n={null} titulo="Deja de pagar de más por tus vuelos" texto={null} resaltar={["vuelos"]} tTitulo={2} tTexto={0} />
       <Visual>
         <div style={{ position: "absolute", left: x, top: y - 70, transform: "rotate(90deg)" }}>
           <Avion tam={140} color={C.crema} />
@@ -238,11 +248,11 @@ const Calendario: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const elegido = 17;
-  const luz = spring({ frame: frame - 70, fps, config: { damping: 9 } });
+  const luz = spring({ frame: frame - 110, fps, config: { damping: 9 } });
   const caros = [0, 3, 5, 6, 9, 12, 13, 19, 20, 26, 27];
   return (
     <>
-      <Bloque n={1} titulo="Busca por mes, no por día." texto="Mira el calendario de precios de Google Flights: a veces moverte un día cambia todo." resaltar={["mes"]} />
+      <Bloque n={1} titulo="Busca por mes, no por día." texto="Mira el calendario de precios de Google Flights: a veces moverte un día cambia todo." resaltar={["mes"]} tTitulo={24} tTexto={100} />
       <Visual>
         <div style={{ position: "absolute", left: 60, top: 34, display: "grid", gridTemplateColumns: "repeat(7, 96px)", gap: 16 }}>
           {Array.from({ length: 28 }).map((_, i) => {
@@ -298,11 +308,11 @@ const Calendario: React.FC = () => {
 const Alerta: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const aviso = spring({ frame: frame - 35, fps, config: { damping: 11 } });
-  const campana = Math.sin(frame / 2.5) * 14 * Math.max(0, 1 - Math.max(0, frame - 35) / 30) * (frame > 35 ? 1 : 0);
+  const aviso = spring({ frame: frame - 82, fps, config: { damping: 11 } });
+  const campana = Math.sin(frame / 2.5) * 14 * Math.max(0, 1 - Math.max(0, frame - 82) / 30) * (frame > 82 ? 1 : 0);
   return (
     <>
-      <Bloque n={2} titulo="Activa alertas de precio." texto="Google Flights te avisa cuando baja." resaltar={["alertas"]} />
+      <Bloque n={2} titulo="Activa alertas de precio." texto="Google Flights te avisa cuando baja." resaltar={["alertas"]} tTitulo={4} tTexto={82} />
       <Visual>
         <div
           style={{
@@ -366,10 +376,10 @@ const Alerta: React.FC = () => {
 const Aeropuertos: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const p1 = spring({ frame: frame - 15, fps, config: { damping: 10 } });
-  const p2 = spring({ frame: frame - 30, fps, config: { damping: 10 } });
-  const linea = interpolate(frame, [40, 70], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-  const vs = spring({ frame: frame - 70, fps, config: { damping: 8 } });
+  const p1 = spring({ frame: frame - 125, fps, config: { damping: 10 } });
+  const p2 = spring({ frame: frame - 165, fps, config: { damping: 10 } });
+  const linea = interpolate(frame, [140, 175], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const vs = spring({ frame: frame - 180, fps, config: { damping: 8 } });
   const Pin: React.FC<{ x: number; s: number; nombre: string }> = ({ x, s, nombre }) => (
     <div style={{ position: "absolute", left: x - 70, top: 120, width: 140, textAlign: "center", transform: `translateY(${(1 - s) * -60}px)`, opacity: s }}>
       <svg width={140} height={170} viewBox="0 0 24 30">
@@ -381,7 +391,7 @@ const Aeropuertos: React.FC = () => {
   );
   return (
     <>
-      <Bloque n={3} titulo="Revisa otros aeropuertos." texto="En CDMX, compara AICM y AIFA." resaltar={["aeropuertos"]} />
+      <Bloque n={3} titulo="Revisa otros aeropuertos." texto="En CDMX, compara AICM y AIFA." resaltar={["aeropuertos"]} tTitulo={30} tTexto={95} />
       <Visual>
         <svg style={{ position: "absolute", left: 0, top: 0 }} width={920} height={500}>
           <line x1={230} y1={205} x2={230 + 460 * linea} y2={205} stroke={C.crema} strokeWidth={6} strokeDasharray="18 16" strokeLinecap="round" opacity={0.6} />
@@ -421,8 +431,8 @@ const Aeropuertos: React.FC = () => {
 const Tarifa: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const maleta = spring({ frame: frame - 60, fps, config: { damping: 9 } });
-  const barra = interpolate(frame, [70, 100], [0.45, 0.85], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
+  const maleta = spring({ frame: frame - 235, fps, config: { damping: 9 } });
+  const barra = interpolate(frame, [245, 275], [0.45, 0.85], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
   return (
     <>
       <Bloque
@@ -430,6 +440,8 @@ const Tarifa: React.FC = () => {
         titulo="Ojo con la tarifa más barata."
         texto="En Volaris y Viva Aerobus sólo incluye un artículo personal: suma la maleta antes de comparar."
         resaltar={["Ojo"]}
+        tTitulo={32}
+        tTexto={108}
       />
       <Visual>
         <div style={{ position: "absolute", left: 60, top: 60, right: 60, fontFamily: SANS, color: C.crema }}>
@@ -470,7 +482,7 @@ const Cierre: React.FC = () => {
   const latido = 1 + Math.max(0, Math.sin((frame - 30) / 6)) * 0.06 * (frame > 30 ? 1 : 0);
   return (
     <>
-      <Bloque n={null} titulo="Guárdalo para tu próximo viaje" texto={null} resaltar={["Guárdalo"]} />
+      <Bloque n={null} titulo="Guárdalo para tu próximo viaje" texto={null} resaltar={["Guárdalo"]} tTitulo={4} tTexto={0} />
       <div
         style={{
           position: "absolute",
@@ -510,6 +522,7 @@ export const VuelosBaratos: React.FC = () => {
   return (
     <AbsoluteFill>
       <Fondo />
+      <Audio src={staticFile("voz-vuelos.mp3")} />
       {piezas.map((Pieza, i) => {
         const e = ESCENAS[i];
         const ultima = i === piezas.length - 1;
