@@ -14,7 +14,14 @@ Estados: ✅ confirmado en fuente primaria · 🟡 confirmado sólo en medios qu
 
 ## Investigación sobre Puerto Vallarta (Dra. María de los Ángeles Huízar Sánchez, UdeG)
 - Baños Francia, J. A., Huízar Sánchez, M. A. y López Ramos, J. L. (2020). «Políticas de gestión turística, transformación urbana y patrimonio en Puerto Vallarta, México». *PatryTer*, 3(6), 51-65. Trata la pérdida de patrimonio arquitectónico en el centro histórico. [Redalyc](https://www.redalyc.org/journal/6040/604065750006/604065750006.pdf)
-- «La modernización de Puerto Vallarta: ¿Renovación urbana o turistificación asistida?» (2020). *PASOS, Revista de Turismo y Patrimonio Cultural*, 18(5), 831-842. DOI: 10.25145/j.pasos.2020.18.059. Trata la turistificación, el desarrollo inmobiliario y el crecimiento de Airbnb y Booking sin regulación clara. (Falta confirmar la lista completa de autores en el original.)
+- Huízar Sánchez, M. A., López Ramos, J. L. y Baños Francia, J. A. (2020). «La modernización de Puerto Vallarta: ¿Renovación urbana o turistificación asistida?». *PASOS, Revista de Turismo y Patrimonio Cultural*, 18(5), 831-842. DOI: 10.25145/j.pasos.2020.18.059. [Repositorio ULL](https://riull.ull.es/xmlui/handle/915/22021) (CC BY-NC-ND 4.0).
+  - 🟡 Según el resumen: la turistificación se impulsa por el desarrollo inmobiliario, que transforma viviendas y comercios para favorecer al visitante. Metodología mixta: discursos oficiales de modernización, percepción de residentes en diarios locales y conteo de comercios. Casos: Zona Romántica y Marina Vallarta; menciona Versalles con creciente demanda turística. Resultado: se corroboran la turistificación y la gentrificación, sobre todo en la Zona Romántica.
+  - Pendiente: leer el PDF completo (mdc.ulpgc.es está bloqueado en la nube) para confirmar con citas textuales y páginas.
+
+## Conceptos
+| Dato | Estado | Fuente |
+|---|---|---|
+| Turistificación: «apropiación física y simbólica de un territorio por una fuerte intensificación de la actividad turística en un breve lapso» | 🟡 | *Boletín de la Asociación de Geógrafos Españoles* (vía [DOAJ](https://doaj.org/article/4360816dd4544b21b11cd0f38d719b6f)); falta confirmar autores, año y página en el original |
 
 ## Tips de viaje
 | Dato | Estado | Fuente |
