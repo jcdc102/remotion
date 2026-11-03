@@ -1,0 +1,307 @@
+{
+  "titulo": "5 ruidos que tu auto NO debería hacer",
+  "tema": "ruidos",
+  "fps": 30,
+  "bpm": 120,
+  "tarjetaFinal": false,
+  "marcaDeAgua": "doctor auto",
+  "pausaEntreClipsSegundos": 0.4,
+  "notaRuidos": "El campo 'ruido' es el sonido real de la falla. Suena a volumen 0.5 con la música bajada, empezando 0.4 s antes de su clip (en la pausa) para que se oiga claro antes de la voz. En c01 la voz espera a que termine el ruido (ruidoAntesDeLaVoz).",
+  "piezas": [
+    {
+      "id": 1,
+      "tipo": "gancho",
+      "clips": [
+        {
+          "id": "c01",
+          "archivo": "c01.mp3",
+          "texto": "¿Tu auto suena así? Puede salir caro.",
+          "resaltar": [
+            "salir caro"
+          ],
+          "pantalla": "¿TU AUTO SUENA ASÍ? 🔊",
+          "pantallaResaltar": [
+            "ASÍ?"
+          ],
+          "visual": "auto-lateral-ondas-sonido",
+          "ruido": "rechinido-frenos",
+          "ruidoAntesDeLaVoz": true,
+          "sfx": "hit",
+          "mascota": {
+            "pose": "susto",
+            "animacion": "entra-rebote",
+            "globo": "¡Ojo!"
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "tipo": "introduccion",
+      "clips": [
+        {
+          "id": "c02",
+          "archivo": "c02.mp3",
+          "texto": "Cinco ruidos que no debes ignorar.",
+          "resaltar": [
+            "Cinco ruidos"
+          ],
+          "chips": [
+            "Chillido",
+            "Clic al girar",
+            "Golpe en topes",
+            "Zumbido",
+            "Rechinido al frenar"
+          ],
+          "visual": "auto-lateral-5-zonas-numeradas",
+          "sfx": "pop-por-numero",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "habla"
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "tipo": "cuerpo",
+      "clips": [
+        {
+          "id": "c03a",
+          "archivo": "c03a.mp3",
+          "texto": "Uno: chillido al arrancar.",
+          "resaltar": [
+            "chillido"
+          ],
+          "visual": "zona-motor-banda-vibra",
+          "ruido": "chillido-banda",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "voltea",
+            "globo": "Chillido"
+          }
+        },
+        {
+          "id": "c03b",
+          "archivo": "c03b.mp3",
+          "texto": "Es la banda, floja o gastada.",
+          "resaltar": [
+            "banda"
+          ],
+          "visual": "banda-con-grietas",
+          "aviso": "Si la banda se rompe, la batería deja de cargarse",
+          "sfx": "clac",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c03c",
+          "archivo": "c03c.mp3",
+          "texto": "Dos: clic, clic al dar vuelta: juntas homocinéticas.",
+          "resaltar": [
+            "clic, clic",
+            "juntas homocinéticas"
+          ],
+          "visual": "volante-girado-rueda-clics",
+          "ruido": "clic-homocinetica",
+          "sfx": "pop",
+          "mascota": {
+            "pose": "duda",
+            "animacion": "duda",
+            "globo": "?"
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "tipo": "bucle",
+      "clips": [
+        {
+          "id": "c04",
+          "archivo": "c04.mp3",
+          "texto": "El tercero lo sientes en cada tope.",
+          "resaltar": [
+            "cada tope"
+          ],
+          "pantalla": "EL TERCERO LO SIENTES EN CADA TOPE",
+          "pantallaResaltar": [
+            "TOPE"
+          ],
+          "visual": "auto-pasa-tope-rebota",
+          "sfx": "riser",
+          "mascota": {
+            "pose": "susto",
+            "animacion": "susto"
+          }
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "tipo": "cuerpo",
+      "clips": [
+        {
+          "id": "c05a",
+          "archivo": "c05a.mp3",
+          "texto": "Tres: golpe seco en los topes.",
+          "resaltar": [
+            "golpe seco"
+          ],
+          "visual": "zona-suspension-golpe",
+          "ruido": "golpe-suspension",
+          "sfx": "hit",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "habla"
+          }
+        },
+        {
+          "id": "c05b",
+          "archivo": "c05b.mp3",
+          "texto": "Bujes, rótulas o amortiguadores.",
+          "resaltar": [
+            "Bujes",
+            "rótulas",
+            "amortiguadores"
+          ],
+          "visual": "bujes-rotula-amortiguador-en-secuencia",
+          "aviso": "Una rótula muy gastada puede soltarse en el camino",
+          "sfx": "pop-por-pieza",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c05c",
+          "archivo": "c05c.mp3",
+          "texto": "Cuatro: zumbido que sube con la velocidad: el balero.",
+          "resaltar": [
+            "zumbido",
+            "balero"
+          ],
+          "visual": "velocimetro-sube-balero-corte",
+          "ruido": "zumbido-balero",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala",
+            "globo": "Revísalo ya"
+          }
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "tipo": "bucle",
+      "clips": [
+        {
+          "id": "c06",
+          "archivo": "c06.mp3",
+          "texto": "El último es el más peligroso.",
+          "resaltar": [
+            "más peligroso"
+          ],
+          "pantalla": "EL ÚLTIMO ES EL MÁS PELIGROSO",
+          "pantallaResaltar": [
+            "PELIGROSO"
+          ],
+          "visual": "freno-alerta-roja-late",
+          "sfx": "riser",
+          "mascota": {
+            "pose": "susto",
+            "animacion": "susto"
+          }
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "tipo": "cuerpo",
+      "clips": [
+        {
+          "id": "c07a",
+          "archivo": "c07a.mp3",
+          "texto": "Cinco: rechinido metálico al frenar.",
+          "resaltar": [
+            "rechinido metálico"
+          ],
+          "visual": "zona-freno-disco-balata",
+          "ruido": "rechinido-frenos",
+          "sfx": "hit",
+          "mascota": {
+            "pose": "susto",
+            "animacion": "susto"
+          }
+        },
+        {
+          "id": "c07b",
+          "archivo": "c07b.mp3",
+          "texto": "Balatas acabadas: metal contra metal.",
+          "resaltar": [
+            "metal contra metal"
+          ],
+          "visual": "balata-acabada-chispas",
+          "sfx": "chispazo",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c07c",
+          "archivo": "c07c.mp3",
+          "texto": "Tu auto tarda más en frenar.",
+          "resaltar": [
+            "tarda más"
+          ],
+          "visual": "distancia-de-frenado-dos-autos",
+          "aviso": "Si el pedal vibra o se va al fondo, no manejes: llama al taller",
+          "sfx": "swipe",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "habla"
+          }
+        },
+        {
+          "id": "c07d",
+          "archivo": "c07d.mp3",
+          "texto": "Revísalos cada diez mil kilómetros.",
+          "resaltar": [
+            "diez mil kilómetros"
+          ],
+          "visual": "dato-grande-10000-km",
+          "sfx": "ding",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "pulgar-final"
+          }
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "tipo": "cta",
+      "clips": [
+        {
+          "id": "c08",
+          "archivo": "c08.mp3",
+          "texto": "Comenta RUIDO o agenda tu revisión.",
+          "resaltar": [
+            "RUIDO"
+          ],
+          "boton": "Comenta RUIDO 👇",
+          "sfx": "pop",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "grande-centro"
+          }
+        }
+      ]
+    }
+  ]
+}

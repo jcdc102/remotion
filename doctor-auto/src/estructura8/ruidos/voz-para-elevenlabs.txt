@@ -1,0 +1,22 @@
+VOZ PARA «5 ruidos que tu auto NO debería hacer»
+Genera cada línea como un clip separado en ElevenLabs, con la misma voz (Mario, la del video anterior).
+Nombra cada archivo exactamente como se indica (c01.mp3, c02.mp3…). Tono: cercano, con energía, sin correr.
+
+c01.mp3   ¿Tu auto suena así? Puede salir caro.
+c02.mp3   Cinco ruidos que no debes ignorar.
+c03a.mp3  Uno: chillido al arrancar.
+c03b.mp3  Es la banda, floja o gastada.
+c03c.mp3  Dos: clic, clic al dar vuelta: juntas homocinéticas.
+c04.mp3   El tercero lo sientes en cada tope.
+c05a.mp3  Tres: golpe seco en los topes.
+c05b.mp3  Bujes, rótulas o amortiguadores.
+c05c.mp3  Cuatro: zumbido que sube con la velocidad: el balero.
+c06.mp3   El último es el más peligroso.
+c07a.mp3  Cinco: rechinido metálico al frenar.
+c07b.mp3  Balatas acabadas: metal contra metal.
+c07c.mp3  Tu auto tarda más en frenar.
+c07d.mp3  Revísalos cada diez mil kilómetros.
+c08.mp3   Comenta RUIDO o agenda tu revisión.
+
+RUIDOS REALES QUE SE NECESITAN (5): chillido-banda, clic-homocinetica, golpe-suspension, rechinido-frenos, zumbido-balero
+Si tienes grabaciones o efectos (Mixkit, ElevenLabs), mándalos; si no, los genero.
