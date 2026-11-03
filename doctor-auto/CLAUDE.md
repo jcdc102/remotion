@@ -95,3 +95,13 @@ Capas: voz, efectos y música, mezcladas dentro de Remotion.
 
 ### Revisión antes de entregar
 Renderiza dos fotogramas (gancho y un cuerpo) y un tramo de 5 s con audio para que yo apruebe movimiento y mezcla. Después renderiza el video completo.
+
+---
+
+## REGLA FIJA: SIEMPRE EFECTOS DE SONIDO
+
+Todos los videos llevan efectos de sonido, aunque el guion no los pida o el campo "sfx" venga vacío.
+- Cada elemento que entra en pantalla tiene su sonido: whoosh en transiciones (uno distinto por tipo), pop en íconos, stickers y globos, impacto ("hit") en el gancho y en los números grandes, riser antes de cada bucle, clac al conectar piezas, ding en cada dato correcto, tic-tac en preguntas.
+- Usar primero los efectos de Mixkit del usuario (public/sfx/mk-*.wav); si falta uno, generarlo con ffmpeg o síntesis y guardarlo en public/sfx/.
+- Volumen de efectos entre 0.35 y 0.5 (por debajo de la voz); dos efectos nunca al mismo tiempo (desfase de 2–3 fotogramas).
+- Antes de entregar: revisar que no haya un cambio visual sin sonido y que el pico final no pase de -1 dB.
