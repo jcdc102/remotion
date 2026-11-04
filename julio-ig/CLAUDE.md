@@ -11,6 +11,7 @@
 - Colores de atardecer (noche #0E1B2E, morado #3A1F4A, coral #FF6B5B, naranja #FFA552, crema #FFF4E6),
   títulos en Playfair Display y texto en Poppins. Arriba: barra de progreso y «@julio.chaidez1» (con « · tips de viaje» en los tips).
 - **Estilo visual (desde el reel de turistificación):** nada de fondo de un solo color. Fondo `<Mundo>` (`src/mundo.tsx`): paisaje animado de la bahía al atardecer, con sol que baja, nubes, aves, montañas y mar con olas. Cada escena lleva una ilustración animada de lo que se dice (calles, casas, torres, mapas, planos, gráficos), con emojis (Noto Color Emoji) como íconos, y pastillas con los datos clave.
+- **Estilo premium con tomas reales (desde «Tipos de turismo»):** tomas de stock gratis de Pexels (vidIQ `vidiq_generate_broll`, sólo versiones HD de 720p o más) a pantalla completa, con zoom lento, color cálido, viñeta, grano de película, destello de luz en cada cambio y número grande por tema (`src/TiposDeTurismo.tsx`). Nunca poner el nombre de un lugar real sobre una toma que no es de ese lugar: para Puerto Vallarta, usar videos de Julio. Créditos de cada toma en `fuentes.md`. Recomprimir el final con `libx264 -crf 21`.
 - Las piezas comunes (fondo, encabezado, texto animado, tarjeta visual, voz, música y efectos) están en `src/comun.tsx` (`<Reel>`); cada video sólo define sus escenas.
 - Texto entre el 15% superior y el 25% inferior libres (interfaz de Instagram).
 - Datos verificables únicamente; nada de «según la psicología» ni citas sin fuente.

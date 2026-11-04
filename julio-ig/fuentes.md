@@ -37,3 +37,25 @@ Estados: ✅ confirmado en fuente primaria · 🟡 confirmado sólo en medios qu
 | Google Flights tiene calendario y gráfica de precios, y alertas de precio | ✅ | Función visible en google.com/travel/flights |
 | CDMX tiene dos aeropuertos comerciales: AICM y AIFA | ✅ | Hecho público |
 | La tarifa más básica de Volaris y Viva Aerobus sólo incluye artículo personal | 🟡 | Revisar las páginas de tarifas de cada aerolínea antes de cada reel |
+
+## Tipos de turismo (revisado el 4 nov 2026)
+Fuente primaria: OMT (2019). *Definiciones de turismo de la OMT*. Madrid: OMT. DOI: 10.18111/9789284420858. No se pudo abrir el original (sitios bloqueados en la nube); 🟡 las definiciones coinciden en artículos académicos que las citan:
+| Tipo | Idea usada en el reel | Dónde se confirmó |
+|---|---|---|
+| Cultural | aprender, descubrir, experimentar y consumir los atractivos culturales, materiales e inmateriales | [MinCIT Colombia](https://www.mincit.gov.co/minturismo/calidad-y-desarrollo-sostenible/producto-turistico), [Euskadi](https://www.euskadi.eus/2023/cultura-y-turismo/web01-a3kebarg/es/) |
+| Ecoturismo | observar, aprender, descubrir, experimentar y apreciar la diversidad biológica y cultural, con actitud responsable | [Redalyc](https://www.redalyc.org/journal/153/15382758008/15382758008.pdf) |
+| Aventura | actividad física, cercanía con la naturaleza; puede implicar riesgo real o percibido | [TFG Univ. Zaragoza](https://zaguan.unizar.es/record/134165/files/TAZ-TFG-2023-4702.pdf) |
+| Gastronómico | la experiencia del viaje gira en torno a la comida y bebida | [Nota académica PUCP](https://repositorio.pucp.edu.pe/index/bitstream/handle/123456789/197166/Nota%20Acad%C3%A9mica%20%2368.pdf?sequence=1) |
+| Salud | motivación principal: la salud física, mental y/o espiritual, con actividades médicas y de bienestar | [Cuadernos de Turismo (2023)](https://revistas.um.es/turismo/article/download/571521/345581/2142691) |
+| Sol y playa | Puerto Vallarta como destino de sol y playa | Huízar Sánchez et al. (2020), PASOS, p. 836 ✅ |
+
+Pendiente: subir el PDF de la OMT para confirmar textual con página.
+
+### Tomas de video (Pexels, licencia gratuita; dar crédito)
+- maleta: Timur Weber · https://www.pexels.com/video/close-up-footage-of-packed-things-in-a-suitcase-9141836/
+- cultural: RDNE Stock project · https://www.pexels.com/video/traditional-cinco-de-mayo-dance-8639088/
+- ballena: Ivan Stecko · https://www.pexels.com/video/close-up-of-whales-13568071/
+- surf: Kindel Media · https://www.pexels.com/video/man-surfing-on-sea-waves-during-daytime-7425556/
+- tacos: Los Muertos Crew · https://www.pexels.com/video/a-person-squeezing-lime-on-tacos-8448095/
+- spa: olia danilevich · https://www.pexels.com/video/a-woman-getting-a-body-massage-9335867/
+- playa: Abdelkrim Benbaha · https://www.pexels.com/video/golden-beach-sunset-video-18302188/ (⚠️ no es Puerto Vallarta: reemplazar por una toma de Julio en PV)
