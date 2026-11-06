@@ -116,3 +116,21 @@ Nada de "fondo de un color con la información enfrente".
 - Onomatopeyas animadas para cada ruido o golpe; etiquetas con líneas que señalan las partes.
 - La mitad de abajo también se mueve (piso, reflejos, banqueta), oscurecida un poco detrás de subtítulos y mascota para que se lean.
 - Referencia: src/estructura8/ruidos/Mundo.tsx y Ruidos.tsx.
+
+---
+
+## ESTILO PREMIUM (obligatorio en TODOS los videos)
+
+El video debe verse premium: acabado de comercial, no de plantilla. Cinco reglas de edición:
+
+1. **Sincroniza las entradas con la narración.** Cada elemento (título, ícono, pieza, dato, flecha) entra en el fotograma exacto en que la voz dice su palabra, usando los tiempos por palabra de los clips. Nada entra "porque sí" ni antes de que se mencione.
+2. **La cámara sigue lo importante.** Hay una cámara virtual que siempre se mueve hacia lo que se está explicando: acercamientos suaves, paneos y seguimiento del objeto (la llanta que gira, el nivel que sube, la luz que se enciende). Nunca una toma totalmente quieta; curvas de aceleración suaves (sin movimientos lineales).
+3. **Encadena los movimientos.** El final de un movimiento es el inicio del siguiente: la cámara no se detiene entre escenas, el objeto que sale empuja al que entra, y las animaciones se traslapan unos fotogramas en vez de ir una tras otra con pausas muertas.
+4. **Transforma un objeto para introducir la siguiente escena.** Las transiciones principales son de transformación: un objeto de la escena se convierte en el de la siguiente (la llanta se vuelve el reloj del medidor, el faro se vuelve la luna, el círculo de la batería se vuelve el ícono siguiente). Los barridos y deslizamientos quedan solo como apoyo.
+5. **Revela el texto desde una máscara.** Los títulos y datos grandes no aparecen con fundido: salen desde una máscara (sube desde detrás de una línea, se descubre con una barra o forma que pasa, o aparece dentro de la silueta de un objeto).
+
+Acabado premium:
+- Profundidad: varias capas con parallax, desenfoque de fondo en primeros planos, sombras suaves, brillos y reflejos.
+- Iluminación: luces de acento (rojo de marca), viñeta ligera, grano fino de película, gradación de color cálida y con contraste.
+- Tipografía limpia con mucho aire; pocos elementos a la vez; movimientos con resorte suave, sin rebotes exagerados.
+- Elementos reales: cuando ayude a que se entienda o se vea mejor, integrar video, fotos u objetos reales (por ejemplo, tomas del taller del cliente, piezas reales recortadas) mezclados con la animación, con la misma gradación de color.
