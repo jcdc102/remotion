@@ -15,6 +15,11 @@ Proyecto de Remotion con dos composiciones verticales (1080×1920, 30 fps):
     clip de voz por línea en `public/audio/` (c01.mp3 … c08.mp3). La duración es la suma
     de los clips más 0.4 s entre cada uno (`duraciones.json`).
 
+  - `viaje` (44 s) y `mitos` (42 s): estilo premium (`src/doctor-auto/premium.tsx`): cámara
+    que sigue lo importante, transformaciones entre escenas y texto desde máscara. Voz por
+    clips en `public/audio/<tema>/` (por ahora, voz de respaldo de libre uso). Efectos:
+    `scripts/sfx-viaje.py` y `scripts/sfx-mitos.py`. Cuadros de prueba: `node scripts/cuadros.mjs 1.5 8 20`.
+
 Reglas de marca para todos los videos: `CLAUDE.md`. Colores y fuentes: `src/doctor-auto/constantes.ts`.
 - **Calaveritas** (16 s): primera versión corta.
 

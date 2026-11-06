@@ -1,0 +1,191 @@
+{
+  "pausaEntreClipsSegundos": 0.3,
+  "clips": {
+    "c01": {
+      "duracion": 3.5,
+      "inicioVoz": 0,
+      "finVoz": 3.5,
+      "tramos": [
+        [
+          0,
+          3.5
+        ]
+      ],
+      "estimado": false
+    },
+    "c02": {
+      "duracion": 2.612,
+      "inicioVoz": 0,
+      "finVoz": 2.612,
+      "tramos": [
+        [
+          0,
+          2.612
+        ]
+      ],
+      "estimado": false
+    },
+    "c03a": {
+      "duracion": 2.586,
+      "inicioVoz": 0,
+      "finVoz": 2.586,
+      "tramos": [
+        [
+          0,
+          2.586
+        ]
+      ],
+      "estimado": false
+    },
+    "c03b": {
+      "duracion": 3.239,
+      "inicioVoz": 0,
+      "finVoz": 3.239,
+      "tramos": [
+        [
+          0,
+          3.239
+        ]
+      ],
+      "estimado": false
+    },
+    "c03c": {
+      "duracion": 3.187,
+      "inicioVoz": 0,
+      "finVoz": 3.187,
+      "tramos": [
+        [
+          0,
+          3.187
+        ]
+      ],
+      "estimado": false
+    },
+    "c04": {
+      "duracion": 1.907,
+      "inicioVoz": 0,
+      "finVoz": 1.907,
+      "tramos": [
+        [
+          0,
+          1.907
+        ]
+      ],
+      "estimado": false
+    },
+    "c05a": {
+      "duracion": 2.168,
+      "inicioVoz": 0,
+      "finVoz": 2.168,
+      "tramos": [
+        [
+          0,
+          2.168
+        ]
+      ],
+      "estimado": false
+    },
+    "c05b": {
+      "duracion": 2.795,
+      "inicioVoz": 0,
+      "finVoz": 2.795,
+      "tramos": [
+        [
+          0,
+          2.795
+        ]
+      ],
+      "estimado": false
+    },
+    "c05c": {
+      "duracion": 3.84,
+      "inicioVoz": 0,
+      "finVoz": 3.84,
+      "tramos": [
+        [
+          0,
+          1.459
+        ],
+        [
+          1.788,
+          3.84
+        ]
+      ],
+      "estimado": false
+    },
+    "c06": {
+      "duracion": 1.646,
+      "inicioVoz": 0,
+      "finVoz": 1.646,
+      "tramos": [
+        [
+          0,
+          1.646
+        ]
+      ],
+      "estimado": false
+    },
+    "c07a": {
+      "duracion": 2.403,
+      "inicioVoz": 0,
+      "finVoz": 2.403,
+      "tramos": [
+        [
+          0,
+          2.403
+        ]
+      ],
+      "estimado": false
+    },
+    "c07b": {
+      "duracion": 1.933,
+      "inicioVoz": 0,
+      "finVoz": 1.933,
+      "tramos": [
+        [
+          0,
+          1.933
+        ]
+      ],
+      "estimado": false
+    },
+    "c07c": {
+      "duracion": 1.724,
+      "inicioVoz": 0,
+      "finVoz": 1.724,
+      "tramos": [
+        [
+          0,
+          1.724
+        ]
+      ],
+      "estimado": false
+    },
+    "c07d": {
+      "duracion": 2.325,
+      "inicioVoz": 0,
+      "finVoz": 2.136,
+      "tramos": [
+        [
+          0,
+          2.136
+        ]
+      ],
+      "estimado": false
+    },
+    "c08": {
+      "duracion": 2.011,
+      "inicioVoz": 0,
+      "finVoz": 2.011,
+      "tramos": [
+        [
+          0,
+          2.011
+        ]
+      ],
+      "estimado": false
+    }
+  },
+  "totalSegundos": 42.076,
+  "musica": true
+}

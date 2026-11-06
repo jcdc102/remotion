@@ -1,0 +1,290 @@
+{
+  "titulo": "¿Mito o realidad?",
+  "tema": "mitos",
+  "fps": 30,
+  "bpm": 120,
+  "tarjetaFinal": false,
+  "marcaDeAgua": "doctor auto",
+  "pausaEntreClipsSegundos": 0.3,
+  "piezas": [
+    {
+      "id": 1,
+      "tipo": "gancho",
+      "clips": [
+        {
+          "id": "c01",
+          "archivo": "c01.mp3",
+          "texto": "¿Mito o realidad? Lo que crees de tu auto te puede salir caro.",
+          "resaltar": [
+            "salir caro"
+          ],
+          "visual": "moneda-mito-realidad",
+          "sfx": "hit",
+          "mascota": {
+            "pose": "duda",
+            "animacion": "entra-rebote",
+            "globo": "¿Tú qué crees?"
+          },
+          "pantalla": "¿MITO O REALIDAD? 🤔",
+          "pantallaResaltar": [
+            "REALIDAD?"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "tipo": "introduccion",
+      "clips": [
+        {
+          "id": "c02",
+          "archivo": "c02.mp3",
+          "texto": "Van cuatro. Adivina antes que yo.",
+          "resaltar": [
+            "Adivina"
+          ],
+          "visual": "cuatro-tarjetas",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "habla"
+          },
+          "chips": [
+            "Calentar el motor",
+            "Gasolina premium",
+            "Gas del aire",
+            "Presión de llantas"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "tipo": "cuerpo",
+      "clips": [
+        {
+          "id": "c03a",
+          "archivo": "c03a.mp3",
+          "texto": "Uno: hay que calentar el motor diez minutos.",
+          "resaltar": [
+            "diez minutos"
+          ],
+          "visual": "cochera-reloj",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "duda",
+            "animacion": "duda"
+          }
+        },
+        {
+          "id": "c03b",
+          "archivo": "c03b.mp3",
+          "texto": "¡Mito! Con treinta segundos basta y manejas suave.",
+          "resaltar": [
+            "Mito"
+          ],
+          "visual": "sello-mito-30s",
+          "sfx": "hit",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c03c",
+          "archivo": "c03c.mp3",
+          "texto": "Dos: la gasolina premium le da más potencia a cualquier auto.",
+          "resaltar": [
+            "más potencia"
+          ],
+          "visual": "bomba-premium",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "duda",
+            "animacion": "duda"
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "tipo": "bucle",
+      "clips": [
+        {
+          "id": "c04",
+          "archivo": "c04.mp3",
+          "texto": "La respuesta te va a sorprender.",
+          "resaltar": [
+            "sorprender"
+          ],
+          "visual": "bomba-suspenso",
+          "sfx": "riser",
+          "mascota": {
+            "pose": "susto",
+            "animacion": "susto"
+          },
+          "pantalla": "LA RESPUESTA TE VA A SORPRENDER 👀",
+          "pantallaResaltar": [
+            "SORPRENDER"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "tipo": "cuerpo",
+      "clips": [
+        {
+          "id": "c05a",
+          "archivo": "c05a.mp3",
+          "texto": "Mito: solo sirve si tu manual la pide.",
+          "resaltar": [
+            "tu manual"
+          ],
+          "visual": "sello-mito-manual",
+          "sfx": "hit",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c05b",
+          "archivo": "c05b.mp3",
+          "texto": "Tres: si el aire no enfría, solo recárgale gas.",
+          "resaltar": [
+            "recárgale gas"
+          ],
+          "visual": "aire-caliente",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "duda",
+            "animacion": "duda"
+          }
+        },
+        {
+          "id": "c05c",
+          "archivo": "c05c.mp3",
+          "texto": "Mito: si le falta gas, hay una fuga. Primero repárala.",
+          "resaltar": [
+            "una fuga"
+          ],
+          "visual": "sello-mito-fuga",
+          "sfx": "hit",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          },
+          "aviso": "⚠️ Recargar sin reparar es tirar tu dinero"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "tipo": "bucle",
+      "clips": [
+        {
+          "id": "c06",
+          "archivo": "c06.mp3",
+          "texto": "El último sí es cierto.",
+          "resaltar": [
+            "sí es cierto"
+          ],
+          "visual": "moneda-realidad",
+          "sfx": "riser",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "habla"
+          },
+          "pantalla": "EL ÚLTIMO SÍ ES CIERTO ✅",
+          "pantallaResaltar": [
+            "CIERTO"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "tipo": "cuerpo",
+      "clips": [
+        {
+          "id": "c07a",
+          "archivo": "c07a.mp3",
+          "texto": "Cuatro: la presión se mide con las llantas frías.",
+          "resaltar": [
+            "llantas frías"
+          ],
+          "visual": "llanta-termometro",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "duda",
+            "animacion": "duda"
+          }
+        },
+        {
+          "id": "c07b",
+          "archivo": "c07b.mp3",
+          "texto": "¡Realidad! Calientes marcan de más.",
+          "resaltar": [
+            "Realidad"
+          ],
+          "visual": "sello-realidad",
+          "sfx": "hit",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c07c",
+          "archivo": "c07c.mp3",
+          "texto": "Mídela antes de manejar.",
+          "resaltar": [
+            "antes de manejar"
+          ],
+          "visual": "llanta-manometro",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c07d",
+          "archivo": "c07d.mp3",
+          "texto": "Y revísala cada quince días.",
+          "resaltar": [
+            "cada quince días"
+          ],
+          "visual": "dato-15-dias",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "habla"
+          }
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "tipo": "cta",
+      "clips": [
+        {
+          "id": "c08",
+          "archivo": "c08.mp3",
+          "texto": "Comenta MITO y te desmiento otro.",
+          "resaltar": [
+            "MITO"
+          ],
+          "visual": "cta-moneda",
+          "sfx": "pop",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "pulgar-final"
+          },
+          "boton": "Comenta MITO 👇"
+        }
+      ]
+    }
+  ]
+}
