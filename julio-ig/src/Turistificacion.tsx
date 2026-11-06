@@ -580,6 +580,7 @@ export const Turistificacion: React.FC = () => (
     etiqueta={null}
     voz="voz-turistificacion.mp3"
     musica="musica-turistificacion.mp3"
+    volumenMusica={null}
     sonidos={SONIDOS}
     escenas={[
       { desde: 0, dur: 267, Pieza: Gancho },

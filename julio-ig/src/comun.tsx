@@ -195,16 +195,17 @@ export const Reel: React.FC<{
   etiqueta: string | null;
   voz: string;
   musica: string;
+  volumenMusica: number | null; // null: 0.14
   sonidos: [number, string, number][];
   escenas: { desde: number; dur: number; Pieza: React.FC }[];
-}> = ({ duracion, fondo, etiqueta, voz, musica, sonidos, escenas }) => (
+}> = ({ duracion, fondo, etiqueta, voz, musica, volumenMusica, sonidos, escenas }) => (
   <AbsoluteFill>
     {fondo ?? <Fondo duracion={duracion} />}
     <Audio src={staticFile(voz)} />
     <Audio
       src={staticFile(musica)}
       volume={(f) =>
-        0.14 * interpolate(f, [0, 15, duracion - 45, duracion], [0, 1, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })
+        (volumenMusica ?? 0.14) * interpolate(f, [0, 15, duracion - 45, duracion], [0, 1, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })
       }
     />
     {sonidos.map(([desde, archivo, volumen], i) => (

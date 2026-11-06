@@ -59,3 +59,9 @@ Pendiente: subir el PDF de la OMT para confirmar textual con página.
 - tacos: Los Muertos Crew · https://www.pexels.com/video/a-person-squeezing-lime-on-tacos-8448095/
 - spa: olia danilevich · https://www.pexels.com/video/a-woman-getting-a-body-massage-9335867/
 - playa: Abdelkrim Benbaha · https://www.pexels.com/video/golden-beach-sunset-video-18302188/ (⚠️ no es Puerto Vallarta: reemplazar por una toma de Julio en PV)
+
+## Reflexión «A veces das tanto…» (6 nov 2026)
+Frase original (no es cita). Tomas de Pexels:
+- mar-atardecer: Atahan Demir · https://www.pexels.com/video/sea-during-sunset-13689606/
+- mujer-playa: Marlon Schmeiski · https://www.pexels.com/video/a-woman-standing-on-the-beach-at-sunset-20270227/
+- playa: Abdelkrim Benbaha · https://www.pexels.com/video/golden-beach-sunset-video-18302188/

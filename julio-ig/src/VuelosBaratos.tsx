@@ -344,6 +344,7 @@ export const VuelosBaratos: React.FC = () => (
     etiqueta="tips de viaje"
     voz="voz-vuelos.mp3"
     musica="musica-vuelos.mp3"
+    volumenMusica={null}
     sonidos={SONIDOS}
     escenas={[
       { desde: 0, dur: 85, Pieza: Gancho },
