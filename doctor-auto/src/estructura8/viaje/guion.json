@@ -1,0 +1,296 @@
+{
+  "titulo": "Antes de salir de viaje: 5 revisiones",
+  "tema": "viaje",
+  "fps": 30,
+  "bpm": 120,
+  "tarjetaFinal": false,
+  "marcaDeAgua": "doctor auto",
+  "pausaEntreClipsSegundos": 0.3,
+  "piezas": [
+    {
+      "id": 1,
+      "tipo": "gancho",
+      "clips": [
+        {
+          "id": "c01",
+          "archivo": "c01.mp3",
+          "texto": "¿Sales de viaje en diciembre? No te quedes tirado en carretera.",
+          "resaltar": [
+            "tirado en carretera"
+          ],
+          "visual": "carretera-auto-varado",
+          "sfx": "hit",
+          "mascota": {
+            "pose": "susto",
+            "animacion": "entra-rebote",
+            "globo": "¡Ojo!"
+          },
+          "pantalla": "¿SALES DE VIAJE? 🎄",
+          "pantallaResaltar": [
+            "VIAJE?"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "tipo": "introduccion",
+      "clips": [
+        {
+          "id": "c02",
+          "archivo": "c02.mp3",
+          "texto": "Revisa estas cinco cosas antes de salir.",
+          "resaltar": [
+            "cinco cosas"
+          ],
+          "visual": "carretera-lista-5",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "habla"
+          },
+          "chips": [
+            "Llantas",
+            "Frenos",
+            "Batería",
+            "Aceite y anticongelante",
+            "Luces y limpiadores"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "tipo": "cuerpo",
+      "clips": [
+        {
+          "id": "c03a",
+          "archivo": "c03a.mp3",
+          "texto": "Uno: llantas. Presión y dibujo.",
+          "resaltar": [
+            "llantas"
+          ],
+          "visual": "llanta-presion-dibujo",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c03b",
+          "archivo": "c03b.mp3",
+          "texto": "Si ya están lisas, cámbialas antes de salir.",
+          "resaltar": [
+            "lisas"
+          ],
+          "visual": "llanta-lisa",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "duda",
+            "animacion": "duda"
+          },
+          "aviso": "⚠️ Revisa también la llanta de refacción"
+        },
+        {
+          "id": "c03c",
+          "archivo": "c03c.mp3",
+          "texto": "Dos: frenos. Si rechinan o vibran, revísalos ya.",
+          "resaltar": [
+            "frenos"
+          ],
+          "visual": "disco-freno",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "tipo": "bucle",
+      "clips": [
+        {
+          "id": "c04",
+          "archivo": "c04.mp3",
+          "texto": "La tercera falla más con el frío.",
+          "resaltar": [
+            "con el frío"
+          ],
+          "visual": "frio-copo",
+          "sfx": "riser",
+          "mascota": {
+            "pose": "susto",
+            "animacion": "susto"
+          },
+          "pantalla": "LA TERCERA FALLA CON EL FRÍO ❄️",
+          "pantallaResaltar": [
+            "FRÍO"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "tipo": "cuerpo",
+      "clips": [
+        {
+          "id": "c05a",
+          "archivo": "c05a.mp3",
+          "texto": "Tres: la batería. Si tiene más de tres años, revísala.",
+          "resaltar": [
+            "batería"
+          ],
+          "visual": "bateria-escarcha",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c05b",
+          "archivo": "c05b.mp3",
+          "texto": "Con el frío, una batería débil ya no arranca.",
+          "resaltar": [
+            "ya no arranca"
+          ],
+          "visual": "bateria-no-arranca",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "susto",
+            "animacion": "susto"
+          }
+        },
+        {
+          "id": "c05c",
+          "archivo": "c05c.mp3",
+          "texto": "Cuatro: aceite y anticongelante, a su nivel.",
+          "resaltar": [
+            "aceite",
+            "anticongelante"
+          ],
+          "visual": "cofre-niveles",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          },
+          "aviso": "⚠️ Nunca abras el radiador con el motor caliente"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "tipo": "bucle",
+      "clips": [
+        {
+          "id": "c06",
+          "archivo": "c06.mp3",
+          "texto": "La última te salva de noche.",
+          "resaltar": [
+            "de noche"
+          ],
+          "visual": "luna-noche",
+          "sfx": "riser",
+          "mascota": {
+            "pose": "duda",
+            "animacion": "duda"
+          },
+          "pantalla": "LA ÚLTIMA TE SALVA DE NOCHE 🌙",
+          "pantallaResaltar": [
+            "NOCHE"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "tipo": "cuerpo",
+      "clips": [
+        {
+          "id": "c07a",
+          "archivo": "c07a.mp3",
+          "texto": "Cinco: luces y limpiadores.",
+          "resaltar": [
+            "luces",
+            "limpiadores"
+          ],
+          "visual": "noche-lluvia",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c07b",
+          "archivo": "c07b.mp3",
+          "texto": "Que prendan todas: altas, frenos y direccionales.",
+          "resaltar": [
+            "altas",
+            "frenos",
+            "direccionales"
+          ],
+          "visual": "noche-luces",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c07c",
+          "archivo": "c07c.mp3",
+          "texto": "Y plumas que limpien bien, sin rayar.",
+          "resaltar": [
+            "sin rayar"
+          ],
+          "visual": "parabrisas-plumas",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c07d",
+          "archivo": "c07d.mp3",
+          "texto": "Treinta minutos de revisión te salvan el viaje.",
+          "resaltar": [
+            "Treinta minutos"
+          ],
+          "visual": "dato-30-min",
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "habla"
+          }
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "tipo": "cta",
+      "clips": [
+        {
+          "id": "c08",
+          "archivo": "c08.mp3",
+          "texto": "Comenta VIAJE o agenda tu revisión antes de salir.",
+          "resaltar": [
+            "VIAJE"
+          ],
+          "visual": "cta-amanecer",
+          "sfx": "pop",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "pulgar-final"
+          },
+          "boton": "Comenta VIAJE 👇"
+        }
+      ]
+    }
+  ]
+}
