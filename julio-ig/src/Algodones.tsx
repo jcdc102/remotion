@@ -41,19 +41,19 @@ const SONIDOS: [number, string, number][] = [
 ];
 
 // Vidrio esmerilado para los paneles.
-const VIDRIO: React.CSSProperties = {
+export const VIDRIO: React.CSSProperties = {
   background: "linear-gradient(160deg, rgba(46,50,92,0.62), rgba(14,18,40,0.78))",
   backdropFilter: "blur(18px) saturate(140%)",
   border: "1.5px solid rgba(255,244,230,0.16)",
   boxShadow: "0 50px 120px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.22)",
 };
 
-const Desierto: React.FC = () => {
+// enfoque: [fotogramas, desenfoque en px] (profundidad de campo: el fondo se desenfoca mientras hay paneles al frente).
+export const Desierto: React.FC<{ duracion: number; enfoque: [number[], number[]] }> = ({ duracion, enfoque: [fe, ve] }) => {
   const frame = useCurrentFrame();
-  const solY = interpolate(frame, [0, DURACION_ALGODONES], [1080, 1170]);
-  const deriva = interpolate(frame, [0, DURACION_ALGODONES], [0, -60]);
-  // Profundidad de campo: el fondo se desenfoca mientras hay paneles al frente.
-  const enfoque = interpolate(frame, [150, 200, 1395, 1440], [0, 6, 6, 2], clamp);
+  const solY = interpolate(frame, [0, duracion], [1080, 1170]);
+  const deriva = interpolate(frame, [0, duracion], [0, -60]);
+  const enfoque = interpolate(frame, fe, ve, clamp);
   const Cactus: React.FC<{ x: number; y: number; e: number }> = ({ x, y, e }) => (
     <svg style={{ position: "absolute", left: x + deriva * 1.6, top: y }} width={90 * e} height={160 * e} viewBox="0 0 90 160">
       <path d="M38 160 L38 30 Q45 10 52 30 L52 160 Z M38 90 L22 90 Q12 90 12 75 L12 55 Q17 45 22 55 L22 78 L38 78 Z M52 70 L66 70 L66 45 Q71 35 76 45 L76 66 Q76 82 66 82 L52 82 Z" fill="#1E0F24" />
@@ -108,7 +108,7 @@ const Desierto: React.FC = () => {
 };
 
 // Degradados compartidos (dientes brillantes, barras, vidrio del termómetro).
-const Degradados: React.FC = () => (
+export const Degradados: React.FC = () => (
   <svg width={0} height={0} style={{ position: "absolute" }}>
     <defs>
       <linearGradient id="gDiente" x1="0" y1="0" x2="1" y2="1">
@@ -124,14 +124,14 @@ const Degradados: React.FC = () => (
   </svg>
 );
 
-const Diente: React.FC<{ tam: number; color: string }> = ({ tam, color }) => (
+export const Diente: React.FC<{ tam: number; color: string }> = ({ tam, color }) => (
   <svg width={tam} height={tam} viewBox="0 0 24 24">
     <path fill={color === "brillo" ? "url(#gDiente)" : color === "brilloNaranja" ? "url(#gDienteNaranja)" : color} d="M7 2C4.2 2 2.5 4.3 2.8 7.4c.3 2.6 1.4 4.3 1.9 6.8.5 2.6.7 7.8 2.8 7.8 1.9 0 1.9-4.6 3-6.4.4-.7.9-.7 1.4-.7s1 0 1.4.7c1.1 1.8 1.1 6.4 3 6.4 2.1 0 2.3-5.2 2.8-7.8.5-2.5 1.6-4.2 1.9-6.8C21.3 4.3 19.6 2 16.8 2c-2 0-3 1-4.8 1S9 2 7 2z" />
   </svg>
 );
 
 // Fuente: entra y sale con su tramo.
-const Fuente: React.FC<{ texto: string; desde: number; hasta: number }> = ({ texto, desde, hasta }) => {
+export const Fuente: React.FC<{ texto: string; desde: number; hasta: number }> = ({ texto, desde, hasta }) => {
   const frame = useCurrentFrame();
   const o = interpolate(frame, [desde, desde + 15, hasta - 12, hasta], [0, 1, 1, 0], clamp);
   return (
@@ -142,7 +142,7 @@ const Fuente: React.FC<{ texto: string; desde: number; hasta: number }> = ({ tex
 };
 
 // Título revelado desde una máscara y sincronizado palabra por palabra; sale subiendo antes del siguiente.
-const Titulo: React.FC<{ texto: string; tiempos: number[]; resaltar: string[] | null; frase: string | null; tiemposFrase: number[] | null; hasta: number }> = ({
+export const Titulo: React.FC<{ texto: string; tiempos: number[]; resaltar: string[] | null; frase: string | null; tiemposFrase: number[] | null; hasta: number }> = ({
   texto,
   tiempos,
   resaltar,
@@ -167,7 +167,7 @@ const Titulo: React.FC<{ texto: string; tiempos: number[]; resaltar: string[] | 
 };
 
 // Reparte palabras entre dos fotogramas (inicio y fin de una frase medida en la voz).
-const repartir = (n: number, a: number, b: number) => Array.from({ length: n }, (_, i) => Math.round(a + ((b - a) * i) / n));
+export const repartir = (n: number, a: number, b: number) => Array.from({ length: n }, (_, i) => Math.round(a + ((b - a) * i) / n));
 
 // ---------- Mundo del mapa (coordenadas propias, la cámara lo recorre) ----------
 // Geografía según el mapa que mandó Julio: el pueblo es un triángulo pegado a la línea fronteriza,
@@ -612,7 +612,7 @@ export const Algodones: React.FC = () => (
   <>
     <Reel
       duracion={DURACION_ALGODONES}
-      fondo={<Desierto />}
+      fondo={<Desierto duracion={DURACION_ALGODONES} enfoque={[[150, 200, 1395, 1440], [0, 6, 6, 2]]} />}
       etiqueta={null}
       voz="voz-algodones.mp3"
       musica="musica-algodones.mp3"

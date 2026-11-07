@@ -93,3 +93,14 @@ Fuente principal ✅ (leída completa): Rodríguez Blanco, A. (2020). «Turismo 
 - Corrección: el guion decía «la mayoría está en las dos manzanas junto a la garita» (exageración); ahora dice «más de la mitad está en solo cinco manzanas, junto a la garita de Andrade».
 Pendiente: el artículo de Redalyc «Territorial fluidity as articulator of dental tourism in Molar City» (Redalyc bloquea descargas automáticas).
 Video 100% ilustrado (sin tomas de stock: vidIQ sin créditos y búsquedas de stock bloqueadas). Mapa ilustrativo, no a escala.
+
+## Historia de Vicente Guerrero (Los Algodones): «De pueblo de cantinas a Molar City» (7 nov 2026)
+Investigación completa en `investigacion/los-algodones.md`. Datos usados en pantalla:
+- ✅ Extremo norte del país, 32° 43′ N (punto extremo de Baja California, 32°43'07"; el centro del pueblo está en 32°42'58"): INEGI, resúmenes estatales de extremos geográficos.
+- ✅ 6,796 habitantes: INEGI, Censo de Población y Vivienda 2020, localidad Vicente Guerrero (Algodones), Mexicali.
+- ✅ 1903: poblado rural dependiente de Mexicali, con Juez de Paz (oficio del 26 de mayo de 1903) y un expendio de licores; 1905: aduana. Allá se perseguían el alcohol y el juego, aquí prosperaron. Capó Valdivia (2014), tesis, UABC.
+- ✅ Años 20, la Prohibición en EE. UU. trae visitantes de ocio: Rodríguez Blanco (2020), Contexto Odontológico, UNAM, p. 52.
+- ✅ Finales de los 60, primeros consultorios; luego cierran las cantinas; testimonio «de 48 cantinas nomás dejé dos»; unos 6,000 cruces al día en temporada alta (octubre a abril, COTUDEAL): Zermeño Flores y Cuevas Contreras (2020), Revista Cenário 8(14), pp. 115 y 121, DOI 10.26512/revistacenario.v8i14.31173.
+- ✅ 311 consultorios dentales: INEGI, DENUE (consulta del 7 nov 2026).
+- No usados, porque no se pudieron confirmar: la fecha de fundación (27 jul 1894), el año de apertura de la garita y el origen del nombre.
+El sello de la aduana es una ilustración; no se usó la foto de archivo de 1905 (derechos sin confirmar).
