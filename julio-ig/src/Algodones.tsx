@@ -1,5 +1,6 @@
-import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { Grano } from "./cine";
+import { AbsoluteFill, interpolate, Sequence, useCurrentFrame } from "remotion";
+import { CameraMotionBlur } from "@remotion/motion-blur";
+import { Destello, Grano } from "./cine";
 import { C, Reel, SANS, SERIF } from "./comun";
 import { Camara, TextoMascara, Transformar } from "./edicion";
 
@@ -39,40 +40,93 @@ const SONIDOS: [number, string, number][] = [
   [1440, "notificacion", 0.35],
 ];
 
+// Vidrio esmerilado para los paneles.
+const VIDRIO: React.CSSProperties = {
+  background: "linear-gradient(160deg, rgba(46,50,92,0.62), rgba(14,18,40,0.78))",
+  backdropFilter: "blur(18px) saturate(140%)",
+  border: "1.5px solid rgba(255,244,230,0.16)",
+  boxShadow: "0 50px 120px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.22)",
+};
+
 const Desierto: React.FC = () => {
   const frame = useCurrentFrame();
   const solY = interpolate(frame, [0, DURACION_ALGODONES], [1080, 1170]);
   const deriva = interpolate(frame, [0, DURACION_ALGODONES], [0, -60]);
+  // Profundidad de campo: el fondo se desenfoca mientras hay paneles al frente.
+  const enfoque = interpolate(frame, [150, 200, 1395, 1440], [0, 6, 6, 2], clamp);
   const Cactus: React.FC<{ x: number; y: number; e: number }> = ({ x, y, e }) => (
     <svg style={{ position: "absolute", left: x + deriva * 1.6, top: y }} width={90 * e} height={160 * e} viewBox="0 0 90 160">
-      <path d="M38 160 L38 30 Q45 10 52 30 L52 160 Z M38 90 L22 90 Q12 90 12 75 L12 55 Q17 45 22 55 L22 78 L38 78 Z M52 70 L66 70 L66 45 Q71 35 76 45 L76 66 Q76 82 66 82 L52 82 Z" fill="#2A1630" />
+      <path d="M38 160 L38 30 Q45 10 52 30 L52 160 Z M38 90 L22 90 Q12 90 12 75 L12 55 Q17 45 22 55 L22 78 L38 78 Z M52 70 L66 70 L66 45 Q71 35 76 45 L76 66 Q76 82 66 82 L52 82 Z" fill="#1E0F24" />
     </svg>
   );
   return (
     <AbsoluteFill>
-      <AbsoluteFill style={{ background: "linear-gradient(180deg, #0E1B2E 0%, #2B1F4A 30%, #7A3358 50%, #D2604F 60%, #FF9A5C 66%, #FFC27A 69%)" }} />
-      <div style={{ position: "absolute", left: 0, top: solY - 300, width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,214,140,0.5) 0%, rgba(255,150,90,0.15) 40%, transparent 70%)" }} />
-      <div style={{ position: "absolute", left: 190, top: solY - 110, width: 220, height: 220, borderRadius: "50%", background: "radial-gradient(circle, #FFF1C9 0%, #FFC27A 55%, #FF8F5A 100%)" }} />
-      <svg style={{ position: "absolute", left: deriva * 0.4, top: 0 }} width={1200} height={1920}>
-        <path d="M-20 1300 L-20 1140 L90 1070 L170 1120 L280 1040 L380 1110 L520 1060 L640 1130 L760 1050 L880 1120 L1000 1070 L1220 1130 L1220 1300 Z" fill="#5A2E58" opacity={0.8} />
-        <path d="M-20 1320 Q 200 1220 420 1270 Q 640 1200 860 1270 Q 1040 1230 1220 1260 L1220 1920 L-20 1920 Z" fill="#B5603F" />
-        <path d="M-20 1400 Q 260 1330 520 1390 Q 780 1340 1220 1380 L1220 1920 L-20 1920 Z" fill="#8E4532" />
-        <path d="M-20 1520 Q 300 1470 620 1510 Q 900 1480 1220 1500 L1220 1920 L-20 1920 Z" fill="#5E2E2A" />
-      </svg>
-      <Cactus x={70} y={1250} e={0.9} />
-      <Cactus x={880} y={1300} e={1.2} />
-      <Cactus x={600} y={1360} e={0.6} />
-      {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} style={{ position: "absolute", left: 0, right: 0, top: 1240 + i * 14, height: 3, background: "rgba(255,210,160,0.12)", transform: `translateX(${Math.sin(frame / 14 + i) * 20}px)` }} />
+      <AbsoluteFill style={{ filter: `blur(${enfoque}px)`, transform: `scale(${1 + enfoque * 0.004})` }}>
+        <AbsoluteFill style={{ background: "linear-gradient(180deg, #070B1C 0%, #1C1A44 26%, #5E2A55 46%, #C4544E 58%, #FF9A5C 65%, #FFC98A 69%)" }} />
+        {Array.from({ length: 70 }).map((_, i) => (
+          <div key={i} style={{ position: "absolute", left: (i * 157) % 1080, top: (i * 89) % 820, width: i % 7 === 0 ? 4 : 2, height: i % 7 === 0 ? 4 : 2, borderRadius: 2, background: "#FFF4E6", opacity: (0.25 + 0.6 * Math.abs(Math.sin(frame / 30 + i))) * interpolate((i * 89) % 820, [0, 820], [1, 0.1]) }} />
+        ))}
+        {/* Rayos de sol que giran muy despacio */}
+        <div style={{ position: "absolute", left: 300 - 900, top: solY - 900, width: 1800, height: 1800, borderRadius: "50%", background: "repeating-conic-gradient(from 0deg, rgba(255,214,150,0.14) 0deg 4deg, transparent 4deg 14deg)", transform: `rotate(${frame * 0.04}deg)`, mixBlendMode: "screen", WebkitMaskImage: "radial-gradient(circle, black 0%, transparent 60%)" }} />
+        <div style={{ position: "absolute", left: 0, top: solY - 300, width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,214,140,0.55) 0%, rgba(255,150,90,0.15) 40%, transparent 70%)" }} />
+        <div style={{ position: "absolute", left: 190, top: solY - 110, width: 220, height: 220, borderRadius: "50%", background: "radial-gradient(circle, #FFF6DC 0%, #FFC98A 55%, #FF8F5A 100%)", boxShadow: "0 0 120px rgba(255,190,120,0.7)" }} />
+        <svg style={{ position: "absolute", left: deriva * 0.4, top: 0 }} width={1200} height={1920}>
+          <defs>
+            <linearGradient id="bruma" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#FFB98A" stopOpacity="0.35" />
+              <stop offset="1" stopColor="#FFB98A" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <path d="M-20 1300 L-20 1140 L90 1070 L170 1120 L280 1040 L380 1110 L520 1060 L640 1130 L760 1050 L880 1120 L1000 1070 L1220 1130 L1220 1300 Z" fill="#4A2550" opacity={0.85} />
+          <rect x={-20} y={1150} width={1240} height={160} fill="url(#bruma)" />
+          <path d="M-20 1320 Q 200 1220 420 1270 Q 640 1200 860 1270 Q 1040 1230 1220 1260 L1220 1920 L-20 1920 Z" fill="#A9573B" />
+          <path d="M-20 1400 Q 260 1330 520 1390 Q 780 1340 1220 1380 L1220 1920 L-20 1920 Z" fill="#7E3D2E" />
+          <path d="M-20 1520 Q 300 1470 620 1510 Q 900 1480 1220 1500 L1220 1920 L-20 1920 Z" fill="#4A2424" />
+        </svg>
+        <Cactus x={70} y={1250} e={0.9} />
+        <Cactus x={880} y={1300} e={1.2} />
+        <Cactus x={600} y={1360} e={0.6} />
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} style={{ position: "absolute", left: 0, right: 0, top: 1240 + i * 14, height: 3, background: "rgba(255,210,160,0.12)", transform: `translateX(${Math.sin(frame / 14 + i) * 20}px)` }} />
+        ))}
+      </AbsoluteFill>
+      {/* Polvo flotando con desenfoque (bokeh), delante del paisaje */}
+      {Array.from({ length: 26 }).map((_, i) => {
+        const t = ((frame * (0.3 + (i % 5) * 0.08) + i * 97) % 2100) / 2100;
+        const tam = 4 + (i % 6) * 3;
+        return (
+          <div key={i} style={{ position: "absolute", left: (i * 211) % 1080 + Math.sin(frame / 40 + i) * 30, top: 1900 - t * 2000, width: tam, height: tam, borderRadius: tam, background: "#FFD9A8", filter: `blur(${(i % 4) * 1.5}px)`, opacity: 0.18 + (i % 3) * 0.1 }} />
+        );
+      })}
+      {/* Destellos de lente */}
+      {[0.25, 0.45, 0.7].map((k, i) => (
+        <div key={i} style={{ position: "absolute", left: 300 + (540 - 300) * k * 2 - 40, top: solY + (700 - solY) * k * 2 - 40, width: 80 + i * 30, height: 80 + i * 30, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,200,150,0.18), transparent 70%)", mixBlendMode: "screen" }} />
       ))}
-      <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(10,12,28,0.8) 0%, rgba(10,12,28,0.3) 32%, rgba(10,12,28,0) 45%)" }} />
+      <AbsoluteFill style={{ background: "radial-gradient(ellipse at 50% 55%, transparent 55%, rgba(0,0,0,0.55) 100%)" }} />
     </AbsoluteFill>
   );
 };
 
+// Degradados compartidos (dientes brillantes, barras, vidrio del termómetro).
+const Degradados: React.FC = () => (
+  <svg width={0} height={0} style={{ position: "absolute" }}>
+    <defs>
+      <linearGradient id="gDiente" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stopColor="#FFFFFF" />
+        <stop offset="0.55" stopColor="#F3E8D8" />
+        <stop offset="1" stopColor="#CDBBA2" />
+      </linearGradient>
+      <linearGradient id="gDienteNaranja" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stopColor="#FFD29A" />
+        <stop offset="1" stopColor="#FF6B5B" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
 const Diente: React.FC<{ tam: number; color: string }> = ({ tam, color }) => (
   <svg width={tam} height={tam} viewBox="0 0 24 24">
-    <path fill={color} d="M7 2C4.2 2 2.5 4.3 2.8 7.4c.3 2.6 1.4 4.3 1.9 6.8.5 2.6.7 7.8 2.8 7.8 1.9 0 1.9-4.6 3-6.4.4-.7.9-.7 1.4-.7s1 0 1.4.7c1.1 1.8 1.1 6.4 3 6.4 2.1 0 2.3-5.2 2.8-7.8.5-2.5 1.6-4.2 1.9-6.8C21.3 4.3 19.6 2 16.8 2c-2 0-3 1-4.8 1S9 2 7 2z" />
+    <path fill={color === "brillo" ? "url(#gDiente)" : color === "brilloNaranja" ? "url(#gDienteNaranja)" : color} d="M7 2C4.2 2 2.5 4.3 2.8 7.4c.3 2.6 1.4 4.3 1.9 6.8.5 2.6.7 7.8 2.8 7.8 1.9 0 1.9-4.6 3-6.4.4-.7.9-.7 1.4-.7s1 0 1.4.7c1.1 1.8 1.1 6.4 3 6.4 2.1 0 2.3-5.2 2.8-7.8.5-2.5 1.6-4.2 1.9-6.8C21.3 4.3 19.6 2 16.8 2c-2 0-3 1-4.8 1S9 2 7 2z" />
   </svg>
 );
 
@@ -101,8 +155,8 @@ const Titulo: React.FC<{ texto: string; tiempos: number[]; resaltar: string[] | 
   if (frame < desde - 2 || frame > hasta + 2) return null;
   const sale = mezcla(frame, hasta - 14, hasta);
   return (
-    <div style={{ position: "absolute", left: 80, right: 80, top: 330, opacity: 1 - sale, transform: `translateY(${-sale * 40}px)` }}>
-      <TextoMascara texto={texto} desde={desde} tiempos={tiempos} tam={80} fuente={SERIF} peso={800} color={C.crema} resaltar={resaltar} />
+    <div style={{ position: "absolute", left: 80, right: 80, top: 330, opacity: 1 - sale, transform: `translateY(${-sale * 40}px)`, textShadow: "0 4px 30px rgba(0,0,0,0.55)" }}>
+      <TextoMascara texto={texto} desde={desde} tiempos={tiempos} tam={84} fuente={SERIF} peso={800} color={C.crema} resaltar={resaltar} />
       {frase && tiemposFrase ? (
         <div style={{ marginTop: 20 }}>
           <TextoMascara texto={frase} desde={tiemposFrase[0]} tiempos={tiemposFrase} tam={40} fuente={SANS} peso={500} color="rgba(255,244,230,0.88)" resaltar={null} />
@@ -127,24 +181,52 @@ const Mapa: React.FC<{ visible: number }> = ({ visible }) => {
   return (
     <div style={{ position: "absolute", left: 0, top: 0, width: 1600, height: 1100, opacity: visible }}>
       <svg width={1600} height={1100}>
-        <rect x={0} y={0} width={1600} height={1100} rx={60} fill="#E9D8C4" />
-        <rect x={0} y={0} width={1600} height={PIN.y} rx={60} fill="#DCC8B0" />
-        <path d={`M 860 1100 Q 900 900 950 760 Q 980 650 ${PIN.x} ${PIN.y}`} fill="none" stroke="#7FB7BE" strokeWidth={22} />
-        <path d={`M ${PIN.x} ${PIN.y} Q 1060 380 1180 200 Q 1240 110 1300 0`} fill="none" stroke="#7FB7BE" strokeWidth={22} />
-        <path d={`M 0 ${PIN.y} L ${PIN.x} ${PIN.y} L 1600 260`} stroke={C.coral} strokeWidth={8} strokeDasharray="26 18" fill="none" />
-        <text x={120} y={PIN.y - 60} fill="#5A3A2A" fontFamily={SANS} fontWeight={600} fontSize={52} opacity={eua}>Estados Unidos</text>
-        <text x={120} y={PIN.y + 100} fill="#5A3A2A" fontFamily={SANS} fontWeight={600} fontSize={52} opacity={mx}>México · Baja California</text>
-        <circle cx={330} cy={760} r={12} fill="#5A3A2A" opacity={mx} />
-        <text x={360} y={772} fill="rgba(90,58,42,0.75)" fontFamily={SANS} fontWeight={500} fontSize={38} opacity={mx}>Mexicali</text>
-        <text x={1320} y={140} fill="rgba(90,58,42,0.75)" fontFamily={SANS} fontWeight={500} fontSize={38} opacity={eua}>Arizona</text>
-        <text x={PIN.x + 50} y={PIN.y + 70} fill="#1E1B40" fontFamily={SERIF} fontWeight={800} fontSize={58}>Los Algodones</text>
+        <defs>
+          <filter id="ruido">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves={4} seed={7} />
+            <feColorMatrix values="0 0 0 0 0.55  0 0 0 0 0.6  0 0 0 0 0.85  0 0 0 0.22 0" />
+          </filter>
+          <filter id="brillo" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="9" />
+          </filter>
+          <clipPath id="tarjetaMapa">
+            <rect x={0} y={0} width={1600} height={1100} rx={60} />
+          </clipPath>
+        </defs>
+        <g clipPath="url(#tarjetaMapa)">
+          <rect x={0} y={0} width={1600} height={1100} fill="#151C36" />
+          <rect x={0} y={0} width={1600} height={PIN.y} fill="#0F1529" />
+          <rect x={0} y={0} width={1600} height={1100} filter="url(#ruido)" />
+          {Array.from({ length: 9 }).map((_, i) => (
+            <line key={i} x1={i * 200} y1={0} x2={i * 200} y2={1100} stroke="rgba(255,244,230,0.05)" strokeWidth={2} />
+          ))}
+          <path d={`M 860 1100 Q 900 900 950 760 Q 980 650 ${PIN.x} ${PIN.y} Q 1060 380 1180 200 Q 1240 110 1300 0`} fill="none" stroke="#5FD3E0" strokeWidth={30} filter="url(#brillo)" opacity={0.6} />
+          <path d={`M 860 1100 Q 900 900 950 760 Q 980 650 ${PIN.x} ${PIN.y} Q 1060 380 1180 200 Q 1240 110 1300 0`} fill="none" stroke="#9BE8F0" strokeWidth={10} />
+          <path d={`M 0 ${PIN.y} L ${PIN.x} ${PIN.y} L 1600 260`} stroke={C.coral} strokeWidth={22} fill="none" filter="url(#brillo)" opacity={0.7} />
+          <path d={`M 0 ${PIN.y} L ${PIN.x} ${PIN.y} L 1600 260`} stroke="#FFB3A8" strokeWidth={5} strokeDasharray="30 16" strokeDashoffset={-frame * 1.2} fill="none" />
+        </g>
+        <rect x={1} y={1} width={1598} height={1098} rx={60} fill="none" stroke="rgba(255,244,230,0.18)" strokeWidth={3} />
+        <text x={120} y={PIN.y - 60} fill="rgba(255,244,230,0.75)" fontFamily={SANS} fontWeight={600} fontSize={44} letterSpacing={10} opacity={eua}>ESTADOS UNIDOS</text>
+        <text x={120} y={PIN.y + 100} fill="rgba(255,244,230,0.75)" fontFamily={SANS} fontWeight={600} fontSize={44} letterSpacing={10} opacity={mx}>MÉXICO · BAJA CALIFORNIA</text>
+        <circle cx={330} cy={760} r={12} fill="#FFF4E6" opacity={mx} />
+        <text x={360} y={772} fill="rgba(255,244,230,0.6)" fontFamily={SANS} fontWeight={500} fontSize={36} letterSpacing={4} opacity={mx}>Mexicali</text>
+        <text x={1320} y={140} fill="rgba(255,244,230,0.6)" fontFamily={SANS} fontWeight={500} fontSize={36} letterSpacing={4} opacity={eua}>Arizona</text>
+        <rect x={PIN.x - 6} y={PIN.y - 420} width={12} height={420} fill="url(#haz)" opacity={0.9} />
+        <defs>
+          <linearGradient id="haz" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stopColor="#FFB3A8" stopOpacity="0.9" />
+            <stop offset="1" stopColor="#FFB3A8" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <text x={PIN.x + 50} y={PIN.y + 70} fill="#FFF4E6" fontFamily={SERIF} fontWeight={800} fontSize={58}>Los Algodones</text>
         <circle cx={PIN.x} cy={PIN.y} r={30 + pulso * 70} fill="none" stroke={C.coral} strokeWidth={6} opacity={1 - pulso} />
+        <circle cx={PIN.x} cy={PIN.y} r={60} fill={C.coral} filter="url(#brillo)" opacity={0.8} />
         <circle cx={PIN.x} cy={PIN.y} r={30} fill={C.coral} stroke={C.crema} strokeWidth={6} />
-        <text x={1560} y={1070} textAnchor="end" fill="rgba(30,27,64,0.45)" fontFamily={SANS} fontSize={28}>mapa ilustrativo, no a escala</text>
+        <text x={1560} y={1070} textAnchor="end" fill="rgba(255,244,230,0.4)" fontFamily={SANS} fontSize={28}>mapa ilustrativo, no a escala</text>
       </svg>
       {/* «Molar City» revelado desde una máscara junto al pin */}
       <div style={{ position: "absolute", left: PIN.x + 50, top: PIN.y + 100, overflow: "hidden", padding: "0 6px" }}>
-        <div style={{ transform: `translateY(${(1 - molar) * 110}%)`, fontFamily: SERIF, fontWeight: 800, fontStyle: "italic", fontSize: 72, color: C.coral }}>«Molar City»</div>
+        <div style={{ transform: `translateY(${(1 - molar) * 110}%)`, fontFamily: SERIF, fontWeight: 800, fontStyle: "italic", fontSize: 72, color: "#FFB3A8", textShadow: "0 0 30px rgba(255,107,91,0.8)" }}>«Molar City»</div>
       </div>
       {/* Banderas y visitantes que cruzan la frontera hacia el pueblo */}
       <div style={{ position: "absolute", left: PIN.x - 260, top: PIN.y - 300, fontSize: 90, opacity: banderas[0], transform: `scale(${0.6 + banderas[0] * 0.4})` }}>🇺🇸</div>
@@ -171,7 +253,10 @@ const Grafica: React.FC<{ visible: number }> = ({ visible }) => {
   const garita = mezcla(frame, 957, 972);
   return (
     <div style={{ position: "absolute", inset: 0, opacity: visible }}>
-      <div style={{ position: "absolute", left: 100, top: 720, width: 880, height: 470, borderRadius: 30, background: "rgba(14,27,46,0.88)", boxShadow: "0 40px 80px rgba(0,0,0,0.45)" }} />
+      <div style={{ position: "absolute", left: 100, top: 720, width: 880, height: 470, borderRadius: 30, ...VIDRIO }} />
+      {[0, 1, 2, 3].map((k) => (
+        <div key={k} style={{ position: "absolute", left: 130, width: 820, top: 860 + k * 70, height: 1, background: "rgba(255,244,230,0.08)" }} />
+      ))}
       <div style={{ position: "absolute", left: 100, top: 720, width: 880, height: 56, borderRadius: "30px 30px 0 0", background: "repeating-linear-gradient(90deg, #C9C2B8 0 14px, transparent 14px 26px)", opacity: 0.4 + garita * 0.5 }} />
       <div style={{ position: "absolute", left: 100, width: 880, top: 728, display: "flex", justifyContent: "center", opacity: garita, transform: `scale(${0.8 + garita * 0.2})` }}>
         <div style={{ padding: "4px 18px", borderRadius: 10, background: C.crema, fontFamily: SANS, fontWeight: 600, fontSize: 24, color: C.noche }}>🛂 Frontera · garita de Andrade</div>
@@ -193,11 +278,14 @@ const Grafica: React.FC<{ visible: number }> = ({ visible }) => {
                 width: b.w,
                 height: b.h * crece + 4,
                 borderRadius: 6,
-                background: top5 ? `rgba(255,107,91,${0.45 + resalta * 0.55})` : "#8A7A9A",
-                boxShadow: top5 ? `0 0 ${resalta * 24}px ${C.coral}` : "none",
-                opacity: i === 0 && frame >= T.temporada ? 0 : 1,
+                background: top5 ? `linear-gradient(180deg, ${C.naranja}, ${C.coral})` : "linear-gradient(180deg, #A99BC0, #6E6290)",
+                opacity: top5 ? 0.55 + resalta * 0.45 : 0.9,
+                boxShadow: top5 ? `0 0 ${10 + resalta * 30}px ${C.coral}, inset 0 2px 0 rgba(255,255,255,0.5)` : "inset 0 2px 0 rgba(255,255,255,0.35)",
+                ...(i === 0 && frame >= T.temporada ? { opacity: 0 } : {}),
               }}
             />
+            {/* Reflejo de la barra */}
+            <div style={{ position: "absolute", left: b.x, top: 1146, width: b.w, height: b.h * crece * 0.35, borderRadius: 6, background: top5 ? C.coral : "#8A7A9A", opacity: 0.16, WebkitMaskImage: "linear-gradient(180deg, black, transparent)", ...(i === 0 && frame >= T.temporada ? { display: "none" } : {}) }} />
           </div>
         );
       })}
@@ -206,7 +294,15 @@ const Grafica: React.FC<{ visible: number }> = ({ visible }) => {
   );
 };
 
-const Escena: React.FC = () => {
+const DESTELLOS = [118, 176, 645, 832, 997, 1262, 1412];
+
+const Escena: React.FC = () => (
+  <CameraMotionBlur shutterAngle={160} samples={5}>
+    <Recorrido />
+  </CameraMotionBlur>
+);
+
+const Recorrido: React.FC = () => {
   const frame = useCurrentFrame();
 
   // 1. Gancho: 311 dientes que se juntan y se vuelven el número 311.
@@ -220,7 +316,7 @@ const Escena: React.FC = () => {
           const aparece = mezcla(frame, 20 + i * 0.22, 32 + i * 0.22);
           return (
             <div key={i} style={{ position: "absolute", left: x0 + (525 - x0) * junta, top: y0 + (985 - y0) * junta, opacity: aparece * (1 - junta * 0.6), transform: `scale(${aparece * (1 - junta * 0.7)})` }}>
-              <Diente tam={30} color={i % 9 === 0 ? C.naranja : C.crema} />
+              <Diente tam={30} color={i % 9 === 0 ? "brilloNaranja" : "brillo"} />
             </div>
           );
         })}
@@ -241,7 +337,14 @@ const Escena: React.FC = () => {
 
   // 4. Una maleta de los visitantes se transforma en el cartel de los años 70.
   const cartelContenido = (
-    <div style={{ width: "100%", height: "100%", background: "linear-gradient(180deg, #F3E3C3, #E6CFA2)", padding: 40, textAlign: "center", boxSizing: "border-box", filter: "sepia(0.3)" }}>
+    <div style={{ position: "relative", width: "100%", height: "100%", background: "radial-gradient(ellipse at 50% 40%, #F6E8CC 0%, #E8D2A6 70%, #C9A877 100%)", padding: 40, textAlign: "center", boxSizing: "border-box", filter: "sepia(0.25)" }}>
+      <svg style={{ position: "absolute", inset: 0, mixBlendMode: "multiply", opacity: 0.35 }} width="100%" height="100%">
+        <filter id="papel">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves={3} seed={3} />
+          <feColorMatrix values="0 0 0 0 0.45  0 0 0 0 0.32  0 0 0 0 0.2  0 0 0 0.6 0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#papel)" />
+      </svg>
       <div style={{ fontFamily: SERIF, fontWeight: 800, fontSize: 30, letterSpacing: 6, color: "#6B3A22" }}>— 197X —</div>
       <div style={{ margin: "18px auto", width: 150 }}>
         <Diente tam={150} color="#6B3A22" />
@@ -282,6 +385,7 @@ const Escena: React.FC = () => {
 
   return (
     <AbsoluteFill>
+      <Degradados />
       {/* ---------- 1 ---------- */}
       {dientes}
       {frame >= 120 && frame < T.mapa + 30 ? (
@@ -291,7 +395,7 @@ const Escena: React.FC = () => {
           desde={120}
           dur={22}
         >
-          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: SERIF, fontWeight: 800, fontSize: 100, color: C.noche }}>311</div>
+          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: SERIF, fontWeight: 800, fontSize: 100, color: C.noche, background: `linear-gradient(160deg, #FFD29A, ${C.coral})`, boxShadow: "inset 0 3px 0 rgba(255,255,255,0.6), 0 0 80px rgba(255,107,91,0.6)" }}>311</div>
         </Transformar>
       ) : null}
       <Fuente texto={FUENTE_INEGI} desde={110} hasta={T.mapa} />
@@ -314,7 +418,7 @@ const Escena: React.FC = () => {
 
       {/* ---------- 4: maleta → cartel ---------- */}
       {frame >= T.historia && frame < T.manzanas + 40 ? (
-        <div style={{ position: "absolute", inset: 0, transform: `translateY(${flota}px)` }}>
+        <div style={{ position: "absolute", inset: 0, transform: `translateY(${flota}px) perspective(1600px) rotateY(${interpolate(frame, [T.historia, T.manzanas], [-10, 6])}deg) rotateX(4deg)`, filter: "drop-shadow(0 50px 60px rgba(0,0,0,0.6))" }}>
           <Transformar de={{ x: 500, y: 1000, w: 80, h: 80, radio: 18, color: "#7A4A2A" }} a={{ x: 190, y: 760, w: 700, h: 520, radio: 14, color: "#F3E3C3" }} desde={T.historia + 5} dur={40}>
             {cartelContenido}
           </Transformar>
@@ -347,9 +451,12 @@ const Escena: React.FC = () => {
       {/* ---------- 6: barra → termómetro, temporada y pájaros ---------- */}
       {frame >= T.temporada && frame < T.salud + 10 ? (
         <div style={{ position: "absolute", inset: 0, opacity: termoVisible, transform: `translateX(${sigue}px)` }}>
-          <Transformar de={{ ...barra0, radio: 6, color: C.coral }} a={{ ...tubo, color: "rgba(255,244,230,0.18)" }} desde={T.temporada} dur={30}>
-            <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: `${nivel * 100}%`, background: `linear-gradient(180deg, ${invierno > 0.5 ? "#9ED6DC" : C.naranja}, ${invierno > 0.5 ? "#4FA3C7" : C.coral})`, borderRadius: 45 }} />
+          <Transformar de={{ ...barra0, radio: 6, color: C.coral }} a={{ ...tubo, color: "rgba(255,244,230,0.14)" }} desde={T.temporada} dur={30}>
+            <div style={{ position: "absolute", left: 10, right: 10, bottom: 10, height: `calc(${nivel * 100}% - 20px)`, background: `linear-gradient(180deg, ${invierno > 0.5 ? "#BFF0F4" : "#FFD29A"}, ${invierno > 0.5 ? "#4FA3C7" : C.coral})`, borderRadius: 40, boxShadow: `0 0 40px ${invierno > 0.5 ? "#4FA3C7" : C.coral}` }} />
+            <div style={{ position: "absolute", left: 14, top: 20, bottom: 20, width: 12, borderRadius: 6, background: "linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.1))" }} />
+            <div style={{ position: "absolute", inset: 0, borderRadius: 45, border: "2px solid rgba(255,255,255,0.4)", boxShadow: "inset 0 0 30px rgba(255,255,255,0.15)" }} />
           </Transformar>
+          <div style={{ position: "absolute", left: 470, top: 1200, width: 140, height: 140, borderRadius: 70, background: `radial-gradient(circle at 35% 35%, #FFFFFF 0%, ${invierno > 0.5 ? "#4FA3C7" : C.coral} 35%, ${invierno > 0.5 ? "#2A6F9A" : "#B8392F"} 100%)`, boxShadow: `0 0 60px ${invierno > 0.5 ? "#4FA3C7" : C.coral}`, opacity: mezcla(frame, T.temporada + 22, T.temporada + 34) }} />
           <div style={{ position: "absolute", left: 120, top: 820, width: 330, textAlign: "right", opacity: verano * (1 - invierno * 0.6) }}>
             <div style={{ fontSize: 70 }}>☀️</div>
             <div style={{ fontFamily: SERIF, fontWeight: 800, fontSize: 52, color: C.crema }}>Verano</div>
@@ -396,8 +503,8 @@ const Escena: React.FC = () => {
             desde={1280}
             dur={26}
           >
-            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: `radial-gradient(circle, ${C.naranja}, ${C.coral})` }}>
-              <Diente tam={180} color={C.crema} />
+            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: `radial-gradient(circle at 35% 30%, #FFE2B8, ${C.naranja} 45%, ${C.coral})`, boxShadow: "inset 0 6px 0 rgba(255,255,255,0.5), inset 0 -20px 40px rgba(120,20,20,0.35)" }}>
+              <Diente tam={180} color="brillo" />
             </div>
           </Transformar>
         </div>
@@ -414,6 +521,11 @@ const Escena: React.FC = () => {
         </Transformar>
       ) : null}
 
+      {DESTELLOS.map((f) => (
+        <Sequence key={f} from={f} durationInFrames={16}>
+          <Destello />
+        </Sequence>
+      ))}
       {/* Velo arriba para que los títulos se lean aunque la cámara acerque el mapa o la gráfica */}
       <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(10,12,28,0.92) 0%, rgba(10,12,28,0.8) 24%, rgba(10,12,28,0) 36%)", pointerEvents: "none" }} />
       {/* ---------- Títulos revelados desde una máscara, sincronizados con la voz ---------- */}
