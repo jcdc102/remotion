@@ -1,67 +1,44 @@
-import { AbsoluteFill, Easing, interpolate, Sequence, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { Grano } from "./cine";
-import { C, Palabras, Reel, SANS, SERIF } from "./comun";
+import { C, Reel, SANS, SERIF } from "./comun";
+import { Camara, TextoMascara, Transformar } from "./edicion";
 
-// Los Algodones, Baja California: turismo de salud. Ritmo pausado: fundidos suaves y tiempo para leer.
+// Los Algodones, Baja California: turismo de salud. Un solo recorrido continuo con las 5 indicaciones de edición:
+// entradas sincronizadas con la voz, cámara que sigue lo importante, objetos que se transforman en la escena siguiente,
+// movimientos encadenados y títulos revelados desde una máscara. Ritmo pausado.
 // Datos: INEGI, DENUE (consulta del 7 nov 2026) y Rodríguez Blanco, A. (2020), Contexto Odontológico, 10(19), 50-58 (UNAM).
-// Voz con pausas: public/voz-algodones.mp3 (52 s).
+// Voz con pausas: public/voz-algodones.mp3 (52 s). Tiempos de cada palabra estimados dentro de cada frase medida.
 export const DURACION_ALGODONES = 1560;
 
 const FUENTE_UNAM = "Fuente: Rodríguez Blanco (2020), Contexto Odontológico, UNAM";
 const FUENTE_INEGI = "Fuente: INEGI, DENUE (consulta del 7 de noviembre de 2026)";
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
-const FUNDIDO = 18;
+const mezcla = (f: number, a: number, b: number) => interpolate(f, [a, b], [0, 1], clamp);
 
-// Tramos de cada escena (fotogramas) y momentos clave de la voz.
-const T = {
-  gancho: [0, 156],
-  lugar: [156, 390],
-  visitantes: [390, 630],
-  historia: [630, 819],
-  garita: [819, 990],
-  temporada: [990, 1260],
-  salud: [1260, 1407],
-  cierre: [1407, 1560],
-} as const;
+// Tramos (fotogramas, 30 fps).
+const T = { gancho: 0, mapa: 175, visitantes: 410, historia: 640, manzanas: 830, temporada: 995, salud: 1270, cierre: 1410 };
 
 const SONIDOS: [number, string, number][] = [
-  [30, "pop", 0.3],
-  [T.lugar[0], "whoosh", 0.25],
-  [T.lugar[0] + 60, "pop", 0.35], // pin
-  [324, "brillo", 0.3], // «Molar City»
-  [T.visitantes[0], "whoosh", 0.25],
-  [T.historia[0], "whoosh", 0.25],
-  [T.historia[0] + 40, "tachar", 0.2],
-  [T.garita[0], "whoosh", 0.25],
-  [T.garita[0] + 80, "pop", 0.3],
-  [T.temporada[0], "whoosh", 0.25],
-  [1176, "brillo", 0.3], // pájaros de la nieve
-  [T.salud[0], "whoosh", 0.25],
-  [1290, "ding", 0.3],
-  [T.cierre[0], "whoosh", 0.25],
-  [1425, "notificacion", 0.35],
+  [20, "pop", 0.25],
+  [97, "whoosh", 0.3], // los dientes se juntan
+  [128, "pop", 0.4], // 311
+  [178, "whoosh", 0.35], // 311 → pin
+  [353, "brillo", 0.3], // Molar City
+  [456, "pop", 0.3],
+  [488, "pop", 0.3],
+  [645, "whoosh", 0.35], // maleta → cartel
+  [835, "whoosh", 0.35], // cartel → gráfica
+  [910, "pop", 0.35],
+  [957, "pop", 0.3],
+  [1000, "whoosh", 0.35], // barra → termómetro
+  [1044, "tachar", 0.2],
+  [1205, "brillo", 0.3], // pájaros de la nieve
+  [1262, "whoosh", 0.35], // pájaros → insignia
+  [1307, "ding", 0.3],
+  [1415, "whoosh", 0.35], // insignia → globo
+  [1440, "notificacion", 0.35],
 ];
 
-const suave = (frame: number, fps: number, desde: number) => spring({ frame: frame - desde, fps, config: { damping: 20, mass: 1.2 } });
-
-// Escena con fundido de entrada y salida (sin cortes bruscos).
-const Tramo: React.FC<{ rango: readonly [number, number]; children: React.ReactNode }> = ({ rango, children }) => {
-  const frame = useCurrentFrame();
-  const [a, b] = rango;
-  const ultimo = b >= DURACION_ALGODONES;
-  const o = interpolate(frame, [a, a + FUNDIDO, b - FUNDIDO, b], [a === 0 ? 1 : 0, 1, 1, ultimo ? 1 : 0], clamp);
-  const sube = interpolate(frame, [a, a + FUNDIDO * 1.5], [24, 0], { ...clamp, easing: Easing.out(Easing.cubic) });
-  if (frame < a - 1 || frame > b + 1) return null;
-  return (
-    <AbsoluteFill style={{ opacity: o, transform: `translateY(${a === 0 ? 0 : sube}px)` }}>
-      <Sequence from={a} durationInFrames={b - a + FUNDIDO}>
-        {children}
-      </Sequence>
-    </AbsoluteFill>
-  );
-};
-
-// Fondo: desierto de la frontera al atardecer, con montañas, dunas, cactus y calor que ondula.
 const Desierto: React.FC = () => {
   const frame = useCurrentFrame();
   const solY = interpolate(frame, [0, DURACION_ALGODONES], [1080, 1170]);
@@ -74,8 +51,8 @@ const Desierto: React.FC = () => {
   return (
     <AbsoluteFill>
       <AbsoluteFill style={{ background: "linear-gradient(180deg, #0E1B2E 0%, #2B1F4A 30%, #7A3358 50%, #D2604F 60%, #FF9A5C 66%, #FFC27A 69%)" }} />
-      <div style={{ position: "absolute", left: 300 - 300, top: solY - 300, width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,214,140,0.5) 0%, rgba(255,150,90,0.15) 40%, transparent 70%)" }} />
-      <div style={{ position: "absolute", left: 300 - 110, top: solY - 110, width: 220, height: 220, borderRadius: "50%", background: "radial-gradient(circle, #FFF1C9 0%, #FFC27A 55%, #FF8F5A 100%)" }} />
+      <div style={{ position: "absolute", left: 0, top: solY - 300, width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,214,140,0.5) 0%, rgba(255,150,90,0.15) 40%, transparent 70%)" }} />
+      <div style={{ position: "absolute", left: 190, top: solY - 110, width: 220, height: 220, borderRadius: "50%", background: "radial-gradient(circle, #FFF1C9 0%, #FFC27A 55%, #FF8F5A 100%)" }} />
       <svg style={{ position: "absolute", left: deriva * 0.4, top: 0 }} width={1200} height={1920}>
         <path d="M-20 1300 L-20 1140 L90 1070 L170 1120 L280 1040 L380 1110 L520 1060 L640 1130 L760 1050 L880 1120 L1000 1070 L1220 1130 L1220 1300 Z" fill="#5A2E58" opacity={0.8} />
         <path d="M-20 1320 Q 200 1220 420 1270 Q 640 1200 860 1270 Q 1040 1230 1220 1260 L1220 1920 L-20 1920 Z" fill="#B5603F" />
@@ -85,32 +62,13 @@ const Desierto: React.FC = () => {
       <Cactus x={70} y={1250} e={0.9} />
       <Cactus x={880} y={1300} e={1.2} />
       <Cactus x={600} y={1360} e={0.6} />
-      {/* Calor que ondula sobre el horizonte */}
       {Array.from({ length: 6 }).map((_, i) => (
         <div key={i} style={{ position: "absolute", left: 0, right: 0, top: 1240 + i * 14, height: 3, background: "rgba(255,210,160,0.12)", transform: `translateX(${Math.sin(frame / 14 + i) * 20}px)` }} />
       ))}
-      <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(10,12,28,0.75) 0%, rgba(10,12,28,0.25) 32%, rgba(10,12,28,0) 45%)" }} />
+      <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(10,12,28,0.8) 0%, rgba(10,12,28,0.3) 32%, rgba(10,12,28,0) 45%)" }} />
     </AbsoluteFill>
   );
 };
-
-const Fuente: React.FC<{ texto: string }> = ({ texto }) => (
-  <div style={{ position: "absolute", left: 80, right: 80, top: 1390, padding: "8px 16px", borderRadius: 14, background: "rgba(14,27,46,0.75)", textAlign: "center", fontFamily: SANS, fontWeight: 500, fontSize: 21, color: "rgba(255,244,230,0.8)" }}>
-    {texto}
-  </div>
-);
-
-const Titulo: React.FC<{ texto: string; frase: string | null; resaltar: string[] | null; tFrase: number }> = ({ texto, frase, resaltar, tFrase }) => (
-  <div style={{ position: "absolute", left: 80, right: 80, top: 340 }}>
-    <Palabras texto={texto} tam={82} fuente={SERIF} peso={800} retraso={4} resaltar={resaltar} color={C.crema} />
-    {frase ? (
-      <>
-        <div style={{ height: 22 }} />
-        <Palabras texto={frase} tam={42} fuente={SANS} peso={500} retraso={tFrase} resaltar={null} color="rgba(255,244,230,0.88)" />
-      </>
-    ) : null}
-  </div>
-);
 
 const Diente: React.FC<{ tam: number; color: string }> = ({ tam, color }) => (
   <svg width={tam} height={tam} viewBox="0 0 24 24">
@@ -118,288 +76,407 @@ const Diente: React.FC<{ tam: number; color: string }> = ({ tam, color }) => (
   </svg>
 );
 
-// ---------- 1. Gancho: 311 consultorios (INEGI) ----------
-const Gancho: React.FC = () => {
+// Fuente: entra y sale con su tramo.
+const Fuente: React.FC<{ texto: string; desde: number; hasta: number }> = ({ texto, desde, hasta }) => {
   const frame = useCurrentFrame();
+  const o = interpolate(frame, [desde, desde + 15, hasta - 12, hasta], [0, 1, 1, 0], clamp);
   return (
-    <>
-      <Titulo texto="Un pueblo con 311 consultorios dentales" frase={null} resaltar={["311"]} tFrase={0} />
-      <div style={{ position: "absolute", left: 90, top: 760, display: "grid", gridTemplateColumns: "repeat(25, 32px)", gap: 4 }}>
+    <div style={{ position: "absolute", left: 80, right: 80, top: 1392, padding: "8px 16px", borderRadius: 14, background: "rgba(14,27,46,0.78)", textAlign: "center", fontFamily: SANS, fontWeight: 500, fontSize: 21, color: "rgba(255,244,230,0.8)", opacity: o }}>
+      {texto}
+    </div>
+  );
+};
+
+// Título revelado desde una máscara y sincronizado palabra por palabra; sale subiendo antes del siguiente.
+const Titulo: React.FC<{ texto: string; tiempos: number[]; resaltar: string[] | null; frase: string | null; tiemposFrase: number[] | null; hasta: number }> = ({
+  texto,
+  tiempos,
+  resaltar,
+  frase,
+  tiemposFrase,
+  hasta,
+}) => {
+  const frame = useCurrentFrame();
+  const desde = tiempos[0] - 2;
+  if (frame < desde - 2 || frame > hasta + 2) return null;
+  const sale = mezcla(frame, hasta - 14, hasta);
+  return (
+    <div style={{ position: "absolute", left: 80, right: 80, top: 330, opacity: 1 - sale, transform: `translateY(${-sale * 40}px)` }}>
+      <TextoMascara texto={texto} desde={desde} tiempos={tiempos} tam={80} fuente={SERIF} peso={800} color={C.crema} resaltar={resaltar} />
+      {frase && tiemposFrase ? (
+        <div style={{ marginTop: 20 }}>
+          <TextoMascara texto={frase} desde={tiemposFrase[0]} tiempos={tiemposFrase} tam={40} fuente={SANS} peso={500} color="rgba(255,244,230,0.88)" resaltar={null} />
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+// Reparte palabras entre dos fotogramas (inicio y fin de una frase medida en la voz).
+const repartir = (n: number, a: number, b: number) => Array.from({ length: n }, (_, i) => Math.round(a + ((b - a) * i) / n));
+
+// ---------- Mundo del mapa (coordenadas propias, la cámara lo recorre) ----------
+const PIN = { x: 1000, y: 520 };
+const Mapa: React.FC<{ visible: number }> = ({ visible }) => {
+  const frame = useCurrentFrame();
+  const pulso = (frame % 50) / 50;
+  const eua = mezcla(frame, 290, 310);
+  const mx = mezcla(frame, 234, 252);
+  const molar = mezcla(frame, 353, 372);
+  const banderas = [mezcla(frame, 456, 470), mezcla(frame, 488, 502)];
+  return (
+    <div style={{ position: "absolute", left: 0, top: 0, width: 1600, height: 1100, opacity: visible }}>
+      <svg width={1600} height={1100}>
+        <rect x={0} y={0} width={1600} height={1100} rx={60} fill="#E9D8C4" />
+        <rect x={0} y={0} width={1600} height={PIN.y} rx={60} fill="#DCC8B0" />
+        <path d={`M 860 1100 Q 900 900 950 760 Q 980 650 ${PIN.x} ${PIN.y}`} fill="none" stroke="#7FB7BE" strokeWidth={22} />
+        <path d={`M ${PIN.x} ${PIN.y} Q 1060 380 1180 200 Q 1240 110 1300 0`} fill="none" stroke="#7FB7BE" strokeWidth={22} />
+        <path d={`M 0 ${PIN.y} L ${PIN.x} ${PIN.y} L 1600 260`} stroke={C.coral} strokeWidth={8} strokeDasharray="26 18" fill="none" />
+        <text x={120} y={PIN.y - 60} fill="#5A3A2A" fontFamily={SANS} fontWeight={600} fontSize={52} opacity={eua}>Estados Unidos</text>
+        <text x={120} y={PIN.y + 100} fill="#5A3A2A" fontFamily={SANS} fontWeight={600} fontSize={52} opacity={mx}>México · Baja California</text>
+        <circle cx={330} cy={760} r={12} fill="#5A3A2A" opacity={mx} />
+        <text x={360} y={772} fill="rgba(90,58,42,0.75)" fontFamily={SANS} fontWeight={500} fontSize={38} opacity={mx}>Mexicali</text>
+        <text x={1320} y={140} fill="rgba(90,58,42,0.75)" fontFamily={SANS} fontWeight={500} fontSize={38} opacity={eua}>Arizona</text>
+        <text x={PIN.x + 50} y={PIN.y + 70} fill="#1E1B40" fontFamily={SERIF} fontWeight={800} fontSize={58}>Los Algodones</text>
+        <circle cx={PIN.x} cy={PIN.y} r={30 + pulso * 70} fill="none" stroke={C.coral} strokeWidth={6} opacity={1 - pulso} />
+        <circle cx={PIN.x} cy={PIN.y} r={30} fill={C.coral} stroke={C.crema} strokeWidth={6} />
+        <text x={1560} y={1070} textAnchor="end" fill="rgba(30,27,64,0.45)" fontFamily={SANS} fontSize={28}>mapa ilustrativo, no a escala</text>
+      </svg>
+      {/* «Molar City» revelado desde una máscara junto al pin */}
+      <div style={{ position: "absolute", left: PIN.x + 50, top: PIN.y + 100, overflow: "hidden", padding: "0 6px" }}>
+        <div style={{ transform: `translateY(${(1 - molar) * 110}%)`, fontFamily: SERIF, fontWeight: 800, fontStyle: "italic", fontSize: 72, color: C.coral }}>«Molar City»</div>
+      </div>
+      {/* Banderas y visitantes que cruzan la frontera hacia el pueblo */}
+      <div style={{ position: "absolute", left: PIN.x - 260, top: PIN.y - 300, fontSize: 90, opacity: banderas[0], transform: `scale(${0.6 + banderas[0] * 0.4})` }}>🇺🇸</div>
+      <div style={{ position: "absolute", left: PIN.x - 140, top: PIN.y - 300, fontSize: 90, opacity: banderas[1], transform: `scale(${0.6 + banderas[1] * 0.4})` }}>🇨🇦</div>
+      {Array.from({ length: 10 }).map((_, i) => {
+        const ciclo = ((frame - 440 + i * 23) % 150) / 150;
+        const activo = frame > 440 + i * 4;
+        return (
+          <div key={i} style={{ position: "absolute", left: PIN.x - 120 + (i % 5) * 50, top: PIN.y - 260 + ciclo * 420, fontSize: 54, opacity: activo ? Math.sin(ciclo * Math.PI) : 0 }}>
+            {["🧳", "🚶", "🧓", "🚶‍♀️", "🧳"][i % 5]}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+// ---------- Mundo de la gráfica de manzanas (coordenadas de pantalla; la cámara se acerca) ----------
+const MANZANAS = [60, 31, 30, 27, 25, 18, 18, 16, 14, 12, 11, 9, 9, 7, 4, 4, 4, 3, 2, 2, 1, 1, 1, 1, 1];
+const BARRA = (i: number, n: number) => ({ x: 130 + i * 34, y: 1140 - (n / 60) * 280, w: 26, h: (n / 60) * 280 });
+const Grafica: React.FC<{ visible: number }> = ({ visible }) => {
+  const frame = useCurrentFrame();
+  const resalta = mezcla(frame, 910, 930);
+  const garita = mezcla(frame, 957, 972);
+  return (
+    <div style={{ position: "absolute", inset: 0, opacity: visible }}>
+      <div style={{ position: "absolute", left: 100, top: 720, width: 880, height: 470, borderRadius: 30, background: "rgba(14,27,46,0.88)", boxShadow: "0 40px 80px rgba(0,0,0,0.45)" }} />
+      <div style={{ position: "absolute", left: 100, top: 720, width: 880, height: 56, borderRadius: "30px 30px 0 0", background: "repeating-linear-gradient(90deg, #C9C2B8 0 14px, transparent 14px 26px)", opacity: 0.4 + garita * 0.5 }} />
+      <div style={{ position: "absolute", left: 100, width: 880, top: 728, display: "flex", justifyContent: "center", opacity: garita, transform: `scale(${0.8 + garita * 0.2})` }}>
+        <div style={{ padding: "4px 18px", borderRadius: 10, background: C.crema, fontFamily: SANS, fontWeight: 600, fontSize: 24, color: C.noche }}>🛂 Frontera · garita de Andrade</div>
+      </div>
+      {MANZANAS.map((n, i) => {
+        const b = BARRA(i, n);
+        const crece = interpolate(frame, [845 + i * 2, 875 + i * 2], [0, 1], clamp);
+        const top5 = i < 5;
+        return (
+          <div key={i}>
+            {top5 ? (
+              <div style={{ position: "absolute", left: b.x - 10, width: 46, top: b.y - 30, textAlign: "center", fontFamily: SANS, fontWeight: 600, fontSize: 20, color: C.crema, opacity: resalta }}>{n}</div>
+            ) : null}
+            <div
+              style={{
+                position: "absolute",
+                left: b.x,
+                top: 1140 - b.h * crece,
+                width: b.w,
+                height: b.h * crece + 4,
+                borderRadius: 6,
+                background: top5 ? `rgba(255,107,91,${0.45 + resalta * 0.55})` : "#8A7A9A",
+                boxShadow: top5 ? `0 0 ${resalta * 24}px ${C.coral}` : "none",
+                opacity: i === 0 && frame >= T.temporada ? 0 : 1,
+              }}
+            />
+          </div>
+        );
+      })}
+      <div style={{ position: "absolute", left: 130, top: 1150, fontFamily: SANS, fontWeight: 500, fontSize: 22, color: "rgba(255,244,230,0.7)" }}>Consultorios por manzana · las 5 primeras suman 173 de 311</div>
+    </div>
+  );
+};
+
+const Escena: React.FC = () => {
+  const frame = useCurrentFrame();
+
+  // 1. Gancho: 311 dientes que se juntan y se vuelven el número 311.
+  const junta = interpolate(frame, [97, 126], [0, 1], { ...clamp, easing: (t) => t * t * (3 - 2 * t) });
+  const dientes =
+    frame < 132 ? (
+      <div style={{ position: "absolute", inset: 0 }}>
         {Array.from({ length: 311 }).map((_, i) => {
-          const s = interpolate(frame, [30 + i * 0.29, 42 + i * 0.29], [0, 1], clamp);
+          const x0 = 90 + (i % 25) * 36;
+          const y0 = 760 + Math.floor(i / 25) * 36;
+          const aparece = mezcla(frame, 20 + i * 0.22, 32 + i * 0.22);
           return (
-            <div key={i} style={{ opacity: s, transform: `scale(${s})` }}>
+            <div key={i} style={{ position: "absolute", left: x0 + (525 - x0) * junta, top: y0 + (985 - y0) * junta, opacity: aparece * (1 - junta * 0.6), transform: `scale(${aparece * (1 - junta * 0.7)})` }}>
               <Diente tam={30} color={i % 9 === 0 ? C.naranja : C.crema} />
             </div>
           );
         })}
       </div>
-      <Fuente texto={FUENTE_INEGI} />
-    </>
-  );
-};
+    ) : null;
 
-// ---------- 2. Dónde está: mapa de la frontera ----------
-const Lugar: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const mapa = suave(frame, fps, 0);
-  const pin = suave(frame, fps, 60);
-  const molar = suave(frame, fps, 168);
-  const pulso = (frame % 50) / 50;
-  return (
-    <>
-      <Titulo texto="Los Algodones, Baja California" frase="En la frontera con Estados Unidos." resaltar={["Algodones,"]} tFrase={40} />
-      <div style={{ position: "absolute", left: 80, top: 700, width: 920, height: 600, borderRadius: 34, overflow: "hidden", opacity: mapa, transform: `scale(${0.94 + mapa * 0.06})`, boxShadow: "0 40px 80px rgba(0,0,0,0.45)" }}>
-        <svg width={920} height={600}>
-          <rect width={920} height={600} fill="#E9D8C4" />
-          {/* Golfo de California y río Colorado (ilustrativo) */}
-          <path d="M 380 600 Q 420 470 470 400 Q 500 360 520 330 L 560 600 Z" fill="#7FB7BE" />
-          <path d="M 520 330 Q 540 250 600 190 Q 640 140 700 60" stroke="#7FB7BE" strokeWidth={10} fill="none" />
-          {/* Frontera */}
-          <path d="M 0 250 L 600 250 L 920 140" stroke={C.coral} strokeWidth={5} strokeDasharray="18 12" fill="none" />
-          <text x={40} y={200} fill="#5A3A2A" fontFamily={SANS} fontWeight={600} fontSize={30}>Estados Unidos</text>
-          <text x={40} y={320} fill="#5A3A2A" fontFamily={SANS} fontWeight={600} fontSize={30}>México</text>
-          <text x={150} y={420} fill="rgba(90,58,42,0.7)" fontFamily={SANS} fontWeight={500} fontSize={24}>Mexicali</text>
-          <circle cx={240} cy={390} r={8} fill="#5A3A2A" />
-          <text x={760} y={110} fill="rgba(90,58,42,0.7)" fontFamily={SANS} fontWeight={500} fontSize={24}>Arizona</text>
-          <g opacity={pin} transform={`translate(560 252) scale(${0.6 + pin * 0.4})`}>
-            <circle r={18 + pulso * 50} fill="none" stroke={C.coral} strokeWidth={4} opacity={1 - pulso} />
-            <circle r={18} fill={C.coral} stroke={C.crema} strokeWidth={4} />
-          </g>
-          <text x={590} y={300} fill="#1E1B40" fontFamily={SERIF} fontWeight={800} fontSize={36} opacity={pin}>Los Algodones</text>
-          <text x={900} y={585} textAnchor="end" fill="rgba(30,27,64,0.5)" fontFamily={SANS} fontSize={18}>mapa ilustrativo, no a escala</text>
-        </svg>
+  // 2. El 311 se transforma en el pin del mapa; la cámara sigue al pin y se aleja para mostrar la frontera.
+  const mapaVisible = interpolate(frame, [T.mapa + 5, T.mapa + 30, T.historia, T.historia + 25], [0, 1, 1, 0], clamp);
+  const pinPantallaY = 1000;
+  const camMapa = [
+    { f: T.mapa, x: PIN.x, y: PIN.y - (pinPantallaY - 960) / 3, s: 3 },
+    { f: 230, x: PIN.x, y: PIN.y - (pinPantallaY - 960) / 3, s: 3 },
+    { f: 300, x: 820, y: 560, s: 0.62 },
+    { f: 400, x: 840, y: 560, s: 0.66 },
+    { f: 450, x: PIN.x + 110, y: PIN.y - 40, s: 1.1 }, // se acerca al cruce de los visitantes
+    { f: 620, x: PIN.x + 120, y: PIN.y - 20, s: 1.18 },
+  ];
+
+  // 4. Una maleta de los visitantes se transforma en el cartel de los años 70.
+  const cartelContenido = (
+    <div style={{ width: "100%", height: "100%", background: "linear-gradient(180deg, #F3E3C3, #E6CFA2)", padding: 40, textAlign: "center", boxSizing: "border-box", filter: "sepia(0.3)" }}>
+      <div style={{ fontFamily: SERIF, fontWeight: 800, fontSize: 30, letterSpacing: 6, color: "#6B3A22" }}>— 197X —</div>
+      <div style={{ margin: "18px auto", width: 150 }}>
+        <Diente tam={150} color="#6B3A22" />
       </div>
-      <div style={{ position: "absolute", left: 0, right: 0, top: 1240, display: "flex", justifyContent: "center", opacity: molar, transform: `scale(${0.8 + molar * 0.2})` }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "14px 36px", borderRadius: 999, background: `linear-gradient(90deg, ${C.naranja}, ${C.coral})`, boxShadow: "0 20px 50px rgba(0,0,0,0.4)" }}>
-          <Diente tam={52} color={C.crema} />
-          <span style={{ fontFamily: SERIF, fontWeight: 800, fontStyle: "italic", fontSize: 62, color: C.noche }}>«Molar City»</span>
+      <div style={{ fontFamily: SERIF, fontWeight: 800, fontSize: 64, color: "#3A1F14" }}>DENTISTA</div>
+      <div style={{ fontFamily: SERIF, fontWeight: 600, fontStyle: "italic", fontSize: 40, color: "#6B3A22" }}>en Los Algodones</div>
+      <div style={{ fontFamily: SANS, fontWeight: 500, fontSize: 22, color: "#6B3A22", marginTop: 24, opacity: 0.8 }}>ilustración</div>
+    </div>
+  );
+  const flota = Math.sin(frame / 18) * 6;
+
+  // 5. El cartel se encoge y se vuelve la primera barra de la gráfica; la cámara se acerca a las 5 manzanas y luego a la garita.
+  const graficaVisible = interpolate(frame, [T.manzanas + 20, T.manzanas + 40, T.temporada + 30, T.temporada + 50], [0, 1, 1, 0], clamp);
+  const camGrafica = [
+    { f: T.manzanas, x: 540, y: 960, s: 1 },
+    { f: 900, x: 540, y: 960, s: 1 },
+    { f: 935, x: 230, y: 1010, s: 1.45 }, // «cinco manzanas»
+    { f: 955, x: 330, y: 900, s: 1.3 },
+    { f: 975, x: 540, y: 900, s: 1.05 }, // «garita de Andrade»
+    { f: 992, x: 540, y: 960, s: 1 },
+  ];
+
+  // 6. La barra más alta se transforma en un termómetro.
+  const barra0 = BARRA(0, 60);
+  const tubo = { x: 495, y: 760, w: 90, h: 470, radio: 45 };
+  const verano = mezcla(frame, 1012, 1030);
+  const invierno = mezcla(frame, 1044, 1075);
+  const nivel = 0.9 - invierno * 0.62;
+  const muchos = mezcla(frame, 1142, 1160);
+  // Los pájaros cruzan y la cámara los sigue (todo el escenario se desliza con ellos).
+  const avesX = interpolate(frame, [1200, 1262], [-260, 760], clamp);
+  const sigue = interpolate(frame, [1205, 1262], [0, -160], { ...clamp, easing: (t) => t * t * (3 - 2 * t) });
+  const termoVisible = interpolate(frame, [T.temporada, T.temporada + 5, T.salud - 10, T.salud + 5], [0, 1, 1, 0], clamp);
+
+  // 7. Los pájaros se juntan y se transforman en la insignia del turismo de salud.
+  const juntan = mezcla(frame, 1262, 1290);
+  const latido = 1 + Math.max(0, Math.sin(frame / 10)) * 0.05;
+
+  return (
+    <AbsoluteFill>
+      {/* ---------- 1 ---------- */}
+      {dientes}
+      {frame >= 120 && frame < T.mapa + 30 ? (
+        <Transformar
+          de={{ x: 510, y: 970, w: 60, h: 60, radio: 30, color: C.coral }}
+          a={{ x: 360, y: 925, w: 360, h: 150, radio: 75, color: C.coral }}
+          desde={120}
+          dur={22}
+        >
+          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: SERIF, fontWeight: 800, fontSize: 100, color: C.noche }}>311</div>
+        </Transformar>
+      ) : null}
+      <Fuente texto={FUENTE_INEGI} desde={110} hasta={T.mapa} />
+
+      {/* ---------- 2 y 3: mapa con cámara ---------- */}
+      {frame >= T.mapa && frame < T.historia + 30 ? (
+        <Camara puntos={camMapa}>
+          <Mapa visible={mapaVisible} />
+        </Camara>
+      ) : null}
+      {/* El 311 se encoge hasta volverse el pin (encima del mapa mientras aparece) */}
+      {frame >= T.mapa && frame < T.mapa + 32 ? (
+        <div style={{ position: "absolute", inset: 0, opacity: 1 - mezcla(frame, T.mapa + 22, T.mapa + 32) }}>
+          <Transformar de={{ x: 360, y: 925, w: 360, h: 150, radio: 75, color: C.coral }} a={{ x: 450, y: 910, w: 180, h: 180, radio: 90, color: C.coral }} desde={T.mapa} dur={24}>
+            {null}
+          </Transformar>
         </div>
-      </div>
-    </>
-  );
-};
+      ) : null}
+      <Fuente texto={FUENTE_UNAM} desde={T.visitantes} hasta={T.historia} />
 
-// ---------- 3. Quién llega ----------
-const Visitantes: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const precio = suave(frame, fps, 120);
-  const personas = Array.from({ length: 14 });
-  return (
-    <>
-      <Titulo texto="Miles de visitantes cada año" frase="Vienen de Estados Unidos y Canadá, por precios más accesibles." resaltar={["Miles"]} tFrase={30} />
-      <div style={{ position: "absolute", left: 0, right: 0, top: 820, height: 260 }}>
-        <div style={{ position: "absolute", left: 470, top: 0, width: 12, height: 240, background: "repeating-linear-gradient(180deg, #C9C2B8 0 18px, #8A8278 18px 24px)", borderRadius: 6 }} />
-        <div style={{ position: "absolute", left: 160, top: -60, fontSize: 80, opacity: suave(frame, fps, 10) }}>🇺🇸🇨🇦</div>
-        <div style={{ position: "absolute", left: 640, top: -60, fontSize: 80, opacity: suave(frame, fps, 20) }}>🇲🇽</div>
-        {personas.map((_, i) => {
-          const ciclo = ((frame + i * 17) % 160) / 160;
-          const x = 60 + ciclo * 900;
-          return (
-            <div key={i} style={{ position: "absolute", left: x, top: 90 + (i % 3) * 40, fontSize: 56, opacity: Math.sin(ciclo * Math.PI) }}>
-              {["🧳", "🚶", "🧓", "🚶‍♀️"][i % 4]}
+      {/* ---------- 4: maleta → cartel ---------- */}
+      {frame >= T.historia && frame < T.manzanas + 40 ? (
+        <div style={{ position: "absolute", inset: 0, transform: `translateY(${flota}px)` }}>
+          <Transformar de={{ x: 500, y: 1000, w: 80, h: 80, radio: 18, color: "#7A4A2A" }} a={{ x: 190, y: 760, w: 700, h: 520, radio: 14, color: "#F3E3C3" }} desde={T.historia + 5} dur={40}>
+            {cartelContenido}
+          </Transformar>
+        </div>
+      ) : null}
+      {/* El cartel se vuelve la primera barra */}
+      {frame >= T.manzanas && frame < T.manzanas + 45 ? (
+        <div style={{ position: "absolute", inset: 0, opacity: 1 - mezcla(frame, T.manzanas + 32, T.manzanas + 45) }}>
+          <Transformar de={{ x: 190, y: 760, w: 700, h: 520, radio: 14, color: "#F3E3C3" }} a={{ x: barra0.x, y: barra0.y, w: barra0.w, h: barra0.h, radio: 6, color: C.coral }} desde={T.manzanas} dur={32}>
+            {null}
+          </Transformar>
+        </div>
+      ) : null}
+      <Fuente texto={FUENTE_UNAM} desde={T.historia + 20} hasta={T.manzanas} />
+
+      {/* ---------- 5: gráfica con cámara ---------- */}
+      {frame >= T.manzanas && frame < T.temporada + 55 ? (
+        <Camara puntos={camGrafica}>
+          <Grafica visible={graficaVisible} />
+        </Camara>
+      ) : null}
+      {frame >= 960 && frame < T.temporada ? (
+        <div style={{ position: "absolute", left: 0, right: 0, top: 1300, display: "flex", justifyContent: "center", gap: 16, opacity: mezcla(frame, 962, 978) * (1 - mezcla(frame, T.temporada - 10, T.temporada)) }}>
+          <div style={{ padding: "12px 26px", borderRadius: 999, background: `linear-gradient(90deg, ${C.naranja}, ${C.coral})`, fontFamily: SANS, fontWeight: 600, fontSize: 32, color: C.noche }}>56% en 5 manzanas</div>
+          <div style={{ padding: "12px 26px", borderRadius: 999, background: C.crema, fontFamily: SANS, fontWeight: 600, fontSize: 32, color: C.noche }}>77% con 0 a 5 trabajadores</div>
+        </div>
+      ) : null}
+      <Fuente texto={FUENTE_INEGI} desde={T.manzanas + 30} hasta={T.temporada} />
+
+      {/* ---------- 6: barra → termómetro, temporada y pájaros ---------- */}
+      {frame >= T.temporada && frame < T.salud + 10 ? (
+        <div style={{ position: "absolute", inset: 0, opacity: termoVisible, transform: `translateX(${sigue}px)` }}>
+          <Transformar de={{ ...barra0, radio: 6, color: C.coral }} a={{ ...tubo, color: "rgba(255,244,230,0.18)" }} desde={T.temporada} dur={30}>
+            <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: `${nivel * 100}%`, background: `linear-gradient(180deg, ${invierno > 0.5 ? "#9ED6DC" : C.naranja}, ${invierno > 0.5 ? "#4FA3C7" : C.coral})`, borderRadius: 45 }} />
+          </Transformar>
+          <div style={{ position: "absolute", left: 120, top: 820, width: 330, textAlign: "right", opacity: verano * (1 - invierno * 0.6) }}>
+            <div style={{ fontSize: 70 }}>☀️</div>
+            <div style={{ fontFamily: SERIF, fontWeight: 800, fontSize: 52, color: C.crema }}>Verano</div>
+            <div style={{ fontFamily: SANS, fontWeight: 600, fontSize: 34, color: C.naranja }}>35–40 °C</div>
+            <div style={{ fontFamily: SANS, fontWeight: 500, fontSize: 26, color: "rgba(255,244,230,0.8)" }}>menos visitantes</div>
+          </div>
+          <div style={{ position: "absolute", left: 630, top: 820, width: 330, opacity: invierno }}>
+            <div style={{ fontSize: 70 }}>❄️</div>
+            <div style={{ fontFamily: SERIF, fontWeight: 800, fontSize: 52, color: C.crema }}>Invierno</div>
+            <div style={{ fontFamily: SANS, fontWeight: 600, fontSize: 34, color: "#9ED6DC" }}>menos de 20 °C</div>
+            <div style={{ fontFamily: SANS, fontWeight: 500, fontSize: 26, color: "rgba(255,244,230,0.8)", opacity: muchos }}>muchos más visitantes</div>
+          </div>
+          {Array.from({ length: 14 }).map((_, i) => (
+            <div key={i} style={{ position: "absolute", left: 640 + (i * 53) % 340, top: ((frame * 2 + i * 41) % 380) + 720, width: 8, height: 8, borderRadius: 4, background: "#FFFFFF", opacity: invierno * 0.8 }} />
+          ))}
+          {/* «los pájaros de la nieve» desde una máscara */}
+          <div style={{ position: "absolute", left: 0, right: 0, top: 1250, display: "flex", justifyContent: "center", transform: `translateX(${-sigue}px)` }}>
+            <div style={{ overflow: "hidden", padding: "0 8px" }}>
+              <div style={{ transform: `translateY(${(1 - mezcla(frame, 1205, 1222)) * 110}%)`, fontFamily: SERIF, fontWeight: 800, fontStyle: "italic", fontSize: 58, color: "#9ED6DC" }}>«los pájaros de la nieve»</div>
             </div>
-          );
-        })}
-      </div>
-      <div style={{ position: "absolute", left: 0, right: 0, top: 1150, display: "flex", justifyContent: "center", opacity: precio, transform: `translateY(${(1 - precio) * 30}px)` }}>
-        <div style={{ padding: "14px 34px", borderRadius: 999, background: C.crema, color: C.noche, fontFamily: SANS, fontWeight: 600, fontSize: 40, boxShadow: "0 20px 50px rgba(0,0,0,0.35)" }}>
-          🦷 Atención dental más accesible
+          </div>
         </div>
-      </div>
-      <Fuente texto={FUENTE_UNAM} />
-    </>
-  );
-};
-
-// ---------- 4. Cómo empezó: un anuncio de los años 70 ----------
-const Historia: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const cartel = suave(frame, fps, 10);
-  return (
-    <>
-      <Titulo texto="Todo empezó en los años 70" frase="Un dentista del pueblo comenzó a anunciarse en Estados Unidos." resaltar={["70"]} tFrase={28} />
-      <div
-        style={{
-          position: "absolute",
-          left: 190,
-          top: 760,
-          width: 700,
-          height: 520,
-          borderRadius: 14,
-          background: "linear-gradient(180deg, #F3E3C3, #E6CFA2)",
-          boxShadow: "0 40px 80px rgba(0,0,0,0.5)",
-          transform: `rotate(${-3 + cartel * 1}deg) scale(${0.85 + cartel * 0.15})`,
-          opacity: cartel,
-          filter: "sepia(0.35)",
-          padding: 40,
-          textAlign: "center",
-        }}
-      >
-        <div style={{ fontFamily: SERIF, fontWeight: 800, fontSize: 30, letterSpacing: 6, color: "#6B3A22" }}>— 197X —</div>
-        <div style={{ margin: "20px auto", width: 150 }}>
-          <Diente tam={150} color="#6B3A22" />
-        </div>
-        <div style={{ fontFamily: SERIF, fontWeight: 800, fontSize: 64, color: "#3A1F14", lineHeight: 1.05 }}>DENTISTA</div>
-        <div style={{ fontFamily: SERIF, fontWeight: 600, fontStyle: "italic", fontSize: 40, color: "#6B3A22", marginTop: 10 }}>en Los Algodones</div>
-        <div style={{ height: 2, background: "#6B3A22", margin: "26px 60px", opacity: 0.5 }} />
-        <div style={{ fontFamily: SANS, fontWeight: 600, fontSize: 24, color: "#6B3A22" }}>ilustración</div>
-      </div>
-      <Fuente texto={FUENTE_UNAM} />
-    </>
-  );
-};
-
-// ---------- 5. Dónde están: más de la mitad en 5 manzanas (DENUE) ----------
-// Consultorios por manzana del DENUE: las 5 con más suman 173 de 311 (56%); el resto se reparte en otras 20.
-const MANZANAS = [60, 31, 30, 27, 25, 18, 18, 16, 14, 12, 11, 9, 9, 7, 4, 4, 4, 3, 2, 2, 1, 1, 1, 1, 1];
-const Garita: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const plano = suave(frame, fps, 0);
-  const resalta = suave(frame, fps, 70);
-  const pie = suave(frame, fps, 120);
-  return (
-    <>
-      <Titulo texto="Más de la mitad, en solo 5 manzanas" frase="Junto a la garita de Andrade." resaltar={["5", "manzanas"]} tFrase={36} />
-      <div style={{ position: "absolute", left: 80, top: 720, width: 920, height: 470, borderRadius: 30, background: "rgba(14,27,46,0.85)", opacity: plano, transform: `translateY(${(1 - plano) * 30}px)`, boxShadow: "0 40px 80px rgba(0,0,0,0.45)" }}>
-        <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: 56, borderRadius: "30px 30px 0 0", background: "repeating-linear-gradient(90deg, #C9C2B8 0 14px, transparent 14px 26px)", opacity: 0.7 }} />
-        <div style={{ position: "absolute", left: 0, right: 0, top: 10, display: "flex", justifyContent: "center" }}>
-          <div style={{ padding: "4px 18px", borderRadius: 10, background: C.crema, fontFamily: SANS, fontWeight: 600, fontSize: 24, color: C.noche }}>🛂 Frontera · garita de Andrade</div>
-        </div>
-        <div style={{ position: "absolute", left: 30, top: 80, display: "flex", alignItems: "flex-end", gap: 8, height: 340 }}>
-          {MANZANAS.map((n, i) => {
-            const top5 = i < 5;
-            const crece = interpolate(frame, [10 + i * 2, 40 + i * 2], [0, 1], { ...clamp, easing: Easing.out(Easing.cubic) });
+      ) : null}
+      {/* Pájaros que cruzan (la cámara los sigue) y luego se juntan en el centro */}
+      {frame >= 1195 && frame < 1295
+        ? Array.from({ length: 7 }).map((_, i) => {
+            const x = avesX - i * 70 + (540 - (avesX - i * 70)) * juntan;
+            const y = 700 + (i % 3) * 45 + Math.sin(frame / 6 + i) * 10 + (980 - (700 + (i % 3) * 45)) * juntan;
             return (
-              <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", width: 26 }}>
-                {top5 ? <div style={{ fontFamily: SANS, fontWeight: 600, fontSize: 20, color: C.crema, opacity: resalta, marginBottom: 4 }}>{n}</div> : null}
-                <div style={{ width: 26, height: (n / 60) * 280 * crece + 4, borderRadius: 6, background: top5 ? `rgba(255,107,91,${0.5 + resalta * 0.5})` : "#8A7A9A", boxShadow: top5 ? `0 0 ${resalta * 24}px ${C.coral}` : "none" }} />
+              <div key={i} style={{ position: "absolute", left: x - 25, top: y - 25, fontSize: 50, opacity: 1 - juntan * 0.8, transform: `scale(${1 - juntan * 0.6})` }}>
+                🐦
               </div>
             );
-          })}
-        </div>
-        <div style={{ position: "absolute", left: 30, right: 30, bottom: 16, fontFamily: SANS, fontWeight: 500, fontSize: 22, color: "rgba(255,244,230,0.7)" }}>
-          Consultorios por manzana · las 5 primeras suman 173 de 311
-        </div>
-      </div>
-      <div style={{ position: "absolute", left: 0, right: 0, top: 1225, display: "flex", justifyContent: "center", gap: 16, opacity: pie, transform: `translateY(${(1 - pie) * 20}px)` }}>
-        <div style={{ padding: "12px 26px", borderRadius: 999, background: `linear-gradient(90deg, ${C.naranja}, ${C.coral})`, fontFamily: SANS, fontWeight: 600, fontSize: 32, color: C.noche }}>56% en 5 manzanas</div>
-        <div style={{ padding: "12px 26px", borderRadius: 999, background: C.crema, fontFamily: SANS, fontWeight: 600, fontSize: 32, color: C.noche }}>77% con 0 a 5 trabajadores</div>
-      </div>
-      <Fuente texto={FUENTE_INEGI} />
-    </>
-  );
-};
+          })
+        : null}
+      <Fuente texto={FUENTE_UNAM} desde={T.temporada + 20} hasta={T.salud} />
 
-// ---------- 6. Temporada: verano caluroso, invierno con «pájaros de la nieve» ----------
-const Temporada: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const verano = suave(frame, fps, 10);
-  const invierno = suave(frame, fps, 60);
-  const aves = interpolate(frame, [180, 200], [0, 1], clamp);
-  return (
-    <>
-      <Titulo texto="Y tiene temporada" frase="En invierno, cuando baja el calor del desierto, llegan muchos más visitantes." resaltar={["temporada"]} tFrase={40} />
-      <div style={{ position: "absolute", left: 80, top: 800, width: 440, height: 380, borderRadius: 30, background: "rgba(40,16,30,0.82)", border: `2px solid ${C.coral}`, opacity: verano, transform: `translateY(${(1 - verano) * 40}px)`, textAlign: "center", paddingTop: 30 }}>
-        <div style={{ fontSize: 90 }}>☀️</div>
-        <div style={{ fontFamily: SERIF, fontWeight: 800, fontSize: 54, color: C.crema }}>Verano</div>
-        <div style={{ fontFamily: SANS, fontWeight: 600, fontSize: 36, color: C.naranja }}>35–40 °C</div>
-        <div style={{ fontFamily: SANS, fontWeight: 500, fontSize: 28, color: "rgba(255,244,230,0.8)", marginTop: 8 }}>menos visitantes</div>
-      </div>
-      <div style={{ position: "absolute", left: 560, top: 800, width: 440, height: 380, borderRadius: 30, background: "rgba(14,27,46,0.82)", border: "2px solid #7FB7BE", opacity: invierno, transform: `translateY(${(1 - invierno) * 40}px)`, textAlign: "center", paddingTop: 30 }}>
-        <div style={{ fontSize: 90 }}>❄️</div>
-        <div style={{ fontFamily: SERIF, fontWeight: 800, fontSize: 54, color: C.crema }}>Invierno</div>
-        <div style={{ fontFamily: SANS, fontWeight: 600, fontSize: 36, color: "#9ED6DC" }}>menos de 20 °C</div>
-        <div style={{ fontFamily: SANS, fontWeight: 500, fontSize: 28, color: "rgba(255,244,230,0.8)", marginTop: 8 }}>muchos más visitantes</div>
-      </div>
-      {Array.from({ length: 7 }).map((_, i) => {
-        const x = interpolate(frame, [180 + i * 4, 270], [-200 - i * 60, 1200], clamp);
-        return (
-          <div key={i} style={{ position: "absolute", left: x, top: 640 + (i % 3) * 40 + Math.sin(frame / 6 + i) * 8, fontSize: 44, opacity: aves }}>
-            🐦
+      {/* ---------- 7: insignia del turismo de salud ---------- */}
+      {frame >= 1280 && frame < T.cierre ? (
+        <div style={{ position: "absolute", inset: 0, transform: `scale(${frame < T.cierre ? latido : 1})`, transformOrigin: "540px 990px" }}>
+          <Transformar
+            de={{ x: 520, y: 970, w: 40, h: 40, radio: 20, color: C.coral }}
+            a={{ x: 370, y: 820, w: 340, h: 340, radio: 170, color: C.coral }}
+            desde={1280}
+            dur={26}
+          >
+            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: `radial-gradient(circle, ${C.naranja}, ${C.coral})` }}>
+              <Diente tam={180} color={C.crema} />
+            </div>
+          </Transformar>
+        </div>
+      ) : null}
+
+      {/* ---------- 8: la insignia se vuelve el globo de comentario ---------- */}
+      {frame >= T.cierre ? (
+        <Transformar de={{ x: 370, y: 820, w: 340, h: 340, radio: 170, color: C.coral }} a={{ x: 390, y: 900, w: 300, h: 200, radio: 60, color: C.coral }} desde={T.cierre} dur={30}>
+          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 24, background: `linear-gradient(135deg, ${C.naranja}, ${C.coral})` }}>
+            {[0, 1, 2].map((i) => (
+              <div key={i} style={{ width: 34, height: 34, borderRadius: 17, background: C.crema, opacity: 0.4 + 0.6 * Math.max(0, Math.sin(frame / 8 - i)) }} />
+            ))}
           </div>
-        );
-      })}
-      <div style={{ position: "absolute", left: 0, right: 0, top: 1230, display: "flex", justifyContent: "center", opacity: aves, transform: `scale(${0.8 + aves * 0.2})` }}>
-        <div style={{ padding: "14px 34px", borderRadius: 999, background: `linear-gradient(90deg, #9ED6DC, #FFF4E6)`, fontFamily: SERIF, fontWeight: 800, fontStyle: "italic", fontSize: 50, color: C.noche }}>
-          «los pájaros de la nieve»
-        </div>
-      </div>
-      <Fuente texto={FUENTE_UNAM} />
-    </>
+        </Transformar>
+      ) : null}
+
+      {/* Velo arriba para que los títulos se lean aunque la cámara acerque el mapa o la gráfica */}
+      <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(10,12,28,0.92) 0%, rgba(10,12,28,0.8) 24%, rgba(10,12,28,0) 36%)", pointerEvents: "none" }} />
+      {/* ---------- Títulos revelados desde una máscara, sincronizados con la voz ---------- */}
+      <Titulo texto="Un pueblo con 311 consultorios dentales" tiempos={[22, 30, 70, 79, 109, 125]} resaltar={["311"]} frase={null} tiemposFrase={null} hasta={T.mapa} />
+      <Titulo
+        texto="Los Algodones, Baja California"
+        tiempos={[182, 190, 234, 242]}
+        resaltar={["Algodones,"]}
+        frase="En la frontera con Estados Unidos."
+        tiemposFrase={repartir(6, 262, 300)}
+        hasta={T.visitantes}
+      />
+      <Titulo
+        texto="Miles de visitantes cada año"
+        tiempos={[442, 446, 452, 470, 476]}
+        resaltar={["Miles"]}
+        frase="De Estados Unidos y Canadá, por precios más accesibles."
+        tiemposFrase={[456, 462, 470, 476, 488, 548, 553, 562, 570]}
+        hasta={T.historia}
+      />
+      <Titulo
+        texto="Todo empezó en los años 70"
+        tiempos={[652, 660, 668, 672, 678, 685]}
+        resaltar={["70"]}
+        frase="Un dentista del pueblo se anunció en Estados Unidos."
+        tiemposFrase={[710, 714, 728, 734, 748, 760, 768, 775, 782]}
+        hasta={T.manzanas}
+      />
+      <Titulo
+        texto="Más de la mitad, en solo 5 manzanas"
+        tiempos={[848, 852, 858, 862, 896, 904, 910, 922]}
+        resaltar={["5", "manzanas"]}
+        frase="Junto a la garita de Andrade."
+        tiemposFrase={[944, 948, 952, 957, 966, 970]}
+        hasta={T.temporada}
+      />
+      <Titulo
+        texto="Y tiene temporada"
+        tiempos={[1004, 1008, 1014]}
+        resaltar={["temporada"]}
+        frase="En invierno llegan muchos más visitantes."
+        tiemposFrase={[1040, 1044, 1120, 1130, 1136, 1142]}
+        hasta={T.salud}
+      />
+      <Titulo
+        texto="Esto es turismo de salud"
+        tiempos={[1278, 1286, 1292, 1302, 1307]}
+        resaltar={["salud"]}
+        frase="Cuando el motivo del viaje es cuidarte."
+        tiemposFrase={[1330, 1338, 1344, 1352, 1358, 1366, 1372]}
+        hasta={T.cierre}
+      />
+      <Titulo
+        texto="¿Tú cruzarías la frontera para ir al dentista?"
+        tiempos={repartir(8, 1424, 1480)}
+        resaltar={["frontera"]}
+        frase="Te leo."
+        tiemposFrase={[1499, 1504]}
+        hasta={DURACION_ALGODONES + 20}
+      />
+    </AbsoluteFill>
   );
 };
-
-// ---------- 7. Turismo de salud ----------
-const Salud: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const icono = suave(frame, fps, 10);
-  const latido = 1 + Math.max(0, Math.sin(frame / 10)) * 0.05;
-  return (
-    <>
-      <Titulo texto="Esto es turismo de salud" frase="Cuando el motivo del viaje es cuidarte." resaltar={["salud"]} tFrase={48} />
-      <div style={{ position: "absolute", left: 540 - 170, top: 820, width: 340, height: 340, borderRadius: 170, background: `radial-gradient(circle, ${C.naranja}, ${C.coral})`, display: "flex", alignItems: "center", justifyContent: "center", transform: `scale(${icono * latido})`, boxShadow: `0 30px 90px ${C.coral}77` }}>
-        <Diente tam={180} color={C.crema} />
-      </div>
-      <div style={{ position: "absolute", left: 0, right: 0, top: 1210, textAlign: "center", fontFamily: SANS, fontWeight: 600, fontSize: 32, color: "rgba(255,244,230,0.85)", opacity: icono }}>
-        ♨️ 🏥 🦷 · uno de los tipos de turismo de la OMT
-      </div>
-    </>
-  );
-};
-
-// ---------- 8. Cierre ----------
-const Cierre: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const globo = suave(frame, fps, 14);
-  const flota = Math.sin(frame / 10) * 8;
-  return (
-    <>
-      <Titulo texto="¿Tú cruzarías la frontera para ir al dentista?" frase="Te leo." resaltar={["frontera"]} tFrase={75} />
-      <div style={{ position: "absolute", left: 540 - 150, top: 900 + flota, width: 300, height: 200, borderRadius: 60, background: `linear-gradient(135deg, ${C.naranja}, ${C.coral})`, transform: `scale(${globo})`, display: "flex", alignItems: "center", justifyContent: "center", gap: 24, boxShadow: `0 30px 80px ${C.coral}77` }}>
-        {[0, 1, 2].map((i) => (
-          <div key={i} style={{ width: 34, height: 34, borderRadius: 17, background: C.crema, opacity: 0.4 + 0.6 * Math.max(0, Math.sin(frame / 8 - i)) }} />
-        ))}
-      </div>
-    </>
-  );
-};
-
-const Escena: React.FC = () => (
-  <AbsoluteFill>
-    <Tramo rango={T.gancho}>
-      <Gancho />
-    </Tramo>
-    <Tramo rango={T.lugar}>
-      <Lugar />
-    </Tramo>
-    <Tramo rango={T.visitantes}>
-      <Visitantes />
-    </Tramo>
-    <Tramo rango={T.historia}>
-      <Historia />
-    </Tramo>
-    <Tramo rango={T.garita}>
-      <Garita />
-    </Tramo>
-    <Tramo rango={T.temporada}>
-      <Temporada />
-    </Tramo>
-    <Tramo rango={T.salud}>
-      <Salud />
-    </Tramo>
-    <Tramo rango={T.cierre}>
-      <Cierre />
-    </Tramo>
-  </AbsoluteFill>
-);
 
 export const Algodones: React.FC = () => (
   <>
