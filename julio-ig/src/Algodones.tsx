@@ -237,6 +237,7 @@ const Mapa: React.FC<{ visible: number }> = ({ visible }) => {
         <circle cx={PIN.x} cy={PIN.y} r={30 + pulso * 70} fill="none" stroke={C.coral} strokeWidth={6} opacity={1 - pulso} />
         <circle cx={PIN.x} cy={PIN.y} r={60} fill={C.coral} filter="url(#brillo)" opacity={0.8} />
         <circle cx={PIN.x} cy={PIN.y} r={30} fill={C.coral} stroke={C.crema} strokeWidth={6} />
+        <text x={762} y={738} fill="rgba(255,244,230,0.7)" fontFamily={SANS} fontWeight={600} fontSize={28} letterSpacing={6}>VICENTE GUERRERO · nombre oficial</text>
         <text x={760} y={790} fill="#FFF4E6" fontFamily={SERIF} fontWeight={800} fontSize={58}>Los Algodones</text>
         <text x={1560} y={1070} textAnchor="end" fill="rgba(255,244,230,0.4)" fontFamily={SANS} fontSize={28}>mapa ilustrativo, no a escala</text>
       </svg>
