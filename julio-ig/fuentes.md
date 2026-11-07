@@ -86,5 +86,10 @@ Fuente principal ✅ (leída completa): Rodríguez Blanco, A. (2020). «Turismo 
 - p. 54: no hay estadística oficial; «la Oficina de Turismo estima unos 350, además de unos 30 laboratorios».
 - p. 56: la zona turística primaria son «las dos manzanas próximas al cruce fronterizo (garita de Andrade)».
 - p. 57: verano de 35 a 40 °C con menos cruces; en invierno, con menos de 20 °C, «comienzan a llegar flujos mucho mayores de visitantes, los llamados pájaros de la nieve».
+**Dato oficial ✅ (reemplaza la estimación de 350):** INEGI, Directorio Estadístico Nacional de Unidades Económicas (DENUE), consulta descargada por Julio el 7 nov 2026 (archivo INEGI_DENUE_07112026), localidad Vicente Guerrero (Algodones), municipio de Mexicali:
+- 311 unidades económicas en la clase SCIAN 621211 «Consultorios dentales del sector privado».
+- Tamaño: 240 de 0 a 5 personas (77%), 58 de 6 a 10, 13 de 11 a 30.
+- Concentración: están en 25 manzanas; las 5 con más consultorios suman 173 de 311 (56%). Consultorios por manzana: 60, 31, 30, 27, 25, 18, 18, 16, 14, 12, 11, 9, 9, 7, 4, 4, 4, 3, 2, 2, 1, 1, 1, 1, 1.
+- Corrección: el guion decía «la mayoría está en las dos manzanas junto a la garita» (exageración); ahora dice «más de la mitad está en solo cinco manzanas, junto a la garita de Andrade».
 Pendiente: el artículo de Redalyc «Territorial fluidity as articulator of dental tourism in Molar City» (Redalyc bloquea descargas automáticas).
 Video 100% ilustrado (sin tomas de stock: vidIQ sin créditos y búsquedas de stock bloqueadas). Mapa ilustrativo, no a escala.

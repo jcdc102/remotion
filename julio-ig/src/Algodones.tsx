@@ -3,10 +3,12 @@ import { Grano } from "./cine";
 import { C, Palabras, Reel, SANS, SERIF } from "./comun";
 
 // Los Algodones, Baja California: turismo de salud. Ritmo pausado: fundidos suaves y tiempo para leer.
-// Datos: Rodríguez Blanco, A. (2020). Contexto Odontológico, 10(19), 50-58 (UNAM). Voz con pausas: public/voz-algodones.mp3 (52 s).
+// Datos: INEGI, DENUE (consulta del 7 nov 2026) y Rodríguez Blanco, A. (2020), Contexto Odontológico, 10(19), 50-58 (UNAM).
+// Voz con pausas: public/voz-algodones.mp3 (52 s).
 export const DURACION_ALGODONES = 1560;
 
-const FUENTE = "Fuente: Rodríguez Blanco (2020), Contexto Odontológico, UNAM";
+const FUENTE_UNAM = "Fuente: Rodríguez Blanco (2020), Contexto Odontológico, UNAM";
+const FUENTE_INEGI = "Fuente: INEGI, DENUE (consulta del 7 de noviembre de 2026)";
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 const FUNDIDO = 18;
 
@@ -92,9 +94,9 @@ const Desierto: React.FC = () => {
   );
 };
 
-const Fuente: React.FC = () => (
+const Fuente: React.FC<{ texto: string }> = ({ texto }) => (
   <div style={{ position: "absolute", left: 80, right: 80, top: 1390, padding: "8px 16px", borderRadius: 14, background: "rgba(14,27,46,0.75)", textAlign: "center", fontFamily: SANS, fontWeight: 500, fontSize: 21, color: "rgba(255,244,230,0.8)" }}>
-    {FUENTE}
+    {texto}
   </div>
 );
 
@@ -116,15 +118,15 @@ const Diente: React.FC<{ tam: number; color: string }> = ({ tam, color }) => (
   </svg>
 );
 
-// ---------- 1. Gancho: 350 consultorios ----------
+// ---------- 1. Gancho: 311 consultorios (INEGI) ----------
 const Gancho: React.FC = () => {
   const frame = useCurrentFrame();
   return (
     <>
-      <Titulo texto="Un pueblo con unos 350 consultorios dentales" frase={null} resaltar={["350"]} tFrase={0} />
+      <Titulo texto="Un pueblo con 311 consultorios dentales" frase={null} resaltar={["311"]} tFrase={0} />
       <div style={{ position: "absolute", left: 90, top: 760, display: "grid", gridTemplateColumns: "repeat(25, 32px)", gap: 4 }}>
-        {Array.from({ length: 350 }).map((_, i) => {
-          const s = interpolate(frame, [30 + i * 0.26, 42 + i * 0.26], [0, 1], clamp);
+        {Array.from({ length: 311 }).map((_, i) => {
+          const s = interpolate(frame, [30 + i * 0.29, 42 + i * 0.29], [0, 1], clamp);
           return (
             <div key={i} style={{ opacity: s, transform: `scale(${s})` }}>
               <Diente tam={30} color={i % 9 === 0 ? C.naranja : C.crema} />
@@ -132,7 +134,7 @@ const Gancho: React.FC = () => {
           );
         })}
       </div>
-      <Fuente />
+      <Fuente texto={FUENTE_INEGI} />
     </>
   );
 };
@@ -207,7 +209,7 @@ const Visitantes: React.FC = () => {
           🦷 Atención dental más accesible
         </div>
       </div>
-      <Fuente />
+      <Fuente texto={FUENTE_UNAM} />
     </>
   );
 };
@@ -246,55 +248,49 @@ const Historia: React.FC = () => {
         <div style={{ height: 2, background: "#6B3A22", margin: "26px 60px", opacity: 0.5 }} />
         <div style={{ fontFamily: SANS, fontWeight: 600, fontSize: 24, color: "#6B3A22" }}>ilustración</div>
       </div>
-      <Fuente />
+      <Fuente texto={FUENTE_UNAM} />
     </>
   );
 };
 
-// ---------- 5. Dónde están: las dos manzanas junto a la garita ----------
+// ---------- 5. Dónde están: más de la mitad en 5 manzanas (DENUE) ----------
+// Consultorios por manzana del DENUE: las 5 con más suman 173 de 311 (56%); el resto se reparte en otras 20.
+const MANZANAS = [60, 31, 30, 27, 25, 18, 18, 16, 14, 12, 11, 9, 9, 7, 4, 4, 4, 3, 2, 2, 1, 1, 1, 1, 1];
 const Garita: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const plano = suave(frame, fps, 0);
-  const resalta = suave(frame, fps, 80);
+  const resalta = suave(frame, fps, 70);
+  const pie = suave(frame, fps, 120);
   return (
     <>
-      <Titulo texto="Casi todo, en dos manzanas" frase="Justo junto a la garita de Andrade." resaltar={["dos", "manzanas"]} tFrase={30} />
-      <div style={{ position: "absolute", left: 80, top: 760, width: 920, height: 540, perspective: 1300, transform: "scale(0.88)" }}>
-        <div style={{ position: "absolute", inset: 0, borderRadius: 30, background: "#3A3550", transform: `rotateX(${44 - (1 - plano) * 25}deg)`, opacity: plano, boxShadow: "0 40px 80px rgba(0,0,0,0.45)", overflow: "hidden" }}>
-          <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: 70, background: "repeating-linear-gradient(90deg, #C9C2B8 0 14px, transparent 14px 26px)", opacity: 0.8 }} />
-          <div style={{ position: "absolute", left: 380, top: 10, padding: "6px 18px", borderRadius: 10, background: C.crema, fontFamily: SANS, fontWeight: 600, fontSize: 26, color: C.noche }}>🛂 Garita de Andrade</div>
-          {[0, 1, 2, 3, 4, 5].map((i) => {
-            const cerca = i === 1 || i === 2;
+      <Titulo texto="Más de la mitad, en solo 5 manzanas" frase="Junto a la garita de Andrade." resaltar={["5", "manzanas"]} tFrase={36} />
+      <div style={{ position: "absolute", left: 80, top: 720, width: 920, height: 470, borderRadius: 30, background: "rgba(14,27,46,0.85)", opacity: plano, transform: `translateY(${(1 - plano) * 30}px)`, boxShadow: "0 40px 80px rgba(0,0,0,0.45)" }}>
+        <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: 56, borderRadius: "30px 30px 0 0", background: "repeating-linear-gradient(90deg, #C9C2B8 0 14px, transparent 14px 26px)", opacity: 0.7 }} />
+        <div style={{ position: "absolute", left: 0, right: 0, top: 10, display: "flex", justifyContent: "center" }}>
+          <div style={{ padding: "4px 18px", borderRadius: 10, background: C.crema, fontFamily: SANS, fontWeight: 600, fontSize: 24, color: C.noche }}>🛂 Frontera · garita de Andrade</div>
+        </div>
+        <div style={{ position: "absolute", left: 30, top: 80, display: "flex", alignItems: "flex-end", gap: 8, height: 340 }}>
+          {MANZANAS.map((n, i) => {
+            const top5 = i < 5;
+            const crece = interpolate(frame, [10 + i * 2, 40 + i * 2], [0, 1], { ...clamp, easing: Easing.out(Easing.cubic) });
             return (
-              <div
-                key={i}
-                style={{
-                  position: "absolute",
-                  left: 40 + (i % 3) * 290,
-                  top: 110 + Math.floor(i / 3) * 210,
-                  width: 260,
-                  height: 180,
-                  borderRadius: 14,
-                  background: cerca ? `rgba(255,107,91,${0.35 + resalta * 0.55})` : "#E9D8C4",
-                  boxShadow: cerca ? `0 0 ${resalta * 50}px ${C.coral}` : "none",
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignContent: "center",
-                  justifyContent: "center",
-                  gap: 6,
-                  padding: 10,
-                }}
-              >
-                {Array.from({ length: cerca ? 18 : 3 }).map((_, k) => (
-                  <Diente key={k} tam={30} color={cerca ? C.crema : "#8A7A9A"} />
-                ))}
+              <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", width: 26 }}>
+                {top5 ? <div style={{ fontFamily: SANS, fontWeight: 600, fontSize: 20, color: C.crema, opacity: resalta, marginBottom: 4 }}>{n}</div> : null}
+                <div style={{ width: 26, height: (n / 60) * 280 * crece + 4, borderRadius: 6, background: top5 ? `rgba(255,107,91,${0.5 + resalta * 0.5})` : "#8A7A9A", boxShadow: top5 ? `0 0 ${resalta * 24}px ${C.coral}` : "none" }} />
               </div>
             );
           })}
         </div>
+        <div style={{ position: "absolute", left: 30, right: 30, bottom: 16, fontFamily: SANS, fontWeight: 500, fontSize: 22, color: "rgba(255,244,230,0.7)" }}>
+          Consultorios por manzana · las 5 primeras suman 173 de 311
+        </div>
       </div>
-      <Fuente />
+      <div style={{ position: "absolute", left: 0, right: 0, top: 1225, display: "flex", justifyContent: "center", gap: 16, opacity: pie, transform: `translateY(${(1 - pie) * 20}px)` }}>
+        <div style={{ padding: "12px 26px", borderRadius: 999, background: `linear-gradient(90deg, ${C.naranja}, ${C.coral})`, fontFamily: SANS, fontWeight: 600, fontSize: 32, color: C.noche }}>56% en 5 manzanas</div>
+        <div style={{ padding: "12px 26px", borderRadius: 999, background: C.crema, fontFamily: SANS, fontWeight: 600, fontSize: 32, color: C.noche }}>77% con 0 a 5 trabajadores</div>
+      </div>
+      <Fuente texto={FUENTE_INEGI} />
     </>
   );
 };
@@ -334,7 +330,7 @@ const Temporada: React.FC = () => {
           «los pájaros de la nieve»
         </div>
       </div>
-      <Fuente />
+      <Fuente texto={FUENTE_UNAM} />
     </>
   );
 };
