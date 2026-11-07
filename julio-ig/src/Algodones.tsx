@@ -170,7 +170,14 @@ const Titulo: React.FC<{ texto: string; tiempos: number[]; resaltar: string[] | 
 const repartir = (n: number, a: number, b: number) => Array.from({ length: n }, (_, i) => Math.round(a + ((b - a) * i) / n));
 
 // ---------- Mundo del mapa (coordenadas propias, la cámara lo recorre) ----------
-const PIN = { x: 1000, y: 520 };
+// Geografía según el mapa que mandó Julio: el pueblo es un triángulo pegado a la línea fronteriza,
+// la garita (Andrade, California) está en su esquina noreste, el río Colorado corre por el este
+// (del otro lado, Arizona y Yuma) y Mexicali queda al oeste, a unos 70 km (Rodríguez Blanco, 2020, p. 57).
+const LINEA = 420; // línea fronteriza
+const PIN = { x: 960, y: 550 }; // centro del pueblo
+const GARITA = { x: 1090, y: LINEA };
+const RIO = "M 1300 0 Q 1230 220 1180 420 Q 1150 520 1110 610 Q 1060 720 1010 820 Q 950 960 900 1100";
+const PUEBLO = "M 750 420 L 1150 420 L 1112 560 L 1045 680 L 935 705 L 862 625 L 745 520 Z";
 const Mapa: React.FC<{ visible: number }> = ({ visible }) => {
   const frame = useCurrentFrame();
   const pulso = (frame % 50) / 50;
@@ -192,50 +199,60 @@ const Mapa: React.FC<{ visible: number }> = ({ visible }) => {
           <clipPath id="tarjetaMapa">
             <rect x={0} y={0} width={1600} height={1100} rx={60} />
           </clipPath>
-        </defs>
-        <g clipPath="url(#tarjetaMapa)">
-          <rect x={0} y={0} width={1600} height={1100} fill="#151C36" />
-          <rect x={0} y={0} width={1600} height={PIN.y} fill="#0F1529" />
-          <rect x={0} y={0} width={1600} height={1100} filter="url(#ruido)" />
-          {Array.from({ length: 9 }).map((_, i) => (
-            <line key={i} x1={i * 200} y1={0} x2={i * 200} y2={1100} stroke="rgba(255,244,230,0.05)" strokeWidth={2} />
-          ))}
-          <path d={`M 860 1100 Q 900 900 950 760 Q 980 650 ${PIN.x} ${PIN.y} Q 1060 380 1180 200 Q 1240 110 1300 0`} fill="none" stroke="#5FD3E0" strokeWidth={30} filter="url(#brillo)" opacity={0.6} />
-          <path d={`M 860 1100 Q 900 900 950 760 Q 980 650 ${PIN.x} ${PIN.y} Q 1060 380 1180 200 Q 1240 110 1300 0`} fill="none" stroke="#9BE8F0" strokeWidth={10} />
-          <path d={`M 0 ${PIN.y} L ${PIN.x} ${PIN.y} L 1600 260`} stroke={C.coral} strokeWidth={22} fill="none" filter="url(#brillo)" opacity={0.7} />
-          <path d={`M 0 ${PIN.y} L ${PIN.x} ${PIN.y} L 1600 260`} stroke="#FFB3A8" strokeWidth={5} strokeDasharray="30 16" strokeDashoffset={-frame * 1.2} fill="none" />
-        </g>
-        <rect x={1} y={1} width={1598} height={1098} rx={60} fill="none" stroke="rgba(255,244,230,0.18)" strokeWidth={3} />
-        <text x={120} y={PIN.y - 60} fill="rgba(255,244,230,0.75)" fontFamily={SANS} fontWeight={600} fontSize={44} letterSpacing={10} opacity={eua}>ESTADOS UNIDOS</text>
-        <text x={120} y={PIN.y + 100} fill="rgba(255,244,230,0.75)" fontFamily={SANS} fontWeight={600} fontSize={44} letterSpacing={10} opacity={mx}>MÉXICO · BAJA CALIFORNIA</text>
-        <circle cx={330} cy={760} r={12} fill="#FFF4E6" opacity={mx} />
-        <text x={360} y={772} fill="rgba(255,244,230,0.6)" fontFamily={SANS} fontWeight={500} fontSize={36} letterSpacing={4} opacity={mx}>Mexicali</text>
-        <text x={1320} y={140} fill="rgba(255,244,230,0.6)" fontFamily={SANS} fontWeight={500} fontSize={36} letterSpacing={4} opacity={eua}>Arizona</text>
-        <rect x={PIN.x - 6} y={PIN.y - 420} width={12} height={420} fill="url(#haz)" opacity={0.9} />
-        <defs>
           <linearGradient id="haz" x1="0" y1="1" x2="0" y2="0">
             <stop offset="0" stopColor="#FFB3A8" stopOpacity="0.9" />
             <stop offset="1" stopColor="#FFB3A8" stopOpacity="0" />
           </linearGradient>
         </defs>
-        <text x={PIN.x + 50} y={PIN.y + 70} fill="#FFF4E6" fontFamily={SERIF} fontWeight={800} fontSize={58}>Los Algodones</text>
+        <g clipPath="url(#tarjetaMapa)">
+          {/* México (oeste del río, abajo de la línea) y Estados Unidos (arriba de la línea y al este del río) */}
+          <rect x={0} y={0} width={1600} height={1100} fill="#0F1529" />
+          <path d={`M 0 ${LINEA} L 1180 ${LINEA} Q 1150 520 1110 610 Q 1060 720 1010 820 Q 950 960 900 1100 L 0 1100 Z`} fill="#161E3A" />
+          <rect x={0} y={0} width={1600} height={1100} filter="url(#ruido)" />
+          {Array.from({ length: 9 }).map((_, i) => (
+            <line key={i} x1={i * 200} y1={0} x2={i * 200} y2={1100} stroke="rgba(255,244,230,0.05)" strokeWidth={2} />
+          ))}
+          {/* El pueblo */}
+          <path d={PUEBLO} fill="rgba(255,179,168,0.16)" stroke="rgba(255,179,168,0.6)" strokeWidth={4} strokeDasharray="10 8" />
+          {/* Río Colorado */}
+          <path d={RIO} fill="none" stroke="#5FD3E0" strokeWidth={30} filter="url(#brillo)" opacity={0.6} />
+          <path d={RIO} fill="none" stroke="#9BE8F0" strokeWidth={10} />
+          {/* Línea fronteriza */}
+          <path d={`M 0 ${LINEA} L 1180 ${LINEA}`} stroke={C.coral} strokeWidth={22} fill="none" filter="url(#brillo)" opacity={0.7} />
+          <path d={`M 0 ${LINEA} L 1180 ${LINEA}`} stroke="#FFB3A8" strokeWidth={5} strokeDasharray="30 16" strokeDashoffset={-frame * 1.2} fill="none" />
+        </g>
+        <rect x={1} y={1} width={1598} height={1098} rx={60} fill="none" stroke="rgba(255,244,230,0.18)" strokeWidth={3} />
+        <text x={90} y={LINEA - 70} fill="rgba(255,244,230,0.75)" fontFamily={SANS} fontWeight={600} fontSize={44} letterSpacing={10} opacity={eua}>ESTADOS UNIDOS</text>
+        <text x={90} y={LINEA - 20} fill="rgba(255,244,230,0.5)" fontFamily={SANS} fontWeight={500} fontSize={32} letterSpacing={6} opacity={eua}>California</text>
+        <text x={1240} y={780} fill="rgba(255,244,230,0.5)" fontFamily={SANS} fontWeight={600} fontSize={36} letterSpacing={8} opacity={eua}>ARIZONA</text>
+        <text x={1300} y={560} fill="rgba(255,244,230,0.6)" fontFamily={SANS} fontWeight={500} fontSize={34} letterSpacing={3} opacity={eua}>Yuma →</text>
+        <text x={1150} y={300} fill="rgba(255,244,230,0.55)" fontFamily={SANS} fontWeight={500} fontSize={30} letterSpacing={3} opacity={eua} transform="rotate(-72 1150 300)">río Colorado</text>
+        <text x={90} y={LINEA + 90} fill="rgba(255,244,230,0.75)" fontFamily={SANS} fontWeight={600} fontSize={44} letterSpacing={10} opacity={mx}>MÉXICO</text>
+        <text x={90} y={LINEA + 140} fill="rgba(255,244,230,0.5)" fontFamily={SANS} fontWeight={500} fontSize={32} letterSpacing={6} opacity={mx}>Baja California</text>
+        <text x={90} y={1000} fill="rgba(255,244,230,0.6)" fontFamily={SANS} fontWeight={500} fontSize={34} letterSpacing={3} opacity={mx}>← Mexicali · 70 km</text>
+        {/* Garita: esquina noreste del pueblo, frente a Andrade, California */}
+        <circle cx={GARITA.x} cy={GARITA.y} r={16} fill="#FFF4E6" stroke={C.coral} strokeWidth={5} />
+        <text x={GARITA.x + 26} y={GARITA.y - 24} fill="rgba(255,244,230,0.75)" fontFamily={SANS} fontWeight={600} fontSize={30}>garita · Andrade</text>
+        <rect x={PIN.x - 6} y={PIN.y - 420} width={12} height={420} fill="url(#haz)" opacity={0.9} />
         <circle cx={PIN.x} cy={PIN.y} r={30 + pulso * 70} fill="none" stroke={C.coral} strokeWidth={6} opacity={1 - pulso} />
         <circle cx={PIN.x} cy={PIN.y} r={60} fill={C.coral} filter="url(#brillo)" opacity={0.8} />
         <circle cx={PIN.x} cy={PIN.y} r={30} fill={C.coral} stroke={C.crema} strokeWidth={6} />
+        <text x={760} y={790} fill="#FFF4E6" fontFamily={SERIF} fontWeight={800} fontSize={58}>Los Algodones</text>
         <text x={1560} y={1070} textAnchor="end" fill="rgba(255,244,230,0.4)" fontFamily={SANS} fontSize={28}>mapa ilustrativo, no a escala</text>
       </svg>
-      {/* «Molar City» revelado desde una máscara junto al pin */}
-      <div style={{ position: "absolute", left: PIN.x + 50, top: PIN.y + 100, overflow: "hidden", padding: "0 6px" }}>
+      {/* «Molar City» revelado desde una máscara bajo el nombre */}
+      <div style={{ position: "absolute", left: 760, top: 810, overflow: "hidden", padding: "0 6px" }}>
         <div style={{ transform: `translateY(${(1 - molar) * 110}%)`, fontFamily: SERIF, fontWeight: 800, fontStyle: "italic", fontSize: 72, color: "#FFB3A8", textShadow: "0 0 30px rgba(255,107,91,0.8)" }}>«Molar City»</div>
       </div>
-      {/* Banderas y visitantes que cruzan la frontera hacia el pueblo */}
-      <div style={{ position: "absolute", left: PIN.x - 260, top: PIN.y - 300, fontSize: 90, opacity: banderas[0], transform: `scale(${0.6 + banderas[0] * 0.4})` }}>🇺🇸</div>
-      <div style={{ position: "absolute", left: PIN.x - 140, top: PIN.y - 300, fontSize: 90, opacity: banderas[1], transform: `scale(${0.6 + banderas[1] * 0.4})` }}>🇨🇦</div>
+      {/* Banderas del lado de Estados Unidos y visitantes que cruzan por la garita hacia el pueblo */}
+      <div style={{ position: "absolute", left: GARITA.x - 330, top: LINEA - 170, fontSize: 90, opacity: banderas[0], transform: `scale(${0.6 + banderas[0] * 0.4})` }}>🇺🇸</div>
+      <div style={{ position: "absolute", left: GARITA.x - 210, top: LINEA - 170, fontSize: 90, opacity: banderas[1], transform: `scale(${0.6 + banderas[1] * 0.4})` }}>🇨🇦</div>
       {Array.from({ length: 10 }).map((_, i) => {
         const ciclo = ((frame - 440 + i * 23) % 150) / 150;
         const activo = frame > 440 + i * 4;
+        const x = GARITA.x - 30 + (i % 3) * 22 - ciclo * 90;
         return (
-          <div key={i} style={{ position: "absolute", left: PIN.x - 120 + (i % 5) * 50, top: PIN.y - 260 + ciclo * 420, fontSize: 54, opacity: activo ? Math.sin(ciclo * Math.PI) : 0 }}>
+          <div key={i} style={{ position: "absolute", left: x, top: LINEA - 160 + ciclo * 320, fontSize: 50, opacity: activo ? Math.sin(ciclo * Math.PI) : 0 }}>
             {["🧳", "🚶", "🧓", "🚶‍♀️", "🧳"][i % 5]}
           </div>
         );
@@ -329,10 +346,10 @@ const Recorrido: React.FC = () => {
   const camMapa = [
     { f: T.mapa, x: PIN.x, y: PIN.y - (pinPantallaY - 960) / 3, s: 3 },
     { f: 230, x: PIN.x, y: PIN.y - (pinPantallaY - 960) / 3, s: 3 },
-    { f: 300, x: 820, y: 560, s: 0.62 },
+    { f: 300, x: 800, y: 560, s: 0.62 },
     { f: 400, x: 840, y: 560, s: 0.66 },
-    { f: 450, x: PIN.x + 110, y: PIN.y - 40, s: 1.1 }, // se acerca al cruce de los visitantes
-    { f: 620, x: PIN.x + 120, y: PIN.y - 20, s: 1.18 },
+    { f: 450, x: GARITA.x - 60, y: GARITA.y + 100, s: 1.1 }, // se acerca a la garita, donde cruzan los visitantes
+    { f: 620, x: GARITA.x - 70, y: GARITA.y + 110, s: 1.14 },
   ];
 
   // 4. Una maleta de los visitantes se transforma en el cartel de los años 70.
