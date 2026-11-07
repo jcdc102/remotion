@@ -77,3 +77,14 @@ Frase original (no es cita). Tomas de Pexels:
 | Ballena jorobada en la Bahía de Banderas en invierno; investigación de la Dra. Rosa María Chávez Dagostino (CUCosta) sobre avistamiento y la NOM-131-SEMARNAT-2010 | ✅ | [UdeG, CUCosta (2025)](https://comsoc.udg.mx/printpdf/90251) |
 
 Tomas reales: monarca — Hao Le · https://www.pexels.com/video/close-up-of-monarch-butterfly-on-purple-flowers-39573849/ ; Morelia — carlos luna · https://www.pexels.com/video/aerial-view-of-morelia-cathedral-in-mexico-32717245/ . Oaxaca, Barrancas, Tolantongo y Vallarta van ilustrados porque no hubo tomas verdaderas de esos lugares. Mapa de México simplificado e ilustrativo.
+
+## Los Algodones, Baja California (7 nov 2026)
+Fuente principal ✅ (leída completa): Rodríguez Blanco, A. (2020). «Turismo dental en Molar City: un análisis cualitativo desde sus trabajadores». *Contexto Odontológico*, 10(19), 50-58. UNAM, Posgrado en Geografía. https://revistas.uaz.edu.mx/index.php/contextoodontologico/article/download/949/867
+- p. 50: «Molar City es el nombre con el que se conoce a la pequeña localidad de Los Algodones (Baja California)… al que cada año llegan miles de estadounidenses y canadienses que buscan atención odontológica a precios más accesibles».
+- p. 52: dedicado al turismo médico (con énfasis en la odontología) «desde la década de 1970, debido a la iniciativa de un dentista establecido en el poblado que comenzó a promocionar sus servicios en Estados Unidos».
+- p. 53: Los Algodones está en el municipio de Mexicali.
+- p. 54: no hay estadística oficial; «la Oficina de Turismo estima unos 350, además de unos 30 laboratorios».
+- p. 56: la zona turística primaria son «las dos manzanas próximas al cruce fronterizo (garita de Andrade)».
+- p. 57: verano de 35 a 40 °C con menos cruces; en invierno, con menos de 20 °C, «comienzan a llegar flujos mucho mayores de visitantes, los llamados pájaros de la nieve».
+Pendiente: el artículo de Redalyc «Territorial fluidity as articulator of dental tourism in Molar City» (Redalyc bloquea descargas automáticas).
+Video 100% ilustrado (sin tomas de stock: vidIQ sin créditos y búsquedas de stock bloqueadas). Mapa ilustrativo, no a escala.
