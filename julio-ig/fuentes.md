@@ -65,3 +65,15 @@ Frase original (no es cita). Tomas de Pexels:
 - mar-atardecer: Atahan Demir · https://www.pexels.com/video/sea-during-sunset-13689606/
 - mujer-playa: Marlon Schmeiski · https://www.pexels.com/video/a-woman-standing-on-the-beach-at-sunset-20270227/
 - playa: Abdelkrim Benbaha · https://www.pexels.com/video/golden-beach-sunset-video-18302188/
+
+## ¿A dónde ir en diciembre? (7 nov 2026)
+| Dato | Estado | Fuente |
+|---|---|---|
+| Noche de Rábanos, Oaxaca: 23 de diciembre, desde 1897 | 🟡 prensa coincidente | [La Jornada (2012)](https://www.jornada.com.mx/2012/12/24/estados/031n2est), [México Desconocido](https://www.mexicodesconocido.com.mx/noche-de-rabanos-oaxaca-tradicion-diciembre.html) (cita a A. Méndez Aquino, «Noche de Rábanos», 1997) |
+| Reserva de la Biosfera Mariposa Monarca: Patrimonio Mundial UNESCO desde 2008; temporada de mediados de noviembre a marzo (CONANP) | ✅ UNESCO / 🟡 fechas | UNESCO, Lista del Patrimonio Mundial; [Tus Buenas Noticias](https://www.tusbuenasnoticias.com/noticias/turismo/2025/11/28/53902-mariposa-monarca-en-michoacan-guia-completa-de-los-santuarios-tarifas-y-consejos-de-visita) |
+| Barrancas del Cobre: nieve posible de diciembre a febrero (Creel, Divisadero) | 🟡 | [México Desconocido](https://www.mexicodesconocido.com.mx/viaje-en-el-tren-chepe-en-invierno.html) |
+| Cocina tradicional mexicana, Patrimonio Cultural Inmaterial 2010, «el paradigma de Michoacán» | ✅ | [UNESCO](https://ich.unesco.org/es/RL/la-cocina-tradicional-mexicana-cultura-comunitaria-ancestral-y-viva-el-paradigma-de-michuacan-00400) |
+| Grutas de Tolantongo: aguas termales en Cardonal, Hidalgo (sin afirmaciones terapéuticas) | 🟡 | [México Desconocido](https://www.mexicodesconocido.com.mx/grutas-de-tolantongo-entre-las-mas-instagrameables-del-mundo.html) |
+| Ballena jorobada en la Bahía de Banderas en invierno; investigación de la Dra. Rosa María Chávez Dagostino (CUCosta) sobre avistamiento y la NOM-131-SEMARNAT-2010 | ✅ | [UdeG, CUCosta (2025)](https://comsoc.udg.mx/printpdf/90251) |
+
+Tomas reales: monarca — Hao Le · https://www.pexels.com/video/close-up-of-monarch-butterfly-on-purple-flowers-39573849/ ; Morelia — carlos luna · https://www.pexels.com/video/aerial-view-of-morelia-cathedral-in-mexico-32717245/ . Oaxaca, Barrancas, Tolantongo y Vallarta van ilustrados porque no hubo tomas verdaderas de esos lugares. Mapa de México simplificado e ilustrativo.
