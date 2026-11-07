@@ -18,6 +18,15 @@
 - Texto entre el 15% superior y el 25% inferior libres (interfaz de Instagram).
 - Datos verificables únicamente; nada de «según la psicología» ni citas sin fuente.
 
+## Indicaciones de edición (pedidas por Julio, para todos los videos)
+Piezas listas en `src/edicion.tsx`.
+1. **Sincroniza las entradas con tu narración:** cada texto, ícono o dato entra en el fotograma exacto en que la voz lo dice (medir con silencedetect y, si hace falta, por palabra). Nada aparece antes de decirse. `TextoMascara` acepta `tiempos` por palabra.
+2. **Haz que la cámara siga lo importante:** una cámara virtual (`Camara`, con puntos clave {f, x, y, s}) se mueve y hace zoom hacia lo que se está explicando, en lugar de mostrar todo quieto al mismo tiempo.
+3. **Transforma un objeto para introducir la siguiente escena:** las escenas se conectan con un objeto que se convierte en el siguiente (por ejemplo, un pin del mapa se vuelve la tarjeta, un diente se vuelve el número). `Transformar` cambia posición, tamaño, forma y color de A a B. Evitar el simple fundido cuando se pueda hacer una transformación.
+4. **Encadena los movimientos:** un movimiento termina donde empieza el siguiente; nada se detiene en seco ni queda congelado. Usar la curva suave (bezier 0.65, 0, 0.35, 1) y traslapar las animaciones.
+5. **Revela el texto desde una máscara:** los títulos aparecen subiendo desde detrás de una línea invisible (`TextoMascara`), no con un simple fundido.
+Estas indicaciones se combinan con el ritmo pausado: movimiento continuo pero sin prisa.
+
 ## Datos y fuentes (regla obligatoria)
 - Cada dato se verifica antes de usarlo y se anota en `fuentes.md`, con la fuente y la fecha en que se revisó.
 - Orden de preferencia de las fuentes:
