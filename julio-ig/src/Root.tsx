@@ -5,6 +5,7 @@ import { TiposDeTurismo, DURACION_TIPOS } from "./TiposDeTurismo";
 import { ReflexionDar, DURACION_REFLEXION_DAR } from "./ReflexionDar";
 import { Diciembre, DURACION_DICIEMBRE } from "./Diciembre";
 import { Algodones, DURACION_ALGODONES } from "./Algodones";
+import { RadarPromo, DURACION_RADAR } from "./RadarPromo";
 import { HistoriaAlgodones, DURACION_HISTORIA_ALGODONES } from "./HistoriaAlgodones";
 
 export const RemotionRoot: React.FC = () => {
@@ -24,6 +25,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="Diciembre" component={Diciembre} durationInFrames={DURACION_DICIEMBRE} fps={30} width={1080} height={1920} />
       <Composition id="Algodones" component={Algodones} durationInFrames={DURACION_ALGODONES} fps={30} width={1080} height={1920} />
       <Composition id="HistoriaAlgodones" component={HistoriaAlgodones} durationInFrames={DURACION_HISTORIA_ALGODONES} fps={30} width={1080} height={1920} />
+      <Composition id="RadarPromo" component={RadarPromo} durationInFrames={DURACION_RADAR} fps={30} width={1080} height={1920} />
     </>
   );
 };

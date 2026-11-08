@@ -104,3 +104,14 @@ Investigación completa en `investigacion/los-algodones.md`. Datos usados en pan
 - ✅ 311 consultorios dentales: INEGI, DENUE (consulta del 7 nov 2026).
 - No usados, porque no se pudieron confirmar: la fecha de fundación (27 jul 1894), el año de apertura de la garita y el origen del nombre.
 El sello de la aduana es una ilustración; no se usó la foto de archivo de 1905 (derechos sin confirmar).
+
+## Promo «Radar Empresarial» (Radio UdeG Puerto Vallarta, 104.3 FM), 8 nov 2026
+Tema: del marketing de masas al marketing de nichos. Voz: clon «Julio». Logos: los que mandó Julio (Radio UdeG PV y Radar Empresarial).
+- ✅ 95.4% de las unidades económicas son micro y emplean al 41.4% del personal (corrige el 95.5/41.5 de los resultados oportunos): INEGI, CE 2024, resultados definitivos, comunicado 79/25 (24 jul 2025). https://www.inegi.org.mx/contenidos/saladeprensa/boletines/2025/ce/CE2024_def.pdf
+- ✅ PyMEs (11 a 250 personas) que venden en línea: 18.7% en 2018 y 28.8% en 2023. INEGI, CE 2024, resultados oportunos, comunicado 05/25 (23 ene 2025). https://inegi.org.mx/contenidos/saladeprensa/boletines/2025/ce/CE_2024_RO_Nal.pdf
+- ✅ 71% espera personalización y 76% se frustra si no la recibe: McKinsey (2021), Next in Personalization 2021 (encuesta en EE. UU., n=1,013). https://www.mckinsey.com/business-functions/growth-marketing-and-sales/our-insights/the-value-of-getting-personalization-right-or-wrong-is-multiplying
+- ✅ Fenty Beauty, 40 tonos y 100 millones de dólares en 40 días «según reportes»: The Fashion Law, con datos de Vogue. https://www.thefashionlaw.com/rihannas-fenty-beauty-collection-brought-in-a-reported-100-million-in-40-days/
+- 🟡 No usado: AIMX 2026 (50% usa IA, 6 h diarias); sólo se confirmó en prensa.
+- Propuestos y no usados: Jalisco, 94.2% micro y 40.6% del personal; 106,816 de 365,421 unidades usaron internet (INEGI, CE 2024, definitivos Jalisco).
+- Bodas de destino y ballenas: sólo como ejemplos de nicho, sin cifras.
+- Música: pista reutilizada de «vuelos» (vidIQ sin créditos hasta el 2 dic 2026).
