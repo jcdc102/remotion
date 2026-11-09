@@ -134,3 +134,16 @@ Acabado premium:
 - Iluminación: luces de acento (rojo de marca), viñeta ligera, grano fino de película, gradación de color cálida y con contraste.
 - Tipografía limpia con mucho aire; pocos elementos a la vez; movimientos con resorte suave, sin rebotes exagerados.
 - Elementos reales: cuando ayude a que se entienda o se vea mejor, integrar video, fotos u objetos reales (por ejemplo, tomas del taller del cliente, piezas reales recortadas) mezclados con la animación, con la misma gradación de color.
+
+---
+
+## ESTILO COOL 3D (obligatorio en TODOS los videos)
+
+Público: conductores mexicanos de 25 a 55 años (dueños de auto de uso diario, familias, trabajadores) que ven TikTok/Reels/Facebook. El video debe entretener como contenido, no parecer anuncio.
+- Se ve pro, premium y en 3D: objetos 3D reales (@remotion/three) con luces, reflejos y sombras; capas con profundidad y cámara que se mueve en 3D.
+- Fondo siempre acorde a lo que se dice y en movimiento constante: nunca un fondo fijo ni de un color.
+- Tomas reales cuando ayuden: clips de video e imágenes reales (generadas en ElevenLabs con modelos de video/imagen, o tomas del taller del cliente) mezclados con los gráficos 3D, con la misma gradación de color.
+- Música de fondo real (ElevenLabs Music, instrumental, 120 BPM, del ánimo del tema), con ducking bajo la voz.
+- Ritmo entretenido: un cambio visual cada 1–2 s, humor ligero y frases del día a día, ganchos y re-enganches claros.
+- El estilo puede variar entre videos (cinemático, show de juego, documental, etc.), siempre pro.
+- Voz: la voz "DOCTOR AUTO" de ElevenLabs (voice_id m4FLfO3mc8RTRVJVmA9C, modelo eleven_v3), toma única cortada por palabras con scripts/cortar-por-palabras.py.

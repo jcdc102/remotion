@@ -29,8 +29,8 @@ import { TemaBateria } from "./bateria/Bateria";
 import { TemaAlineacion } from "./alineacion/Alineacion";
 import { TemaPasarCorriente } from "./pasar-corriente/PasarCorriente";
 import { TemaRuidos } from "./ruidos/Ruidos";
-import { TemaViaje } from "./viaje/Viaje";
-import { TemaMitos } from "./mitos/Mitos";
+import { TemaViajePro } from "./viaje/ViajePro";
+import { TemaMitosPro } from "./mitos/MitosPro";
 
 const VOZ = staticFile("estructura8/voz.mp3");
 const sfx = (nombre: string) => staticFile(`estructura8/sfx/${nombre}.wav`);
@@ -271,7 +271,7 @@ export const Estructura8: React.FC<{ tema: TemaEstructura8 }> = ({ tema }) => {
   if (tema === "alineacion") return <TemaAlineacion />;
   if (tema === "pasar-corriente") return <TemaPasarCorriente />;
   if (tema === "ruidos") return <TemaRuidos />;
-  if (tema === "viaje") return <TemaViaje />;
-  if (tema === "mitos") return <TemaMitos />;
+  if (tema === "viaje") return <TemaViajePro />;
+  if (tema === "mitos") return <TemaMitosPro />;
   return <DiaDeMuertos />;
 };
