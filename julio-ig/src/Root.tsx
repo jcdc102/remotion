@@ -25,7 +25,8 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="Diciembre" component={Diciembre} durationInFrames={DURACION_DICIEMBRE} fps={30} width={1080} height={1920} />
       <Composition id="Algodones" component={Algodones} durationInFrames={DURACION_ALGODONES} fps={30} width={1080} height={1920} />
       <Composition id="HistoriaAlgodones" component={HistoriaAlgodones} durationInFrames={DURACION_HISTORIA_ALGODONES} fps={30} width={1080} height={1920} />
-      <Composition id="RadarPromo" component={RadarPromo} durationInFrames={DURACION_RADAR} fps={30} width={1080} height={1920} />
+      <Composition id="RadarPromo" component={RadarPromo} durationInFrames={DURACION_RADAR} fps={30} width={1080} height={1920} defaultProps={{ horizontal: false }} />
+      <Composition id="RadarPromoHorizontal" component={RadarPromo} durationInFrames={DURACION_RADAR} fps={30} width={1920} height={1080} defaultProps={{ horizontal: true }} />
     </>
   );
 };

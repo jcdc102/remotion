@@ -115,3 +115,8 @@ Tema: del marketing de masas al marketing de nichos. Voz: clon «Julio». Logos:
 - Propuestos y no usados: Jalisco, 94.2% micro y 40.6% del personal; 106,816 de 365,421 unidades usaron internet (INEGI, CE 2024, definitivos Jalisco).
 - Bodas de destino y ballenas: sólo como ejemplos de nicho, sin cifras.
 - Música: pista reutilizada de «vuelos» (vidIQ sin créditos hasta el 2 dic 2026).
+
+### Cambio del 9 nov 2026: sin marcas y en horizontal (pedido de Julio)
+- Se quitó el caso Fenty Beauty (voz y pantalla) y la voz ya no dice «McKinsey»: ahora dice «un estudio de 2021». La fuente sigue en letra chica en pantalla, porque cada dato lleva su fuente.
+- Escena nueva en lugar de Fenty: «Cuando le hablas a alguien en específico… te escucha» (sin datos).
+- Versión horizontal 1920x1080 (RadarPromoHorizontal).
