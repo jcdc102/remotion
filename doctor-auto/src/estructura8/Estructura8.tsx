@@ -31,6 +31,8 @@ import { TemaPasarCorriente } from "./pasar-corriente/PasarCorriente";
 import { TemaRuidos } from "./ruidos/Ruidos";
 import { TemaViajePro } from "./viaje/ViajePro";
 import { TemaMitosPro } from "./mitos/MitosPro";
+import { TemaCalor } from "./calor/CalorPro";
+import { TemaAdivina } from "./adivina/AdivinaPro";
 
 const VOZ = staticFile("estructura8/voz.mp3");
 const sfx = (nombre: string) => staticFile(`estructura8/sfx/${nombre}.wav`);
@@ -263,7 +265,7 @@ const DiaDeMuertos: React.FC = () => {
   );
 };
 
-export type TemaEstructura8 = "dia-de-muertos" | "bateria" | "alineacion" | "pasar-corriente" | "ruidos" | "viaje" | "mitos";
+export type TemaEstructura8 = "dia-de-muertos" | "bateria" | "alineacion" | "pasar-corriente" | "ruidos" | "viaje" | "mitos" | "calor" | "adivina";
 
 // Estructura8: misma estructura de 8 piezas con distintos temas.
 export const Estructura8: React.FC<{ tema: TemaEstructura8 }> = ({ tema }) => {
@@ -273,5 +275,7 @@ export const Estructura8: React.FC<{ tema: TemaEstructura8 }> = ({ tema }) => {
   if (tema === "ruidos") return <TemaRuidos />;
   if (tema === "viaje") return <TemaViajePro />;
   if (tema === "mitos") return <TemaMitosPro />;
+  if (tema === "calor") return <TemaCalor />;
+  if (tema === "adivina") return <TemaAdivina />;
   return <DiaDeMuertos />;
 };

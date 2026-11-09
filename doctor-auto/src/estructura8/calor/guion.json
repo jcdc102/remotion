@@ -1,0 +1,270 @@
+{
+  "fps": 30,
+  "bpm": 120,
+  "tarjetaFinal": false,
+  "marcaDeAgua": "doctor auto",
+  "pausaEntreClipsSegundos": 0.45,
+  "titulo": "¿Se calentó tu auto en carretera? Haz esto",
+  "tema": "calor",
+  "piezas": [
+    {
+      "id": 1,
+      "tipo": "gancho",
+      "clips": [
+        {
+          "id": "c01",
+          "archivo": "c01.mp3",
+          "texto": "¿Se te calentó el auto en carretera? No hagas esto.",
+          "resaltar": [
+            "No hagas esto"
+          ],
+          "sfx": "hit",
+          "mascota": {
+            "pose": "susto",
+            "animacion": "entra-rebote",
+            "globo": "¡Ojo!"
+          },
+          "pantalla": "¿SE CALENTÓ TU AUTO? 🌡️",
+          "pantallaResaltar": [
+            "CALENTÓ"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "tipo": "introduccion",
+      "clips": [
+        {
+          "id": "c02",
+          "archivo": "c02.mp3",
+          "texto": "Sigue estos pasos y salva tu motor.",
+          "resaltar": [
+            "salva tu motor"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "habla"
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "tipo": "cuerpo",
+      "clips": [
+        {
+          "id": "c03a",
+          "archivo": "c03a.mp3",
+          "texto": "Uno: apaga el aire y prende la calefacción.",
+          "resaltar": [
+            "calefacción"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c03b",
+          "archivo": "c03b.mp3",
+          "texto": "Suena raro, pero le saca calor al motor.",
+          "resaltar": [
+            "saca calor"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "duda",
+            "animacion": "duda"
+          }
+        },
+        {
+          "id": "c03c",
+          "archivo": "c03c.mp3",
+          "texto": "Dos: oríllate en un lugar seguro y apágalo.",
+          "resaltar": [
+            "apágalo"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "tipo": "bucle",
+      "clips": [
+        {
+          "id": "c04",
+          "archivo": "c04.mp3",
+          "texto": "Y lo más importante viene ahora.",
+          "resaltar": [
+            "más importante"
+          ],
+          "sfx": "riser",
+          "mascota": {
+            "pose": "susto",
+            "animacion": "susto"
+          },
+          "pantalla": "LO MÁS IMPORTANTE 👇",
+          "pantallaResaltar": [
+            "IMPORTANTE"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "tipo": "cuerpo",
+      "clips": [
+        {
+          "id": "c05a",
+          "archivo": "c05a.mp3",
+          "texto": "Tres: nunca abras el radiador caliente.",
+          "resaltar": [
+            "nunca abras"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "susto",
+            "animacion": "susto"
+          }
+        },
+        {
+          "id": "c05b",
+          "archivo": "c05b.mp3",
+          "texto": "El vapor sale hirviendo y te puede quemar.",
+          "resaltar": [
+            "te puede quemar"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c05c",
+          "archivo": "c05c.mp3",
+          "texto": "Espera treinta minutos a que se enfríe.",
+          "resaltar": [
+            "treinta minutos"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          },
+          "aviso": "⚠️ Nunca le eches agua fría al motor caliente"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "tipo": "bucle",
+      "clips": [
+        {
+          "id": "c06",
+          "archivo": "c06.mp3",
+          "texto": "Y si te pasa seguido, ojo.",
+          "resaltar": [
+            "seguido"
+          ],
+          "sfx": "riser",
+          "mascota": {
+            "pose": "duda",
+            "animacion": "duda"
+          },
+          "pantalla": "¿TE PASA SEGUIDO? 👀",
+          "pantallaResaltar": [
+            "SEGUIDO?"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "tipo": "cuerpo",
+      "clips": [
+        {
+          "id": "c07a",
+          "archivo": "c07a.mp3",
+          "texto": "Cuatro: revisa el nivel de anticongelante.",
+          "resaltar": [
+            "anticongelante"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c07b",
+          "archivo": "c07b.mp3",
+          "texto": "Si baja seguido, hay una fuga.",
+          "resaltar": [
+            "una fuga"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c07c",
+          "archivo": "c07c.mp3",
+          "texto": "Puede ser la bomba de agua o el termostato.",
+          "resaltar": [
+            "bomba de agua",
+            "termostato"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c07d",
+          "archivo": "c07d.mp3",
+          "texto": "Reparar un motor puede costar más de treinta mil pesos.",
+          "resaltar": [
+            "treinta mil pesos"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "susto",
+            "animacion": "susto"
+          }
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "tipo": "cta",
+      "clips": [
+        {
+          "id": "c08",
+          "archivo": "c08.mp3",
+          "texto": "Comenta CALOR o agenda tu revisión.",
+          "resaltar": [
+            "CALOR"
+          ],
+          "sfx": "pop",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "pulgar-final"
+          },
+          "boton": "Comenta CALOR 👇"
+        }
+      ]
+    }
+  ]
+}

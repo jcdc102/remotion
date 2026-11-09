@@ -17,6 +17,7 @@ export type ClipGuion = {
   chips?: string[];
   ruido?: string;
   ruidoAntesDeLaVoz?: boolean;
+  ruidoSegundos?: number; // duración del ruido antes de la voz (si falta, la del tema)
   sfx: string;
   mascota: MascotaClip;
 };
@@ -52,7 +53,7 @@ export const construirClips = (g: GuionClips, d: Duraciones, duracionRuidoPrevio
   const clips: Clip[] = g.piezas.flatMap((p) =>
     p.clips.map((c) => {
       const m = d.clips[c.id];
-      const adelanto = c.ruidoAntesDeLaVoz ? duracionRuidoPrevio : 0;
+      const adelanto = c.ruidoAntesDeLaVoz ? (c.ruidoSegundos ?? duracionRuidoPrevio) : 0;
       const inicio = cursor;
       const inicioAudio = inicio + adelanto;
       const duracion = adelanto + m.duracion;

@@ -1,0 +1,280 @@
+{
+  "fps": 30,
+  "bpm": 120,
+  "tarjetaFinal": false,
+  "marcaDeAgua": "doctor auto",
+  "pausaEntreClipsSegundos": 0.3,
+  "titulo": "Adivina el ruido",
+  "tema": "adivina",
+  "piezas": [
+    {
+      "id": 1,
+      "tipo": "gancho",
+      "clips": [
+        {
+          "id": "c01",
+          "archivo": "c01.mp3",
+          "texto": "Si adivinas este ruido, sabes más que muchos mecánicos.",
+          "resaltar": [
+            "sabes más"
+          ],
+          "sfx": "hit",
+          "mascota": {
+            "pose": "duda",
+            "animacion": "entra-rebote",
+            "globo": "¿Qué es?"
+          },
+          "pantalla": "¿ADIVINAS EL RUIDO? 🔊",
+          "pantallaResaltar": [
+            "RUIDO?"
+          ],
+          "ruido": "rechinido-frenos",
+          "ruidoAntesDeLaVoz": true,
+          "ruidoSegundos": 0.9
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "tipo": "introduccion",
+      "clips": [
+        {
+          "id": "c02",
+          "archivo": "c02.mp3",
+          "texto": "Son tres. Comenta tu respuesta antes que yo.",
+          "resaltar": [
+            "Comenta"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "habla"
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "tipo": "cuerpo",
+      "clips": [
+        {
+          "id": "c03a",
+          "archivo": "c03a.mp3",
+          "texto": "Ruido número uno. Escucha bien.",
+          "resaltar": [
+            "número uno"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "duda",
+            "animacion": "duda"
+          }
+        },
+        {
+          "id": "c03b",
+          "archivo": "c03b.mp3",
+          "texto": "¡Es la banda! Chilla cuando está floja o gastada.",
+          "resaltar": [
+            "la banda"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          },
+          "ruido": "chillido-banda",
+          "ruidoAntesDeLaVoz": true,
+          "ruidoSegundos": 2.4
+        },
+        {
+          "id": "c03c",
+          "archivo": "c03c.mp3",
+          "texto": "Si se rompe, tu batería deja de cargar.",
+          "resaltar": [
+            "deja de cargar"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "tipo": "bucle",
+      "clips": [
+        {
+          "id": "c04",
+          "archivo": "c04.mp3",
+          "texto": "El segundo es más difícil.",
+          "resaltar": [
+            "más difícil"
+          ],
+          "sfx": "riser",
+          "mascota": {
+            "pose": "duda",
+            "animacion": "duda"
+          },
+          "pantalla": "EL SEGUNDO ES MÁS DIFÍCIL 😏",
+          "pantallaResaltar": [
+            "DIFÍCIL"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "tipo": "cuerpo",
+      "clips": [
+        {
+          "id": "c05a",
+          "archivo": "c05a.mp3",
+          "texto": "Ruido número dos.",
+          "resaltar": [
+            "número dos"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "duda",
+            "animacion": "duda"
+          }
+        },
+        {
+          "id": "c05b",
+          "archivo": "c05b.mp3",
+          "texto": "¡Clic, clic al dar vuelta! Es la junta homocinética.",
+          "resaltar": [
+            "junta homocinética"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          },
+          "ruido": "clic-homocinetica",
+          "ruidoAntesDeLaVoz": true,
+          "ruidoSegundos": 2.4
+        },
+        {
+          "id": "c05c",
+          "archivo": "c05c.mp3",
+          "texto": "Si la ignoras, te puede dejar tirado.",
+          "resaltar": [
+            "dejar tirado"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "tipo": "bucle",
+      "clips": [
+        {
+          "id": "c06",
+          "archivo": "c06.mp3",
+          "texto": "El último es el más peligroso.",
+          "resaltar": [
+            "más peligroso"
+          ],
+          "sfx": "riser",
+          "mascota": {
+            "pose": "susto",
+            "animacion": "susto"
+          },
+          "pantalla": "EL ÚLTIMO ES EL MÁS PELIGROSO ⚠️",
+          "pantallaResaltar": [
+            "PELIGROSO"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "tipo": "cuerpo",
+      "clips": [
+        {
+          "id": "c07a",
+          "archivo": "c07a.mp3",
+          "texto": "Ruido número tres.",
+          "resaltar": [
+            "número tres"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "duda",
+            "animacion": "duda"
+          }
+        },
+        {
+          "id": "c07b",
+          "archivo": "c07b.mp3",
+          "texto": "¡Son las balatas! Ya no tienen nada.",
+          "resaltar": [
+            "las balatas"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "susto",
+            "animacion": "susto"
+          },
+          "ruido": "rechinido-frenos",
+          "ruidoAntesDeLaVoz": true,
+          "ruidoSegundos": 2.4
+        },
+        {
+          "id": "c07c",
+          "archivo": "c07c.mp3",
+          "texto": "Metal contra metal, y tu auto frena menos.",
+          "resaltar": [
+            "frena menos"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "senala",
+            "animacion": "flecha-senala"
+          }
+        },
+        {
+          "id": "c07d",
+          "archivo": "c07d.mp3",
+          "texto": "¿Cuántos adivinaste?",
+          "resaltar": [
+            "Cuántos"
+          ],
+          "sfx": "whoosh",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "habla"
+          }
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "tipo": "cta",
+      "clips": [
+        {
+          "id": "c08",
+          "archivo": "c08.mp3",
+          "texto": "Comenta tu puntaje o agenda tu revisión.",
+          "resaltar": [
+            "tu puntaje"
+          ],
+          "sfx": "pop",
+          "mascota": {
+            "pose": "pulgar",
+            "animacion": "pulgar-final"
+          },
+          "boton": "Comenta tu puntaje 👇"
+        }
+      ]
+    }
+  ]
+}

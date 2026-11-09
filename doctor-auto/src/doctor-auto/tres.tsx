@@ -178,3 +178,127 @@ export const Bateria3D: React.FC<{ giro: number; x: number; y: number; escala: n
     </group>
   );
 };
+
+// Carátula del cronómetro: marcas de minutos y número grande.
+const caraCronometro = () => {
+  const c = document.createElement("canvas");
+  c.width = 1024;
+  c.height = 1024;
+  const g = c.getContext("2d") as CanvasRenderingContext2D;
+  g.fillStyle = "#f4f1ea";
+  g.fillRect(0, 0, 1024, 1024);
+  g.strokeStyle = "#1d1f26";
+  for (let k = 0; k < 60; k++) {
+    const a = (k / 60) * Math.PI * 2;
+    g.lineWidth = k % 5 === 0 ? 16 : 6;
+    const r1 = k % 5 === 0 ? 400 : 430;
+    g.beginPath();
+    g.moveTo(512 + Math.cos(a) * r1, 512 + Math.sin(a) * r1);
+    g.lineTo(512 + Math.cos(a) * 470, 512 + Math.sin(a) * 470);
+    g.stroke();
+  }
+  // media vuelta en rojo = 30 minutos
+  g.strokeStyle = "#CC2328";
+  g.lineWidth = 40;
+  g.beginPath();
+  g.arc(512, 512, 340, -Math.PI / 2, Math.PI / 2);
+  g.stroke();
+  g.fillStyle = "#1d1f26";
+  g.textAlign = "center";
+  g.textBaseline = "middle";
+  g.font = "220px Anton, Impact, sans-serif";
+  g.fillText("30", 512, 470);
+  g.font = "90px Anton, Impact, sans-serif";
+  g.fillText("MIN", 512, 650);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+};
+
+// Cronómetro 3D: cuerpo metálico, carátula y aguja que avanza (avance 0–1 = media vuelta).
+export const Cronometro3D: React.FC<{ giro: number; avance: number; x: number; y: number; escala: number }> = ({ giro, avance, x, y, escala }) => {
+  const cara = useMemo(() => new THREE.MeshStandardMaterial({ map: caraCronometro(), roughness: 0.4 }), []);
+  return (
+    <group position={[x, y, 0]} scale={escala} rotation={[0.15, giro, 0]}>
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[1.75, 1.75, 0.5, 96]} />
+        <meshStandardMaterial color="#c9ced6" metalness={1} roughness={0.2} />
+      </mesh>
+      <mesh position={[0, 0, 0.26]} material={cara}>
+        <circleGeometry args={[1.55, 96]} />
+      </mesh>
+      <mesh position={[0, 0, 0.27]}>
+        <torusGeometry args={[1.6, 0.08, 16, 96]} />
+        <meshStandardMaterial color={ROJO_DA} metalness={0.6} roughness={0.3} />
+      </mesh>
+      {/* corona y botones */}
+      <mesh position={[0, 1.95, 0]}>
+        <cylinderGeometry args={[0.22, 0.22, 0.35, 32]} />
+        <meshStandardMaterial color="#c9ced6" metalness={1} roughness={0.2} />
+      </mesh>
+      <mesh position={[0, 2.2, 0]}>
+        <boxGeometry args={[0.6, 0.18, 0.3]} />
+        <meshStandardMaterial color={ROJO_DA} metalness={0.5} roughness={0.3} />
+      </mesh>
+      {/* aguja */}
+      <group position={[0, 0, 0.32]} rotation={[0, 0, -Math.PI * avance]}>
+        <mesh position={[0, 0.62, 0]}>
+          <boxGeometry args={[0.07, 1.25, 0.04]} />
+          <meshStandardMaterial color={ROJO_DA} />
+        </mesh>
+      </group>
+      <mesh position={[0, 0, 0.34]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.1, 0.1, 0.06, 24]} />
+        <meshStandardMaterial color="#1d1f26" metalness={0.8} roughness={0.3} />
+      </mesh>
+    </group>
+  );
+};
+
+// Bocina 3D: caja con cono que vibra con el ruido (fuerza 0–1) y aros de sonido que salen.
+export const Bocina3D: React.FC<{ t: number; fuerza: number; giro: number; x: number; y: number; escala: number }> = ({ t, fuerza, giro, x, y, escala }) => {
+  const empuje = fuerza * 0.12 * Math.sin(t * 90);
+  return (
+    <group position={[x, y, 0]} scale={escala} rotation={[0.1, giro, 0]}>
+      <mesh>
+        <boxGeometry args={[2.6, 3.4, 1.4]} />
+        <meshStandardMaterial color="#4a4d57" roughness={0.35} metalness={0.5} />
+      </mesh>
+      <mesh position={[0, 1.35, 0.71]}>
+        <boxGeometry args={[2.62, 0.18, 0.02]} />
+        <meshStandardMaterial color={ROJO_DA} emissive={ROJO_DA} emissiveIntensity={0.4 + fuerza} />
+      </mesh>
+      {[
+        { y: -0.35, r: 1.0 },
+        { y: 1.0, r: 0.35 },
+      ].map((k) => (
+        <group key={k.y} position={[0, k.y - 0.15, 0.71 + empuje]}>
+          <mesh>
+            <torusGeometry args={[k.r, 0.09, 16, 64]} />
+            <meshStandardMaterial color="#c9ced6" metalness={1} roughness={0.25} />
+          </mesh>
+          <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, -0.1]}>
+            <coneGeometry args={[k.r, 0.4, 48, 1, true]} />
+            <meshStandardMaterial color="#15161a" roughness={0.7} side={THREE.DoubleSide} emissive="#CC2328" emissiveIntensity={0.15 + 0.6 * fuerza} />
+          </mesh>
+          <mesh position={[0, 0, 0.02]}>
+            <circleGeometry args={[k.r * 0.28, 32]} />
+            <meshStandardMaterial color={ROJO_DA} metalness={0.5} roughness={0.3} />
+          </mesh>
+        </group>
+      ))}
+      {/* aros de sonido */}
+      {fuerza > 0.05
+        ? [0, 1, 2].map((k) => {
+            const p = (t * 1.6 + k / 3) % 1;
+            return (
+              <mesh key={k} position={[0, -0.5, 0.9 + p * 1.2]}>
+                <torusGeometry args={[1.1 + p * 1.8, 0.04, 8, 64]} />
+                <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={1} transparent opacity={(1 - p) * fuerza} />
+              </mesh>
+            );
+          })
+        : null}
+    </group>
+  );
+};
