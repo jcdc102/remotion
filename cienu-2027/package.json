@@ -1,0 +1,20 @@
+{
+  "name": "cienu-2027-video",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render Convocatoria out/convocatoria.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.380",
+    "@remotion/google-fonts": "4.0.380",
+    "qrcode.react": "4.2.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.380"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.0",
+    "typescript": "5.8.3"
+  }
+}
