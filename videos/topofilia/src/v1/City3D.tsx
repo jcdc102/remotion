@@ -504,7 +504,7 @@ export const City3D: React.FC = () => {
 			width={width}
 			height={height}
 			camera={{fov: 42, near: 0.1, far: 300, position: [0, 10, 20]}}
-			gl={{antialias: true}}
+			gl={{antialias: true, preserveDrawingBuffer: true}}
 			dpr={2}
 		>
 			<CityContent />
