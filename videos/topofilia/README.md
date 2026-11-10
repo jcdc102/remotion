@@ -21,7 +21,22 @@ Videos verticales (1080×1920) para millennials y Gen Z, basados en el artículo
 - **Andrés · Narrador Investigación**: `nN88kfEjlRwtPs43m1ql`. Hombre de unos 35 años, español mexicano neutro, grave y con tono documental.
 
 La narración se genera por escenas con el modelo `eleven_v4` y se guarda en `public/v1/s1.mp3 … s8.mp3`.
-Los tiempos de cada frase (para los subtítulos) se midieron con detección de silencios y están en `src/v1/data.ts`.
+Los tiempos exactos de cada palabra (transcritos con ElevenLabs Scribe) están en `src/v1/words.ts`.
+La función `cue(escena, palabra)` de `src/v1/data.ts` devuelve el segundo en que se dice una palabra; todas
+las entradas de texto, cifras, sonidos y movimientos de cámara se sincronizan con ella.
+
+## Música y sonido
+
+- `public/music/bed.mp3`: música instrumental generada con ElevenLabs Music (electrónica cinematográfica con toque latino). Va baja bajo la voz y sube en el cierre.
+- `public/sfx/`: whoosh (transiciones), pop (pines y etiquetas), impact (cifras grandes), riser (antes de revelar algo), ticks (contadores), rumble (torres), click y ding (la reserva).
+
+## Lenguaje de animación
+
+- Cada entrada se sincroniza con la palabra de la narración que la menciona.
+- Un objeto se transforma para introducir la siguiente escena: el elemento principal se encoge en un punto rojo que viaja y hace crecer el elemento principal de la escena siguiente.
+- La cámara 3D sigue lo importante: el pin que cae, la salida al mapa mundial, la entrada al polígono, las torres y las 8 zonas.
+- Los movimientos se encadenan: los elementos salen uno tras otro antes de que llegue la escena siguiente.
+- Los textos se revelan desde una máscara.
 
 ## Uso
 
@@ -32,6 +47,7 @@ npm run render:v1    # exporta out/v1-los-numeros.mp4
 ```
 
 En servidores sin GPU, el 3D se renderiza por software con `--gl=swangle` (ya configurado en `remotion.config.ts`).
+El 3D se dibuja a doble resolución (`dpr={2}`) para evitar el parpadeo de las ventanas y la cuadrícula de casas.
 
 ## Estructura
 
@@ -43,4 +59,3 @@ En servidores sin GPU, el 3D se renderiza por software con `--gl=swangle` (ya co
 ## Pendiente
 
 - Agregar el logo institucional (el espacio inferior de la tarjeta final está libre para eso).
-- Música de fondo (opcional).

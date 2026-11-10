@@ -1,6 +1,6 @@
-import {useThree} from '@react-three/fiber';
+import {useFrame, useThree} from '@react-three/fiber';
 import {ThreeCanvas} from '@remotion/three';
-import {useLayoutEffect, useMemo, useRef} from 'react';
+import {useCallback, useLayoutEffect, useMemo, useRef} from 'react';
 import {
 	Easing,
 	interpolate,
@@ -9,7 +9,7 @@ import {
 	useVideoConfig,
 } from 'remotion';
 import * as THREE from 'three';
-import {FPS, sceneStart} from './data';
+import {cue, FPS, sceneOf, sceneStart} from './data';
 
 const GRID = 24;
 const PITCH = 1.15;
@@ -108,17 +108,19 @@ const useWindowTexture = () =>
 		canvas.width = 64;
 		canvas.height = 256;
 		const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-		ctx.fillStyle = '#1a2230';
+		ctx.fillStyle = '#2a3242';
 		ctx.fillRect(0, 0, 64, 256);
 		for (let y = 6; y < 256; y += 14) {
 			for (let x = 5; x < 64; x += 14) {
 				const lit = random(`win-${x}-${y}`) > 0.45;
-				ctx.fillStyle = lit ? '#FFD9A0' : '#2b3647';
+				ctx.fillStyle = lit ? '#E9C793' : '#384356';
 				ctx.fillRect(x, y, 8, 7);
 			}
 		}
 		const tex = new THREE.CanvasTexture(canvas);
 		tex.colorSpace = THREE.SRGBColorSpace;
+		tex.anisotropy = 8;
+		tex.minFilter = THREE.LinearMipmapLinearFilter;
 		return tex;
 	}, []);
 
@@ -138,19 +140,29 @@ const useCameraKeys = (): Key[] =>
 			P.z + z,
 		];
 		const s = (id: string, plus = 0) => sceneStart(id) + sec(plus);
+		const w = (id: string, word: string, plus = 0) => sceneStart(id) + sec(cue(id, word) + plus);
 		return [
-			{t: 0, pos: p(5, 3.2, 8), look: l(0, 0.4, 0)},
-			{t: s('hook', 6), pos: p(3, 5, 9), look: l(0, 0.3, 0)},
-			{t: s('global', 0.5), pos: p(6, 13, 18), look: l(2, 0, 0)},
-			{t: s('global', 9), pos: [4, 34, 34], look: [0, 0, 1]},
-			{t: s('vallarta', 9), pos: [-10, 30, 30], look: [-1, 0, 0]},
-			{t: s('study', 3), pos: p(5, 13, 14), look: l(0, 0, 0)},
-			{t: s('study', 9), pos: p(2, 11, 12), look: l(0, 0, 0)},
-			{t: s('findings', 7.5), pos: p(-9, 11, 14), look: l(0, 1.5, 0)},
-			{t: s('effects', 4), pos: p(9, 12, 13), look: l(0, 1, 0)},
-			{t: s('effects', 9), pos: p(5, 16, 15), look: l(0, 0, 0)},
-			{t: s('zones', 3), pos: [2, 46, 30], look: [0, 0, 1]},
-			{t: s('zones', 8.5), pos: [-4, 44, 32], look: [0, 0, 0]},
+			{t: 0, pos: p(6, 3.6, 9), look: l(0, 0.4, 0)},
+			{t: w('hook', 'Fácil'), pos: p(4, 4.6, 9.5), look: l(0, 0.5, 0)},
+			// follow the hero pin as it drops
+			{t: w('hook', 'barrio'), pos: p(2.2, 3.4, 6.5), look: l(0, 1, 0)},
+			{t: s('global', 0.4), pos: p(3, 6, 10), look: l(0, 0.5, 0)},
+			// pull out as pins spread worldwide
+			{t: w('global', '8'), pos: [4, 34, 34], look: [0, 0, 1]},
+			{t: w('vallarta', 'doce'), pos: [-8, 28, 28], look: [-1, 0, 0]},
+			{t: s('study', 0.4), pos: [-6, 26, 26], look: [-1, 0, 0]},
+			// dive into the study polygon on "tres colonias"
+			{t: w('study', 'tres', 0.6), pos: p(5, 13, 14), look: l(0, 0, 0)},
+			{t: s('findings', 0.2), pos: p(2, 11, 12), look: l(0, 0, 0)},
+			{t: w('findings', 'más'), pos: p(-4, 9, 13), look: l(0, 0.8, 0)},
+			// towers rise: low dramatic angle
+			{t: s('effects', 0), pos: p(-9, 9, 13), look: l(0, 1.8, 0)},
+			{t: w('effects', 'desaparecen', 0.4), pos: p(8, 9, 11), look: l(0, 0.6, 0)},
+			{t: w('effects', 'identidad'), pos: p(5, 15, 15), look: l(0, 0, 0)},
+			{t: w('zones', 'rentas'), pos: [-2, 30, 30], look: [-1, 0, 0]},
+			// pull out to reveal the eight zones
+			{t: w('zones', 'zonas', 0.8), pos: [2, 46, 30], look: [0, 0, 1]},
+			{t: s('outro', 0), pos: [-4, 44, 32], look: [0, 0, 0]},
 			{t: s('outro', 12), pos: [12, 30, 30], look: [0, 0, 0]},
 		];
 	}, []);
@@ -187,11 +199,24 @@ const CityContent: React.FC = () => {
 			effects: sceneStart('effects'),
 			zones: sceneStart('zones'),
 			outro: sceneStart('outro'),
+			towersAt: sceneStart('findings') + sec(cue('findings', 'más') - 0.2),
+			towersSpan: sec(cue('findings', 'construcción') - cue('findings', 'más') + 1.6),
+			vanishAt: sceneStart('effects') + sec(0.3),
+			vanishSpan: sec(cue('effects', 'desaparecen') + 0.4),
+			outline: sceneStart('study') + sec(cue('study', 'tres')),
+			heroDrop: sec(cue('hook', 'barrio') - 1.1),
+			heroOut: sceneStart('global') - sec(0.3),
+			zoneRings: sceneStart('zones') + sec(cue('zones', 'ocho')),
 		}),
 		[],
 	);
 
-	useLayoutEffect(() => {
+	// Runs before every R3F render (useFrame) and on frame change, so a fresh
+	// render tab never draws the city before its instances are positioned.
+	const update = useCallback(() => {
+		if (!bodies.current || !roofsRef.current || !towers.current || !pinHeads.current || !pinTips.current) {
+			return;
+		}
 		// Camera path
 		let k = 0;
 		while (k < keys.length - 2 && frame > keys[k + 1].t) {
@@ -219,12 +244,10 @@ const CityContent: React.FC = () => {
 		);
 		const studyFocus = interpolate(
 			frame,
-			[S.study, S.study + sec(1.5), S.zones, S.zones + sec(1.5)],
+			[S.outline - sec(0.5), S.outline + sec(1), S.zones, S.zones + sec(1.5)],
 			[0, 1, 1, 0],
 			{extrapolateLeft: 'clamp', extrapolateRight: 'clamp'},
 		);
-		const findingsLen = S.effects - S.findings;
-		const effectsLen = S.zones - S.effects;
 
 		// pins grow with camera distance so they stay readable in aerial shots
 		const pinBoost = Math.min(1.8, Math.max(1, pos.distanceTo(look) / 17));
@@ -236,11 +259,11 @@ const CityContent: React.FC = () => {
 		lots.forEach((lot, idx) => {
 			const rise = backOut((frame - lot.riseDelay) / 18);
 			const towerProgress = lot.tower
-				? clamp01((frame - S.findings - lot.towerAt * findingsLen * 0.85) / 22)
+				? clamp01((frame - S.towersAt - lot.towerAt * S.towersSpan) / 20)
 				: 0;
 			const vanish =
 				!lot.tower && lot.poly
-					? clamp01((frame - S.effects - lot.vanishAt * effectsLen * 0.5) / 18)
+					? clamp01((frame - S.vanishAt - (lot.vanishAt / 1.6) * S.vanishSpan) / 14)
 					: 0;
 			const houseScale = rise * (1 - towerProgress) * (1 - vanish);
 
@@ -286,7 +309,7 @@ const CityContent: React.FC = () => {
 				{extrapolateLeft: 'clamp', extrapolateRight: 'extend'},
 			);
 			const isRental = lot.rentalRank < share || (lot.poly && lot.tower && towerProgress > 0.5);
-			const popFrame = lot.rentalRank < 0.3 ? appearAt : S.findings + lot.towerAt * findingsLen * 0.85 + 10;
+			const popFrame = lot.rentalRank < 0.3 ? appearAt : S.towersAt + lot.towerAt * S.towersSpan + 12;
 			let pinScale = isRental ? backOut((frame - popFrame) / 10) : 0;
 			if (!lot.poly) {
 				pinScale *= 1 - studyFocus * 0.6;
@@ -324,7 +347,7 @@ const CityContent: React.FC = () => {
 
 		// polygon outline draw-on
 		if (outline.current) {
-			const o = interpolate(frame, [S.study + sec(0.5), S.study + sec(2.5)], [0, 1], {
+			const o = interpolate(frame, [S.outline, S.outline + sec(1.2)], [0, 1], {
 				extrapolateLeft: 'clamp',
 				extrapolateRight: 'clamp',
 				easing: Easing.out(Easing.cubic),
@@ -344,7 +367,7 @@ const CityContent: React.FC = () => {
 		// 8 zones pulse
 		if (zonesRef.current) {
 			zonesRef.current.children.forEach((c, zi) => {
-				const s = backOut((frame - S.zones - sec(2.6) - zi * 5) / 14);
+				const s = backOut((frame - S.zoneRings - zi * 3) / 12);
 				const pulse = 1 + Math.sin((frame - zi * 9) / 8) * 0.08;
 				c.scale.setScalar(Math.max(0.0001, s * pulse));
 				c.visible = s > 0.001;
@@ -353,8 +376,8 @@ const CityContent: React.FC = () => {
 
 		// hero pin drop on "y reservas"
 		if (heroPin.current) {
-			const drop = clamp01((frame - sec(3.9)) / 14);
-			const out = clamp01((frame - S.global - sec(0.4)) / 10);
+			const drop = clamp01((frame - S.heroDrop) / 14);
+			const out = clamp01((frame - S.heroOut) / 8);
 			const y = 6 * (1 - Easing.bounce(drop)) + 1.35;
 			heroPin.current.position.set(POLY_CENTER.x, y, POLY_CENTER.z);
 			heroPin.current.scale.setScalar(drop > 0 ? 1 - out : 0.0001);
@@ -362,6 +385,9 @@ const CityContent: React.FC = () => {
 			heroPin.current.visible = drop > 0 && out < 1;
 		}
 	}, [frame, lots, camera, keys, S]);
+
+	useLayoutEffect(update, [update]);
+	useFrame(update);
 
 	const count = lots.length;
 	const outlineW = coord(POLY.i1) - coord(POLY.i0) + 1.4;
@@ -413,7 +439,7 @@ const CityContent: React.FC = () => {
 					map={windowTex}
 					emissiveMap={windowTex}
 					emissive="#ffffff"
-					emissiveIntensity={0.55}
+					emissiveIntensity={0.35}
 					roughness={0.35}
 					metalness={0.3}
 				/>
@@ -479,6 +505,7 @@ export const City3D: React.FC = () => {
 			height={height}
 			camera={{fov: 42, near: 0.1, far: 300, position: [0, 10, 20]}}
 			gl={{antialias: true}}
+			dpr={2}
 		>
 			<CityContent />
 		</ThreeCanvas>

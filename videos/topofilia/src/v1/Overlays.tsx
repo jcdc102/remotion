@@ -1,25 +1,47 @@
 import React from 'react';
 import {AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {BODY, C, DISPLAY} from '../theme';
+import {cue, FPS, sceneOf} from './data';
 import {
+	Abs,
 	BigNumber,
 	Counter,
 	Glass,
 	Headline,
+	Iris,
 	Label,
+	MaskLine,
 	Pill,
+	Pop,
 	Red,
-	Rise,
 	Source,
-	useAppear,
-	useFadeOut,
+	useSpringAt,
+	Wipe,
 } from './ui';
 
-const Top: React.FC<{children: React.ReactNode; top?: number}> = ({children, top = 210}) => (
-	<AbsoluteFill style={{padding: `${top}px 72px 0 72px`, display: 'flex', flexDirection: 'column', gap: 28}}>
-		{children}
-	</AbsoluteFill>
-);
+/** Seconds where a scene's elements leave (chain exit) and its hero collapses. */
+const ends = (id: string) => {
+	const d = sceneOf(id).duration / FPS;
+	return {exit: d - 0.6, collapse: d - 0.36};
+};
+/** When the incoming hero grows out of the travelling dot. */
+const ENTER = 0.22;
+
+/**
+ * Screen positions (px) where each hero collapses into a dot and where the
+ * next one grows from. The dot travelling between them is drawn by <Bridge/>.
+ */
+export const BRIDGE_POINTS: Record<string, {from: [number, number]; to: [number, number]}> = {
+	'hook-pin': {from: [392, 786], to: [540, 900]},
+	hook: {from: [540, 900], to: [172, 325]},
+	global: {from: [972, 768], to: [104, 227]},
+	vallarta: {from: [462, 765], to: [166, 414]},
+	study: {from: [540, 695], to: [294, 400]},
+	findings: {from: [108, 626], to: [128, 340]},
+	effects: {from: [712, 625], to: [104, 227]},
+	zones: {from: [172, 430], to: [166, 383]},
+};
+export const HOOK_CARD_COLLAPSE = 5.9;
 
 const Check: React.FC = () => (
 	<svg width="34" height="34" viewBox="0 0 24 24">
@@ -33,148 +55,175 @@ const Arrow: React.FC<{size?: number}> = ({size = 40}) => (
 	</svg>
 );
 
-/* 1 · Hook */
+/** Scale punch when a number lands on its final value. */
+const usePunch = (sec: number) => {
+	const p = useSpringAt(sec, {damping: 9, stiffness: 220, mass: 0.5});
+	return 1 + Math.sin(Math.min(1, p) * Math.PI) * 0.09;
+};
+
+/* 1 · Hook ------------------------------------------------------------- */
 export const HookOverlay: React.FC = () => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
-	const booked = frame >= 4.25 * fps;
-	const press = interpolate(frame, [4.05 * fps, 4.2 * fps, 4.4 * fps], [1, 0.92, 1], {
+	const c = (w: string, n = 0) => cue('hook', w, n);
+	const {exit} = ends('hook');
+	const pressAt = c('reservas');
+	const booked = frame >= (pressAt + 0.1) * fps;
+	const press = interpolate(frame, [pressAt * fps - 3, pressAt * fps + 2, pressAt * fps + 8], [1, 0.9, 1], {
 		extrapolateLeft: 'clamp',
 		extrapolateRight: 'clamp',
 	});
 	return (
-		<>
-			<Top>
-				<Rise delay={0.1} out={5.5}>
+		<AbsoluteFill>
+			<Abs x={72} y={200}>
+				<MaskLine at={0.1} out={HOOK_CARD_COLLAPSE}>
 					<Pill>Serie investigación · 01/03</Pill>
-				</Rise>
-				<Rise delay={0.35} out={5.5} y={80}>
-					<Glass style={{padding: 0, overflow: 'hidden', width: 640}}>
-						<div
-							style={{
-								height: 300,
-								background:
-									'linear-gradient(180deg, #F59E5B 0%, #E5604A 38%, #6B3E73 62%, #123B5A 63%, #0B2A44 100%)',
-								position: 'relative',
-							}}
-						>
+				</MaskLine>
+			</Abs>
+			<Abs x={72} y={290} w={640}>
+				<Iris origin="50% 85.8%" collapseAt={HOOK_CARD_COLLAPSE}>
+					<Wipe at={0.3} dir="up">
+						<Glass style={{padding: 0, overflow: 'hidden'}}>
 							<div
 								style={{
-									position: 'absolute',
-									left: '50%',
-									top: 120,
-									width: 120,
-									height: 120,
-									marginLeft: -60,
-									borderRadius: 99,
-									background: '#FFD38A',
-									boxShadow: '0 0 80px #FFB36B',
-								}}
-							/>
-							<div style={{position: 'absolute', left: 0, right: 0, top: 189, height: 111, background: 'linear-gradient(180deg,#14476b,#0a2740)'}} />
-							<div
-								style={{
-									position: 'absolute',
-									top: 22,
-									right: 22,
-									padding: '8px 18px',
-									borderRadius: 99,
-									background: 'rgba(0,0,0,0.45)',
-									color: '#fff',
-									fontFamily: BODY,
-									fontWeight: 700,
-									fontSize: 24,
+									height: 300,
+									background:
+										'linear-gradient(180deg, #F59E5B 0%, #E5604A 38%, #6B3E73 62%, #123B5A 63%, #0B2A44 100%)',
+									position: 'relative',
 								}}
 							>
-								<svg width="22" height="22" viewBox="0 0 24 24" style={{marginRight: 8, verticalAlign: -2}}>
-									<path d="M12 2l3 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.8 5.7 21.4l1.5-7.1L1.8 9.4 9 8.6z" fill="#FFD38A" />
-								</svg>
-								4.9
+								<div
+									style={{
+										position: 'absolute',
+										left: '50%',
+										top: 120,
+										width: 120,
+										height: 120,
+										marginLeft: -60,
+										borderRadius: 99,
+										background: '#FFD38A',
+										boxShadow: '0 0 80px #FFB36B',
+									}}
+								/>
+								<div style={{position: 'absolute', left: 0, right: 0, top: 189, height: 111, background: 'linear-gradient(180deg,#14476b,#0a2740)'}} />
+								<div
+									style={{
+										position: 'absolute',
+										top: 22,
+										right: 22,
+										padding: '8px 18px',
+										borderRadius: 99,
+										background: 'rgba(0,0,0,0.45)',
+										color: '#fff',
+										fontFamily: BODY,
+										fontWeight: 700,
+										fontSize: 24,
+									}}
+								>
+									<svg width="22" height="22" viewBox="0 0 24 24" style={{marginRight: 8, verticalAlign: -2}}>
+										<path d="M12 2l3 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.8 5.7 21.4l1.5-7.1L1.8 9.4 9 8.6z" fill="#FFD38A" />
+									</svg>
+									4.9
+								</div>
 							</div>
-						</div>
-						<div style={{padding: '30px 36px 36px'}}>
-							<Label size={42} style={{fontWeight: 700}}>Depa frente al mar</Label>
-							<Label size={28} style={{color: C.muted, marginTop: 8}}>Puerto Vallarta · 2 noches</Label>
-							<div
-								style={{
-									marginTop: 28,
-									height: 92,
-									borderRadius: 24,
-									background: booked ? '#1FAF6A' : C.red,
-									display: 'flex',
-									alignItems: 'center',
-									justifyContent: 'center',
-									gap: 14,
-									transform: `scale(${press})`,
-									color: '#fff',
-									fontFamily: BODY,
-									fontWeight: 800,
-									fontSize: 36,
-								}}
-							>
-								{booked ? (
-									<>
-										<Check /> Reservado
-									</>
-								) : (
-									'Reservar'
-								)}
+							<div style={{padding: '30px 36px 36px'}}>
+								<MaskLine at={c('depa')}>
+									<Label size={42} style={{fontWeight: 700}}>Depa frente al mar</Label>
+								</MaskLine>
+								<MaskLine at={c('Puerto')} style={{marginTop: 8}}>
+									<Label size={28} style={{color: C.muted}}>Puerto Vallarta · 2 noches</Label>
+								</MaskLine>
+								<div
+									style={{
+										marginTop: 28,
+										height: 92,
+										borderRadius: 24,
+										background: booked ? '#1FAF6A' : C.red,
+										display: 'flex',
+										alignItems: 'center',
+										justifyContent: 'center',
+										gap: 14,
+										transform: `scale(${press})`,
+										color: '#fff',
+										fontFamily: BODY,
+										fontWeight: 800,
+										fontSize: 36,
+									}}
+								>
+									{booked ? (
+										<>
+											<Check /> Reservado
+										</>
+									) : (
+										'Reservar'
+									)}
+								</div>
 							</div>
-						</div>
-					</Glass>
-				</Rise>
-			</Top>
-			<Top top={300}>
-				<Rise delay={6.15} y={60}>
-					<Headline size={104}>
-						¿Y el <Red>barrio</Red>
-						<br />
-						donde te
-						<br />
-						quedas?
-					</Headline>
-				</Rise>
-			</Top>
-		</>
+						</Glass>
+					</Wipe>
+				</Iris>
+			</Abs>
+			<Abs x={72} y={290}>
+				<Headline size={100}>
+					<MaskLine at={c('qué')} out={exit}>¿Qué pasa con</MaskLine>
+					<MaskLine at={c('el')} out={exit + 0.06}>
+						el <Red>barrio</Red>
+					</MaskLine>
+					<MaskLine at={c('donde')} out={exit + 0.12}>donde te</MaskLine>
+					<MaskLine at={c('quedar')} out={exit + 0.18}>quedas?</MaskLine>
+				</Headline>
+			</Abs>
+		</AbsoluteFill>
 	);
 };
 
-/* 2 · Global growth */
+/* 2 · Global growth ----------------------------------------------------- */
 export const GlobalOverlay: React.FC = () => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
-	const second = frame >= 6.2 * fps;
-	const bar = interpolate(frame, [0.5 * fps, 1.5 * fps, 6.3 * fps, 8.6 * fps], [0, 0.25, 0.25, 1], {
+	const c = (w: string, n = 0) => cue('global', w, n);
+	const {exit, collapse} = ends('global');
+	const tSecond = c('2025');
+	const tEight = c('8');
+	const bar = interpolate(frame, [c('2') * fps, c('millones') * fps, tSecond * fps, tEight * fps], [0, 0.25, 0.25, 1], {
 		extrapolateLeft: 'clamp',
 		extrapolateRight: 'clamp',
 	});
-	const badge = useAppear(8.7);
+	const punch = usePunch(tEight);
 	return (
-		<Top>
-			<Rise delay={0.05}>
-				<Pill>En el mundo</Pill>
-			</Rise>
-			<Rise delay={0.25}>
-				<Label size={44} style={{fontWeight: 600, maxWidth: 860}}>
-					Rentas vacacionales activas en plataformas digitales
-				</Label>
-			</Rise>
-			<Rise delay={0.45}>
-				<div style={{display: 'flex', alignItems: 'baseline', gap: 26}}>
-					<div style={{fontFamily: DISPLAY, fontWeight: 700, fontSize: 64, color: C.redGlow}}>
-						{second ? '2025' : '2016'}
+		<AbsoluteFill>
+			<Abs x={72} y={200}>
+				<MaskLine at={0.1} out={exit}>
+					<Pill>En el mundo</Pill>
+				</MaskLine>
+			</Abs>
+			<Abs x={72} y={290} w={300}>
+				<Iris origin="33% 50%" expandAt={ENTER}>
+					<div style={{position: 'relative', height: 76, fontFamily: DISPLAY, fontWeight: 700, fontSize: 64, color: C.redGlow}}>
+						<MaskLine at={ENTER} out={tSecond - 0.1} style={{position: 'absolute'}}>2016</MaskLine>
+						<MaskLine at={tSecond} out={exit + 0.04} style={{position: 'absolute'}}>2025</MaskLine>
 					</div>
+				</Iris>
+			</Abs>
+			<Abs x={72} y={380} w={900}>
+				<div style={{position: 'relative', height: 240}}>
+					<MaskLine at={c('2')} out={tSecond - 0.05} style={{position: 'absolute'}}>
+						<BigNumber size={230}>2M</BigNumber>
+					</MaskLine>
+					<MaskLine at={tSecond + 0.1} out={exit + 0.08} style={{position: 'absolute'}}>
+						<div style={{transform: `scale(${punch})`, transformOrigin: 'left center'}}>
+							<BigNumber size={230}>
+								+<Counter from={3} to={8} start={tSecond + 0.1} end={tEight} format={(n) => `${Math.round(n)}M`} />
+							</BigNumber>
+						</div>
+					</MaskLine>
 				</div>
-				<div style={{display: 'flex', alignItems: 'flex-end', gap: 24}}>
-					<BigNumber size={230}>
-						{second ? '+' : ''}
-						<Counter from={2} to={second ? 8 : 2} start={6.3} duration={2.2} format={(n) => `${Math.round(n)}M`} />
-					</BigNumber>
+			</Abs>
+			<Abs x={680} y={450}>
+				<Pop at={tEight + 0.15} out={exit + 0.1}>
 					<div
 						style={{
-							opacity: badge,
-							transform: `scale(${0.6 + badge * 0.4}) rotate(-6deg)`,
-							marginBottom: 40,
+							transform: 'rotate(-6deg)',
 							padding: '12px 24px',
 							borderRadius: 20,
 							background: C.red,
@@ -182,64 +231,127 @@ export const GlobalOverlay: React.FC = () => {
 							fontFamily: DISPLAY,
 							fontWeight: 800,
 							fontSize: 60,
+							boxShadow: '0 12px 40px rgba(229,38,47,0.5)',
 						}}
 					>
 						×4
 					</div>
-				</div>
-				<div style={{marginTop: 26, height: 18, width: 860, borderRadius: 99, background: 'rgba(255,255,255,0.12)'}}>
+				</Pop>
+			</Abs>
+			<Abs x={72} y={630} w={900}>
+				<Label size={42}>
+					<MaskLine at={c('rentas')} out={exit + 0.12}>rentas vacacionales activas</MaskLine>
+					<MaskLine at={c('plataformas') - 0.1} out={exit + 0.16}>en plataformas digitales</MaskLine>
+				</Label>
+			</Abs>
+			<Abs x={72} y={760} w={900}>
+				<Iris origin="100% 50%" collapseAt={collapse}>
+					<div style={{height: 16, borderRadius: 99, background: 'rgba(255,255,255,0.12)'}}>
+						<div
+							style={{
+								height: '100%',
+								width: `${bar * 100}%`,
+								borderRadius: 99,
+								background: `linear-gradient(90deg, ${C.red}, #ff7a59)`,
+								boxShadow: `0 0 24px ${C.red}`,
+							}}
+						/>
+					</div>
+				</Iris>
+			</Abs>
+			<Abs x={72} y={800}>
+				<MaskLine at={c('digitales')} out={exit + 0.2}>
+					<Source>Kumar (2025), citado en López Ramos y Huízar (2026)</Source>
+				</MaskLine>
+			</Abs>
+		</AbsoluteFill>
+	);
+};
+
+/* 3 · Puerto Vallarta ---------------------------------------------------- */
+export const VallartaOverlay: React.FC = () => {
+	const c = (w: string, n = 0) => cue('vallarta', w, n);
+	const {exit, collapse} = ends('vallarta');
+	const punch1 = usePunch(c('millones'));
+	const punch2 = usePunch(c('seiscientas') + 0.5);
+	return (
+		<AbsoluteFill>
+			<Abs x={72} y={200}>
+				<Iris origin="4% 50%" expandAt={ENTER}>
+					<MaskLine at={0} out={exit}>
+						<Pill>Puerto Vallarta, Jalisco</Pill>
+					</MaskLine>
+				</Iris>
+			</Abs>
+			<Abs x={72} y={290}>
+				<MaskLine at={c('seis')} out={exit + 0.04}>
+					<div style={{transform: `scale(${punch1})`, transformOrigin: 'left center'}}>
+						<BigNumber size={150}>
+							<Counter from={0} to={6.265} start={c('seis')} end={c('millones') + 0.3} format={(n) => `${n.toFixed(2)}M`} />
+						</BigNumber>
+					</div>
+				</MaskLine>
+			</Abs>
+			<Abs x={72} y={455}>
+				<MaskLine at={c('visitantes')} out={exit + 0.08}>
+					<Label size={42}>visitantes en 2025</Label>
+				</MaskLine>
+				<MaskLine at={c('2025')} out={exit + 0.1} style={{marginTop: 8}}>
+					<Source>SECTURJAL (2025)</Source>
+				</MaskLine>
+			</Abs>
+			<Abs x={72} y={585} w={900}>
+				<Wipe at={c('y')} out={exit + 0.12}>
+					<div style={{height: 2, background: C.stroke}} />
+				</Wipe>
+			</Abs>
+			<Abs x={72} y={615}>
+				<Pop at={c('2026')} out={exit + 0.14}>
 					<div
 						style={{
-							height: '100%',
-							width: `${bar * 100}%`,
+							padding: '10px 22px',
 							borderRadius: 99,
-							background: `linear-gradient(90deg, ${C.red}, #ff7a59)`,
-							boxShadow: `0 0 24px ${C.red}`,
+							border: `1.5px solid ${C.stroke}`,
+							background: 'rgba(22,24,32,0.72)',
+							fontFamily: BODY,
+							fontWeight: 700,
+							fontSize: 28,
+							color: C.ink,
 						}}
-					/>
-				</div>
-			</Rise>
-			<Rise delay={1} style={{marginTop: 6}}>
-				<Source>Kumar (2025), citado en López Ramos y Huízar (2026)</Source>
-			</Rise>
-		</Top>
-	);
-};
-
-/* 3 · Puerto Vallarta */
-export const VallartaOverlay: React.FC = () => {
-	return (
-		<Top>
-			<Rise delay={0.05}>
-				<Pill>Puerto Vallarta, Jalisco</Pill>
-			</Rise>
-			<Rise delay={0.3}>
-				<BigNumber size={150}>
-					<Counter from={0} to={6.265} start={0.3} duration={2.6} format={(n) => `${n.toFixed(2)}M`} />
-				</BigNumber>
-				<Label size={42} style={{marginTop: 10}}>visitantes en 2025</Label>
-				<div style={{marginTop: 8}}>
-					<Source>SECTURJAL (2025)</Source>
-				</div>
-			</Rise>
-			<Rise delay={5.0} style={{marginTop: 30}}>
-				<div style={{height: 2, width: 860, background: C.stroke, marginBottom: 34}} />
-				<BigNumber size={150} color={C.redGlow}>
-					+<Counter from={0} to={12600} start={5.0} duration={3} />
-				</BigNumber>
-				<Label size={42} style={{marginTop: 10}}>rentas activas · inicios de 2026</Label>
-				<div style={{marginTop: 8}}>
+					>
+						inicios de 2026
+					</div>
+				</Pop>
+			</Abs>
+			<Abs x={72} y={690} w={780}>
+				<Iris origin="50% 50%" collapseAt={collapse}>
+					<MaskLine at={c('doce')}>
+						<div style={{transform: `scale(${punch2})`, transformOrigin: 'left center'}}>
+							<BigNumber size={150} color={C.redGlow}>
+								+<Counter from={0} to={12600} start={c('doce')} end={c('seiscientas') + 0.5} />
+							</BigNumber>
+						</div>
+					</MaskLine>
+				</Iris>
+			</Abs>
+			<Abs x={72} y={855}>
+				<MaskLine at={c('rentas')} out={exit + 0.18}>
+					<Label size={42}>rentas activas</Label>
+				</MaskLine>
+				<MaskLine at={c('activas')} out={exit + 0.2} style={{marginTop: 8}}>
 					<Source>AirDNA (2026)</Source>
-				</div>
-			</Rise>
-		</Top>
+				</MaskLine>
+			</Abs>
+		</AbsoluteFill>
 	);
 };
 
-/* 4 · The study */
+/* 4 · The study --------------------------------------------------------- */
 export const StudyOverlay: React.FC = () => {
-	const author = (name: string, inst: string, delay: number) => (
-		<Rise delay={delay} y={24}>
+	const c = (w: string, n = 0) => cue('study', w, n);
+	const {exit, collapse} = ends('study');
+	const author = (name: string, initials: string, inst: string, at: number) => (
+		<MaskLine at={at}>
 			<div style={{display: 'flex', gap: 22, alignItems: 'center'}}>
 				<div
 					style={{
@@ -257,257 +369,319 @@ export const StudyOverlay: React.FC = () => {
 						flexShrink: 0,
 					}}
 				>
-					{name
-						.split(' ')
-						.filter((w) => /^[A-ZÁÉÍÓÚ]/.test(w))
-						.slice(0, 2)
-						.map((w) => w[0])
-						.join('')}
+					{initials}
 				</div>
 				<div>
 					<Label size={36} style={{fontWeight: 700}}>{name}</Label>
 					<Label size={26} style={{color: C.muted, marginTop: 4}}>{inst}</Label>
 				</div>
 			</div>
-		</Rise>
+		</MaskLine>
 	);
-	const chips = ['Versalles', 'Díaz Ordaz', 'Los Mangos'];
+	const chips: [string, number][] = [
+		['Versalles', c('Versalles')],
+		['Díaz Ordaz', c('Díaz')],
+		['Los Mangos', c('Los')],
+	];
 	return (
-		<Top>
-			<Rise delay={0.05}>
-				<Pill>El estudio</Pill>
-			</Rise>
-			<Rise delay={0.25} y={60}>
-				<Glass style={{display: 'flex', flexDirection: 'column', gap: 28}}>
-					{author('Jorge Luis López Ramos', 'Centro de Investigación para el Desarrollo Sustentable (CIDES)', 0.9)}
-					{author('María de los Ángeles Huízar Sánchez', 'Universidad de Guadalajara', 2.6)}
-				</Glass>
-			</Rise>
-			<div style={{display: 'flex', gap: 18, flexWrap: 'wrap', marginTop: 10}}>
-				{chips.map((c, i) => (
-					<Rise key={c} delay={7.3 + i * 0.45} y={30}>
-						<div
-							style={{
-								padding: '18px 30px',
-								borderRadius: 999,
-								background: C.red,
-								color: '#fff',
-								fontFamily: BODY,
-								fontWeight: 800,
-								fontSize: 34,
-								boxShadow: `0 10px 40px rgba(229,38,47,0.45)`,
-							}}
-						>
-							{c}
-						</div>
-					</Rise>
-				))}
-			</div>
-		</Top>
+		<AbsoluteFill>
+			<Abs x={72} y={200}>
+				<MaskLine at={0.1} out={exit}>
+					<Pill>El estudio</Pill>
+				</MaskLine>
+			</Abs>
+			<Abs x={72} y={290} w={936}>
+				<Iris origin="10% 50%" expandAt={ENTER} collapseAt={exit + 0.1}>
+					<Glass style={{display: 'flex', flexDirection: 'column', gap: 28}}>
+						{author('Jorge Luis López Ramos', 'JL', 'Centro de Investigación para el Desarrollo Sustentable (CIDES)', c('Jorge'))}
+						{author('María de los Ángeles Huízar Sánchez', 'MH', 'Universidad de Guadalajara', c('María'))}
+					</Glass>
+				</Iris>
+			</Abs>
+			<Abs x={72} y={580}>
+				<MaskLine at={c('tres')} out={exit + 0.04}>
+					<Label size={36} style={{color: C.muted}}>se metió a fondo en 3 colonias</Label>
+				</MaskLine>
+			</Abs>
+			<Abs x={72} y={650} w={936}>
+				<Iris origin="50% 50%" collapseAt={collapse}>
+					<div style={{display: 'flex', gap: 18, height: 90, alignItems: 'center'}}>
+						{chips.map(([name, at]) => (
+							<Pop key={name} at={at}>
+								<div
+									style={{
+										padding: '18px 30px',
+										borderRadius: 999,
+										background: C.red,
+										color: '#fff',
+										fontFamily: BODY,
+										fontWeight: 800,
+										fontSize: 34,
+										boxShadow: '0 10px 40px rgba(229,38,47,0.45)',
+									}}
+								>
+									{name}
+								</div>
+							</Pop>
+						))}
+					</div>
+				</Iris>
+			</Abs>
+		</AbsoluteFill>
 	);
 };
 
-/* 5 · Findings */
+/* 5 · Findings ---------------------------------------------------------- */
 export const FindingsOverlay: React.FC = () => {
-	const tile = (delay: number, num: React.ReactNode, label: string) => (
-		<Rise delay={delay} y={50} style={{flex: 1}}>
-			<Glass style={{padding: 34}}>
-				<BigNumber size={96}>{num}</BigNumber>
-				<Label size={32} style={{marginTop: 12, color: C.muted, fontWeight: 600}}>{label}</Label>
-			</Glass>
-		</Rise>
-	);
+	const c = (w: string, n = 0) => cue('findings', w, n);
+	const {exit, collapse} = ends('findings');
+	const p1 = usePunch(c('mil'));
+	const p2 = usePunch(c('comercios'));
 	return (
-		<Top>
-			<Rise delay={0.05}>
-				<Pill>Lo que encontraron</Pill>
-			</Rise>
-			<div style={{display: 'flex', gap: 24}}>
-				{tile(1.0, <>~<Counter from={0} to={1000} start={1.0} duration={1.6} /></>, 'rentas vacacionales activas')}
-				{tile(3.0, <>~<Counter from={0} to={700} start={3.0} duration={1.4} /></>, 'comercios y servicios')}
-			</div>
-			<Rise delay={5.4} y={40}>
-				<div style={{display: 'flex', alignItems: 'center', gap: 20}}>
-					<Arrow size={72} />
-					<Headline size={66}>
-						Más torres
-						<br />
-						en construcción
-					</Headline>
-				</div>
-			</Rise>
-			<Rise delay={1.2}>
-				<Source>AirDNA, DENUE-INEGI y trabajo de campo</Source>
-			</Rise>
-		</Top>
+		<AbsoluteFill>
+			<Abs x={72} y={200}>
+				<MaskLine at={0.1} out={exit}>
+					<Pill>Lo que encontraron</Pill>
+				</MaskLine>
+			</Abs>
+			<Abs x={72} y={290} w={444}>
+				<Iris origin="50% 50%" expandAt={ENTER} collapseAt={exit + 0.04}>
+					<Glass style={{padding: 34, height: 220, boxSizing: 'border-box'}}>
+						<MaskLine at={c('cerca')}>
+							<div style={{transform: `scale(${p1})`, transformOrigin: 'left center'}}>
+								<BigNumber size={92}>
+									~<Counter from={0} to={1000} start={c('cerca')} end={c('mil') + 0.1} />
+								</BigNumber>
+							</div>
+						</MaskLine>
+						<MaskLine at={c('rentas')} style={{marginTop: 14}}>
+							<Label size={30} style={{color: C.muted}}>rentas vacacionales activas</Label>
+						</MaskLine>
+					</Glass>
+				</Iris>
+			</Abs>
+			<Abs x={564} y={290} w={444}>
+				<Wipe at={c('unos')} out={exit + 0.08}>
+					<Glass style={{padding: 34, height: 220, boxSizing: 'border-box'}}>
+						<MaskLine at={c('setecientos') - 0.1}>
+							<div style={{transform: `scale(${p2})`, transformOrigin: 'left center'}}>
+								<BigNumber size={92}>
+									~<Counter from={0} to={700} start={c('setecientos')} end={c('comercios')} />
+								</BigNumber>
+							</div>
+						</MaskLine>
+						<MaskLine at={c('comercios')} style={{marginTop: 14}}>
+							<Label size={30} style={{color: C.muted}}>comercios y servicios</Label>
+						</MaskLine>
+					</Glass>
+				</Wipe>
+			</Abs>
+			<Abs x={72} y={530}>
+				<MaskLine at={c('comercios') + 0.3} out={exit + 0.1}>
+					<Source>AirDNA, DENUE-INEGI y trabajo de campo</Source>
+				</MaskLine>
+			</Abs>
+			<Abs x={72} y={590}>
+				<Iris origin="50% 50%" collapseAt={collapse}>
+					<Pop at={c('más')}>
+						<Arrow size={72} />
+					</Pop>
+				</Iris>
+			</Abs>
+			<Abs x={170} y={590}>
+				<Headline size={66}>
+					<MaskLine at={c('más')} out={exit + 0.12}>Más torres</MaskLine>
+					<MaskLine at={c('construcción')} out={exit + 0.16}>en construcción</MaskLine>
+				</Headline>
+			</Abs>
+		</AbsoluteFill>
 	);
 };
 
-/* 6 · Effects */
+/* 6 · Effects ----------------------------------------------------------- */
 export const EffectsOverlay: React.FC = () => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
-	const dimList = interpolate(frame, [6.1 * fps, 6.5 * fps], [1, 0], {
+	const c = (w: string, n = 0) => cue('effects', w, n);
+	const {collapse} = ends('effects');
+	const listOut = c('Un') - 0.35;
+	const items: [string, React.ReactNode, number][] = [
+		['01', 'Casas tradicionales que desaparecen', 0.06],
+		['02', <>Precio del suelo <Red>↑</Red></>, c('Precios')],
+		['03', 'Vecinos que se van', c('Vecinos')],
+	];
+	const tId = c('identidad');
+	const underline = interpolate(frame, [tId * fps, (tId + 0.5) * fps], [0, 1], {
 		extrapolateLeft: 'clamp',
 		extrapolateRight: 'clamp',
 	});
-	const items: [string, React.ReactNode, number][] = [
-		['01', 'Casas tradicionales que desaparecen', 0.05],
-		['02', <>Precio del suelo <Red>↑</Red></>, 2.66],
-		['03', 'Vecinos que se van', 4.69],
-	];
-	const underline = useAppear(7.2, 24);
 	return (
-		<>
-			<Top>
-				<div style={{opacity: dimList, display: 'flex', flexDirection: 'column', gap: 26}}>
-					{items.map(([n, t, d]) => (
-						<Rise key={n} delay={d} y={30}>
-							<Glass style={{padding: '28px 34px', display: 'flex', alignItems: 'center', gap: 28}}>
-								<div style={{fontFamily: DISPLAY, fontWeight: 800, fontSize: 44, color: C.redGlow}}>{n}</div>
-								<Label size={42} style={{fontWeight: 700}}>{t}</Label>
-							</Glass>
-						</Rise>
+		<AbsoluteFill>
+			{items.map(([n, t, at], i) => {
+				const row = (
+					<Glass style={{padding: '26px 34px', display: 'flex', alignItems: 'center', gap: 28}}>
+						<div style={{fontFamily: DISPLAY, fontWeight: 800, fontSize: 44, color: C.redGlow}}>{n}</div>
+						<Label size={40} style={{fontWeight: 700}}>{t}</Label>
+					</Glass>
+				);
+				return (
+					<Abs key={n} x={72} y={290 + i * 128} w={936}>
+						{i === 0 ? (
+							<Iris origin="6% 50%" expandAt={ENTER}>
+								<Wipe at={0} out={listOut}>{row}</Wipe>
+							</Iris>
+						) : (
+							<Wipe at={at} out={listOut + i * 0.06}>{row}</Wipe>
+						)}
+					</Abs>
+				);
+			})}
+			<Abs x={72} y={300}>
+				<Headline size={98}>
+					<MaskLine at={c('Un')}>Un barrio</MaskLine>
+					<MaskLine at={c('pierde')}>que pierde su</MaskLine>
+					<MaskLine at={tId}>
+						<Red>identidad</Red>
+					</MaskLine>
+				</Headline>
+			</Abs>
+			<Abs x={72} y={620} w={640}>
+				<Iris origin="100% 50%" collapseAt={collapse}>
+					<div style={{height: 10, width: `${underline * 100}%`, background: C.redGlow, borderRadius: 9, boxShadow: `0 0 20px ${C.red}`}} />
+				</Iris>
+			</Abs>
+		</AbsoluteFill>
+	);
+};
+
+/* 7 · Eight zones ------------------------------------------------------- */
+export const ZonesOverlay: React.FC = () => {
+	const c = (w: string, n = 0) => cue('zones', w, n);
+	const {exit, collapse} = ends('zones');
+	const zones = ['Versalles', 'Díaz Ordaz', 'Del Cerro', 'Emiliano Zapata', '5 de Diciembre', 'Zona Romántica', 'Zona Hotelera', 'Garza Blanca'];
+	const tZones = c('zonas');
+	return (
+		<AbsoluteFill>
+			<Abs x={72} y={200}>
+				<Iris origin="4% 50%" expandAt={ENTER}>
+					<MaskLine at={0} out={exit}>
+						<Pill>No es un caso aislado</Pill>
+					</MaskLine>
+				</Iris>
+			</Abs>
+			<Abs x={72} y={300} w={200}>
+				<Iris origin="50% 50%" collapseAt={collapse}>
+					<Pop at={c('ocho')}>
+						<BigNumber size={260} color={C.redGlow}>8</BigNumber>
+					</Pop>
+				</Iris>
+			</Abs>
+			<Abs x={300} y={330}>
+				<Headline size={62}>
+					<MaskLine at={tZones} out={exit + 0.04}>zonas</MaskLine>
+					<MaskLine at={tZones + 0.12} out={exit + 0.08}>concentran</MaskLine>
+					<MaskLine at={tZones + 0.24} out={exit + 0.12}>las rentas</MaskLine>
+				</Headline>
+			</Abs>
+			<Abs x={72} y={600} w={936}>
+				<div style={{display: 'flex', flexWrap: 'wrap', gap: 14}}>
+					{zones.map((z, i) => (
+						<Pop key={z} at={c('ciudad') + i * 0.08} out={exit + 0.14 + i * 0.02}>
+							<div
+								style={{
+									padding: '12px 22px',
+									borderRadius: 999,
+									border: `1.5px solid ${C.stroke}`,
+									background: 'rgba(22,24,32,0.72)',
+									fontFamily: BODY,
+									fontWeight: 600,
+									fontSize: 28,
+									color: C.ink,
+								}}
+							>
+								{z}
+							</div>
+						</Pop>
 					))}
 				</div>
-			</Top>
-			<Top top={290}>
-				<Rise delay={6.3} y={60}>
-					<Headline size={98}>
-						Un barrio
-						<br />
-						que pierde su
-						<br />
-						<span style={{position: 'relative', color: C.redGlow}}>
-							identidad
-							<span
-								style={{
-									position: 'absolute',
-									left: 0,
-									bottom: -10,
-									height: 10,
-									width: `${underline * 100}%`,
-									background: C.redGlow,
-									borderRadius: 9,
-								}}
-							/>
-						</span>
-					</Headline>
-				</Rise>
-			</Top>
-		</>
+			</Abs>
+			<Abs x={72} y={880}>
+				<MaskLine at={c('todas')} out={exit + 0.2}>
+					<Label size={40} style={{fontWeight: 700}}>
+						Todas eran <Red>barrios de vivienda local</Red>
+					</Label>
+				</MaskLine>
+			</Abs>
+		</AbsoluteFill>
 	);
 };
 
-/* 7 · Eight zones */
-export const ZonesOverlay: React.FC = () => {
-	const zones = [
-		'Versalles',
-		'Díaz Ordaz',
-		'Del Cerro',
-		'Emiliano Zapata',
-		'5 de Diciembre',
-		'Zona Romántica',
-		'Zona Hotelera',
-		'Garza Blanca',
-	];
-	return (
-		<Top>
-			<Rise delay={0.05}>
-				<Pill>No es un caso aislado</Pill>
-			</Rise>
-			<Rise delay={2.5} y={60}>
-				<div style={{display: 'flex', alignItems: 'center', gap: 30}}>
-					<BigNumber size={260} color={C.redGlow}>8</BigNumber>
-					<Headline size={62}>
-						zonas
-						<br />
-						concentran
-						<br />
-						las rentas
-					</Headline>
-				</div>
-			</Rise>
-			<div style={{display: 'flex', flexWrap: 'wrap', gap: 14}}>
-				{zones.map((z, i) => (
-					<Rise key={z} delay={3.1 + i * 0.18} y={20}>
-						<div
-							style={{
-								padding: '12px 22px',
-								borderRadius: 999,
-								border: `1.5px solid ${C.stroke}`,
-								background: 'rgba(10,12,18,0.6)',
-								fontFamily: BODY,
-								fontWeight: 600,
-								fontSize: 28,
-								color: C.ink,
-							}}
-						>
-							{z}
-						</div>
-					</Rise>
-				))}
-			</div>
-			<Rise delay={6.05}>
-				<Label size={40} style={{fontWeight: 700}}>
-					Todas eran <Red>barrios de vivienda local</Red>
-				</Label>
-			</Rise>
-		</Top>
-	);
-};
-
-/* 8 · Outro + citation */
+/* 8 · Outro + citation -------------------------------------------------- */
 export const OutroOverlay: React.FC = () => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
+	const c = (w: string, n = 0) => cue('outro', w, n);
 	const shade = interpolate(frame, [0, 0.8 * fps], [0, 0.55], {extrapolateRight: 'clamp'});
-	const cardOut = useFadeOut(3.3, 12);
+	const cardOut = c('Y') - 0.15;
+	const topo = usePunch(c('Topofilia'));
 	return (
 		<>
 			<AbsoluteFill style={{background: `rgba(4,6,10,${shade})`}} />
-			<Top top={230}>
-				<div style={{opacity: cardOut, display: 'flex', flexDirection: 'column', gap: 28}}>
-					<Rise delay={0.05}>
+			<AbsoluteFill>
+				<Abs x={72} y={230}>
+					<MaskLine at={0.1} out={cardOut}>
 						<Pill>Lee el estudio completo</Pill>
-					</Rise>
-					<Rise delay={0.3} y={60}>
-						<Glass style={{padding: 44}}>
-							<div style={{fontFamily: DISPLAY, fontWeight: 800, fontSize: 76, color: C.ink, letterSpacing: -2}}>
-								Topo<Red>filia</Red>
-							</div>
-							<Label size={24} style={{color: C.muted, marginTop: 6}}>
-								Difusión Periódica de Arquitectura, Urbanismo y Territorios
-							</Label>
-							<div style={{height: 2, background: C.stroke, margin: '26px 0'}} />
-							<Label size={33} style={{fontWeight: 700, lineHeight: 1.25}}>
-								El alojamiento vacacional basado en plataformas digitales: causas, efectos e impactos en zonas de
-								residencia local
-							</Label>
-							<Label size={28} style={{color: C.muted, marginTop: 18}}>
-								López Ramos, J. L. y Huízar Sánchez, M. Á. (2026)
-							</Label>
-							<Label size={26} style={{color: C.muted, marginTop: 8}}>
-								Año XIX, n.º 32, pp. 178–203 · ISSN 2594-0635
-							</Label>
-						</Glass>
-					</Rise>
-				</div>
-			</Top>
-			<Top top={420}>
-				<Rise delay={3.45} y={70}>
-					<Pill>Próximo mes · 02/03</Pill>
-					<div style={{height: 30}} />
-					<Headline size={120}>
-						El
-						<br />
-						<Red>barrio</Red>
+					</MaskLine>
+				</Abs>
+				<Abs x={72} y={320} w={936}>
+					<Iris origin="10% 15%" expandAt={ENTER}>
+						<Wipe at={0} out={cardOut + 0.05} dir="up">
+							<Glass style={{padding: 44}}>
+								<div style={{transform: `scale(${topo})`, transformOrigin: 'left center'}}>
+									<MaskLine at={0.35}>
+										<div style={{fontFamily: DISPLAY, fontWeight: 800, fontSize: 76, color: C.ink, letterSpacing: -2}}>
+											Topo<Red>filia</Red>
+										</div>
+									</MaskLine>
+								</div>
+								<MaskLine at={0.5} style={{marginTop: 6}}>
+									<Label size={24} style={{color: C.muted}}>Difusión Periódica de Arquitectura, Urbanismo y Territorios</Label>
+								</MaskLine>
+								<div style={{height: 2, background: C.stroke, margin: '26px 0'}} />
+								<Label size={33} style={{fontWeight: 700, lineHeight: 1.25}}>
+									<MaskLine at={c('estudio') + 0.3}>El alojamiento vacacional basado en</MaskLine>
+									<MaskLine at={c('estudio') + 0.4}>plataformas digitales: causas, efectos e</MaskLine>
+									<MaskLine at={c('estudio') + 0.5}>impactos en zonas de residencia local</MaskLine>
+								</Label>
+								<MaskLine at={c('completo')} style={{marginTop: 18}}>
+									<Label size={28} style={{color: C.muted}}>López Ramos, J. L. y Huízar Sánchez, M. Á. (2026)</Label>
+								</MaskLine>
+								<MaskLine at={c('revista')} style={{marginTop: 8}}>
+									<Label size={26} style={{color: C.muted}}>Año XIX, n.º 32, pp. 178–203 · ISSN 2594-0635</Label>
+								</MaskLine>
+							</Glass>
+						</Wipe>
+					</Iris>
+				</Abs>
+				<Abs x={72} y={430}>
+					<MaskLine at={c('próximo')}>
+						<Pill>Próximo mes · 02/03</Pill>
+					</MaskLine>
+				</Abs>
+				<Abs x={72} y={530}>
+					<Headline size={130}>
+						<MaskLine at={c('contamos')}>El</MaskLine>
+						<MaskLine at={c('barrio')}>
+							<Red>barrio</Red>
+						</MaskLine>
 					</Headline>
-					<Label size={40} style={{marginTop: 24, color: C.muted, maxWidth: 820}}>
-						La historia de un barrio que se transforma
-					</Label>
-				</Rise>
-			</Top>
+				</Abs>
+				<Abs x={72} y={830} w={900}>
+					<MaskLine at={c('transformando')}>
+						<Label size={40} style={{color: C.muted}}>La historia de un barrio que se transforma</Label>
+					</MaskLine>
+				</Abs>
+			</AbsoluteFill>
 		</>
 	);
 };
