@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "studio": "remotion studio",
-    "render": "remotion render Convocatoria out/convocatoria.mp4"
+    "render": "remotion render Convocatoria out/raw.mp4 && ffmpeg -y -i out/raw.mp4 -c:v copy -af loudnorm=I=-14:TP=-1.5:LRA=11 -c:a aac -b:a 192k out/convocatoria-cienu-2027.mp4",
+    "audio": "python3 scripts/make-audio.py"
   },
   "dependencies": {
     "@remotion/cli": "4.0.380",

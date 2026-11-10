@@ -4,9 +4,11 @@ import {QRCodeSVG} from 'qrcode.react';
 import React from 'react';
 import {
 	AbsoluteFill,
+	Audio,
 	Easing,
 	Img,
 	interpolate,
+	Sequence,
 	spring,
 	staticFile,
 	useCurrentFrame,
@@ -30,6 +32,40 @@ const INK = '#1C2230';
 const BG = '#FBFDFC';
 
 const URL = 'cienu.cuc.udg.mx/convocatoria';
+
+const KICKER = '¡YA ESTÁ PUBLICADA!';
+
+// Sound effects, synced to the animation (frame, file, volume)
+const sfx: [number, string, number][] = [
+	[0, 'whoosh', 0.6],
+	[10, 'pop', 0.7],
+	[36, 'pop', 0.3],
+	[48, 'whoosh', 0.3],
+	// Typewriter clicks for the kicker
+	...KICKER.split('')
+		.map((c, i): [number, string, number] => [Math.round(52 + ((i + 1) * 36) / KICKER.length), c === ' ' ? '' : 'mouse-click', 0.25])
+		.filter(([, f]) => f !== ''),
+	[84, 'riser', 0.6],
+	[86, 'whoosh', 0.5],
+	[120, 'impact', 0.8],
+	[140, 'page-turn', 0.35],
+	[190, 'switch', 0.35],
+	[222, 'whip', 0.45],
+	[236, 'whip', 0.45],
+	[250, 'whip', 0.45],
+	[296, 'pop', 0.6],
+	[300, 'whoosh', 0.4],
+	// Typing the URL, a click every other character
+	...Array.from({length: Math.ceil(URL.length / 2)}, (_, i): [number, string, number] => [
+		Math.round(318 + (i * 2 * 32) / URL.length),
+		'mouse-click',
+		0.18,
+	]),
+	[345, 'pop', 0.35],
+	[351, 'pop', 0.35],
+	[357, 'pop', 0.35],
+	[372, 'ding', 0.5],
+];
 
 const clamp = {
 	extrapolateLeft: 'clamp',
@@ -149,7 +185,7 @@ export const Convocatoria: React.FC = () => {
 	const logoS = spring({frame: frame - 8, fps, config: {damping: 13, mass: 0.8}});
 
 	// Typewriter for "¡YA ESTÁ PUBLICADA!"
-	const kicker = '¡YA ESTÁ PUBLICADA!';
+	const kicker = KICKER;
 	const typed = Math.floor(interpolate(frame, [52, 88], [0, kicker.length], clamp));
 	const kickerLine = interpolate(frame, [48, 64], [0, 1], {...clamp, easing: ease});
 	const cursorOn = frame < 100 && Math.floor(frame / 8) % 2 === 0;
@@ -193,6 +229,12 @@ export const Convocatoria: React.FC = () => {
 
 	return (
 		<AbsoluteFill style={{background: BG, fontFamily: sans, color: INK, overflow: 'hidden'}}>
+			<Audio src={staticFile('music.wav')} volume={0.55} />
+			{sfx.map(([from, file, volume], i) => (
+				<Sequence key={i} from={from} layout="none">
+					<Audio src={staticFile(`sfx/${file}.wav`)} volume={volume} />
+				</Sequence>
+			))}
 			{/* Decorative arcs, top right */}
 			<svg
 				width={900}
