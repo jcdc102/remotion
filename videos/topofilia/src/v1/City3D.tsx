@@ -214,7 +214,7 @@ const CityContent: React.FC = () => {
 	// Runs before every R3F render (useFrame) and on frame change, so a fresh
 	// render tab never draws the city before its instances are positioned.
 	const update = useCallback(() => {
-		if (!bodies.current || !roofsRef.current || !towers.current || !pinHeads.current || !pinTips.current) {
+				if (!bodies.current || !roofsRef.current || !towers.current || !pinHeads.current || !pinTips.current) {
 			return;
 		}
 		// Camera path
@@ -388,6 +388,16 @@ const CityContent: React.FC = () => {
 
 	useLayoutEffect(update, [update]);
 	useFrame(update);
+	// Take over rendering so we can wait for the (software) GPU to finish
+	// before Remotion captures the frame. Otherwise a frame can be grabbed
+	// half drawn.
+	useFrame((state) => {
+		state.gl.render(state.scene, state.camera);
+		const ctx = state.gl.getContext();
+		ctx.finish();
+		const px = new Uint8Array(4);
+		ctx.readPixels(0, 0, 1, 1, ctx.RGBA, ctx.UNSIGNED_BYTE, px);
+	}, 1);
 
 	const count = lots.length;
 	const outlineW = coord(POLY.i1) - coord(POLY.i0) + 1.4;
@@ -412,28 +422,28 @@ const CityContent: React.FC = () => {
 
 			{/* ground */}
 			<mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]}>
-				<planeGeometry args={[HALF * 2 + 4, HALF * 2 + 4]} />
+				<planeGeometry args={[HALF * 2 + 4, HALF * 2 + 4, 24, 24]} />
 				<meshStandardMaterial color="#141922" roughness={1} />
 			</mesh>
 			{/* beach + ocean to the west */}
 			<mesh rotation={[-Math.PI / 2, 0, 0]} position={[-HALF - 3.2, -0.005, 0]}>
-				<planeGeometry args={[2.4, HALF * 2 + 4]} />
+				<planeGeometry args={[2.4, HALF * 2 + 4, 2, 24]} />
 				<meshStandardMaterial color="#c9a46c" roughness={1} />
 			</mesh>
 			<mesh rotation={[-Math.PI / 2, 0, 0]} position={[-HALF - 54.4, -0.02, 0]}>
-				<planeGeometry args={[100, 200]} />
+				<planeGeometry args={[100, 200, 25, 50]} />
 				<meshStandardMaterial color="#0c3550" roughness={0.25} metalness={0.4} />
 			</mesh>
 
-			<instancedMesh ref={bodies} args={[undefined, undefined, count]}>
+			<instancedMesh ref={bodies} args={[undefined, undefined, count]} frustumCulled={false}>
 				<boxGeometry args={[1, 1, 1]} />
 				<meshStandardMaterial roughness={0.8} />
 			</instancedMesh>
-			<instancedMesh ref={roofsRef} args={[undefined, undefined, count]}>
+			<instancedMesh ref={roofsRef} args={[undefined, undefined, count]} frustumCulled={false}>
 				<coneGeometry args={[0.72, 1, 4]} />
 				<meshStandardMaterial roughness={0.7} flatShading />
 			</instancedMesh>
-			<instancedMesh ref={towers} args={[undefined, undefined, count]}>
+			<instancedMesh ref={towers} args={[undefined, undefined, count]} frustumCulled={false}>
 				<boxGeometry args={[1, 1, 1]} />
 				<meshStandardMaterial
 					map={windowTex}
@@ -444,11 +454,11 @@ const CityContent: React.FC = () => {
 					metalness={0.3}
 				/>
 			</instancedMesh>
-			<instancedMesh ref={pinHeads} args={[undefined, undefined, count]}>
+			<instancedMesh ref={pinHeads} args={[undefined, undefined, count]} frustumCulled={false}>
 				<sphereGeometry args={[1, 16, 12]} />
 				<meshBasicMaterial color="#ff4655" toneMapped={false} />
 			</instancedMesh>
-			<instancedMesh ref={pinTips} args={[undefined, undefined, count]}>
+			<instancedMesh ref={pinTips} args={[undefined, undefined, count]} frustumCulled={false}>
 				<coneGeometry args={[1, 1, 12]} />
 				<meshBasicMaterial color="#ff4655" toneMapped={false} />
 			</instancedMesh>
