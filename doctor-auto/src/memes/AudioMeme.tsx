@@ -101,8 +101,8 @@ export const AUDIO_TAKA: AudioMemeProps = {
     { archivo: "real/a3-conductor.mp4", desde: 0.3, t0: 0, t1: 1.92, zoom: [1.0, 1.1] },
     { archivo: "real/a1-banda.mp4", desde: 0.5, t0: 1.92, t1: 2.42, zoom: [1.15, 1.25] },
     { archivo: "real/a2-homocinetica.mp4", desde: 1.0, t0: 2.42, t1: 2.74, zoom: [1.2, 1.3] },
-    { archivo: "real/a1-banda.mp4", desde: 2.5, t0: 2.74, t1: 3.3, zoom: [1.35, 1.45] },
-    { archivo: "real/a2-homocinetica.mp4", desde: 2.5, t0: 3.3, t1: 3.78, zoom: [1.45, 1.55] },
+    { archivo: "real/k6-bomba.mp4", desde: 1.0, t0: 2.74, t1: 3.3, zoom: [1.15, 1.25] },
+    { archivo: "real/k1-medidor.mp4", desde: 1.5, t0: 3.3, t1: 3.78, zoom: [1.2, 1.3] },
     { archivo: "real/v4-freno.mp4", desde: 0, t0: 3.78, t1: 4.68, zoom: [1.1, 1.25] },
     { archivo: "real/v6-cofre.mp4", desde: 1.0, t0: 4.68, t1: 5.5, zoom: [1.05, 1.15] },
     { archivo: "real/k4-radiador.mp4", desde: 0.5, t0: 5.5, t1: 6.5, zoom: [1.1, 1.25] },
@@ -116,5 +116,5 @@ export const AUDIO_TAKA: AudioMemeProps = {
   ],
   remate: "Tranqui 😎\nEn Doctor Auto sí\nentendemos el\n\"taka taka\"",
   subremate: "Diagnóstico por escáner · CDMX 🔧",
-  fondoRemate: "real/k4-fin.jpg",
+  fondoRemate: "real/k3-fin.jpg",
 };
