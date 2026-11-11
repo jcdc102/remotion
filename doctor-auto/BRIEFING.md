@@ -58,3 +58,11 @@ Resumen del briefing que entregó Julio. Fuente de verdad para estrategia y regl
 - El contenido de IA anterior era de Gemini (videos generativos de Google de menos de 30 s). Ya no se usa Gemini; ahora Claude es la herramienta.
 - Rol de Claude: editar clips reales que Julio consigue (cortes, textos, sonido, cierre de marca), copys, análisis e ideas. No generar videos con IA salvo humor o tendencia.
 - No hacer: mascota ni novelas de IA en FB e IG. No pedir accesos ni discutir números con Axel.
+
+## Datos reales de Facebook (Supermetrics, 11 nov 2026)
+- Acceso: Supermetrics conectado a la página Doctor Auto (944419888910006). Instagram todavía no está conectado. En el conector de Meta Ads se ve el negocio Doctor Auto (973683702650291) y la página, pero no la cuenta publicitaria.
+- Vistas de video de la página por mes: nov 146K, dic 22K, ene 17K, feb 603K, mar 165K, abr 740K, may 166K, jun 155K, jul 12.5K, ago 24K, sep 15K, oct 5.3K.
+- De noviembre a mayo se publicaban unos 12 posts al mes: 3 o 4 memes de video real con #humor #memes, y el resto promos. Los memes dieron casi todas las vistas; las promos sacaban entre 300 y 600 cada una.
+- Top: "Achis esa no me la sabía" (6 feb, 1.44M), "Ánimo, gran inicio de semana" (13 abr, 417K), "Cuando el poderoso trae trucos" (20 feb, 276K), "Mi pierna después de 1 hora en tráfico con un estándar" (4 jun, 265K), "Ah caray, súbele a esa cumbión" (6 abr, 265K), "¿Cómo va su lunes?" (19 ene, 260K), "Déjalos que ladren" (20 abr, 227K), "Maneja con precaución" (4 may, 218K), "Presupuesto de 1, ingenio de 100" (13 feb, 189K). Todos orgánicos.
+- De julio a noviembre se publicaron entre 28 y 36 posts al mes, casi sin memes (IA, educativos, #ElAutoHabla, preguntas). La mediana por post bajó de 533 vistas (nov-may) a 185 (jul-nov).
+- La caída fuerte empieza en julio, no en mayo.
