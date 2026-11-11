@@ -51,3 +51,10 @@ Resumen del briefing que entregó Julio. Fuente de verdad para estrategia y regl
 - Septiembre (campaña en Canva): 22 videos, 5 series fijas (meme externo con SnapTik + CapCut, Primer Auto, #ElAutoHabla, dato curioso, noticias globales con Gemini + CapCut), temas desde búsquedas reales, ~3.6 h de producción por semana. Regla: Spark Ads solo si un video orgánico llega a 15%+ de retención o 50+ guardados en 48 h. Resultado: 53.7K vistas, +589 seguidores, 86% con pago.
 - Octubre (campaña en PDF): objetivo crecer 18-24, 5 series, $700 MXN en Spark Ads. Resultado: 342.2K vistas, 72% de un meme de Primer Auto, +72 seguidores. Espectadores 18-24 28.2% (meta 15% cumplida), seguidores 18-24 8.7% (meta 13% no cumplida).
 - Constantes: Primer Auto y los memes son lo que mejor funciona desde agosto; noticias globales y datos curiosos con IA rinden poco; el problema de fondo es convertir alcance en seguidores orgánicos.
+
+## Cambio de rumbo (11 nov 2026)
+- Fernando le dio a Julio un último aviso ("tienes los días contados"). Pide videos chuscos reales, sin IA, bien editados y virales.
+- Axel (reporte "FB renovación"): lo que funciona son videos reales con humor sobre problemas de mecánica y de automovilistas, memes y referencias culturales. También promos, contenido educativo, datos históricos y gente real. Lo estático casi no funciona; si acaso, carruseles de temas de interés. IA solo con humor o tendencia. Según Axel, la caída empieza en mayo y solo un video de Julio está en el top 10 histórico.
+- El contenido de IA anterior era de Gemini (videos generativos de Google de menos de 30 s). Ya no se usa Gemini; ahora Claude es la herramienta.
+- Rol de Claude: editar clips reales que Julio consigue (cortes, textos, sonido, cierre de marca), copys, análisis e ideas. No generar videos con IA salvo humor o tendencia.
+- No hacer: mascota ni novelas de IA en FB e IG. No pedir accesos ni discutir números con Axel.
