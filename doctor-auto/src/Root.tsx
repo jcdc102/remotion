@@ -1,4 +1,5 @@
 import { Composition } from "remotion";
+import { Recorte, RECORTE_CHOQUE, duracionRecorte } from "./memes/Recorte";
 import { Reaccion, REACCION_CHOQUE, duracionReaccion } from "./memes/Reaccion";
 import { Meme, MEME_COFRE, MEME_FRIO, MEME_QUINCENA, MEME_RUIDITO, duracionMeme } from "./memes/Meme";
 import { Calaveritas } from "./Calaveritas";
@@ -21,6 +22,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="MemeCofre" component={Meme} defaultProps={MEME_COFRE} durationInFrames={duracionMeme(MEME_COFRE.tomas)} fps={30} width={1080} height={1920} />
       <Composition id="MemeFrio" component={Meme} defaultProps={MEME_FRIO} durationInFrames={duracionMeme(MEME_FRIO.tomas)} fps={30} width={1080} height={1920} />
       <Composition id="ReaccionChoque" component={Reaccion} defaultProps={REACCION_CHOQUE} durationInFrames={duracionReaccion(REACCION_CHOQUE)} fps={30} width={1080} height={1920} />
+      <Composition id="RecorteChoque" component={Recorte} defaultProps={RECORTE_CHOQUE} durationInFrames={duracionRecorte(RECORTE_CHOQUE)} fps={30} width={1080} height={1920} />
       <Composition id="Prueba3D" component={Prueba3D} durationInFrames={60} fps={30} width={1080} height={1920} />
       <Composition
         id="Calaveritas"
