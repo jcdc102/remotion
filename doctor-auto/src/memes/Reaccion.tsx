@@ -25,8 +25,8 @@ export const Reaccion: React.FC<ReaccionProps> = ({ archivo, fondo, durClip, rem
         <AbsoluteFill style={{ filter: "blur(18px) brightness(0.45)", transform: "scale(1.1)" }}>
           <Img src={staticFile(fondo)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         </AbsoluteFill>
-        <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", padding: "0 80px", gap: 36 }}>
-          <div style={{ fontFamily, fontWeight: 800, fontSize: 76, color: "white", textAlign: "center", lineHeight: 1.12, transform: `scale(${0.6 + 0.4 * entra})`, opacity: entra, textShadow: "0 6px 24px rgba(0,0,0,0.6)", whiteSpace: "pre-line" }}>
+        <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", padding: "0 50px", gap: 36 }}>
+          <div style={{ fontFamily, fontWeight: 800, fontSize: 66, color: "white", textAlign: "center", lineHeight: 1.12, transform: `scale(${0.6 + 0.4 * entra})`, opacity: entra, textShadow: "0 6px 24px rgba(0,0,0,0.6)", whiteSpace: "pre-line" }}>
             {remate}
           </div>
           <div style={{ fontFamily, fontWeight: 700, fontSize: 46, color: "#111", background: "white", borderRadius: 18, padding: "16px 30px", textAlign: "center", opacity: entraSub, transform: `translateY(${(1 - entraSub) * 40}px)` }}>
