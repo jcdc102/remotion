@@ -136,3 +136,23 @@ export const MEME_COFRE: MemeProps = {
     { archivo: "sfx/memes/boom.mp3", t: 6.3, volumen: 0.8 },
   ],
 };
+
+export const MEME_FRIO: MemeProps = {
+  musica: "sfx/memes/musica.mp3",
+  corte: 3.0,
+  tomas: [
+    { archivo: "real/v5-bateria-frio.mp4", desde: 0, dur: 3.0, zoom: [1.0, 1.08], texto: "Mi carro en las mañanas\nde diciembre:" },
+    { archivo: "real/v5-bateria-frio.mp4", desde: 1.6, dur: 3.3, zoom: [1.25, 1.45], texto: "Ay no... 5 minutitos\nmás, jefe 😴" },
+    { archivo: "real/m1-calentar.mp4", desde: 0.2, dur: 3.2, zoom: [1.05, 1.15], texto: "Yo, esperando afuera\na que despierte 🥶" },
+  ],
+  sonidos: [
+    { archivo: "sfx/memes/voz-f1.wav", t: 0.2, volumen: 1 },
+    { archivo: "sfx/viaje/marcha-falla.wav", t: 1.2, volumen: 0.8 },
+    { archivo: "sfx/memes/scratch.mp3", t: 2.85, volumen: 0.8 },
+    { archivo: "sfx/memes/voz-f2.wav", t: 3.2, volumen: 1 },
+    { archivo: "sfx/memes/ronquido.mp3", t: 5.95, volumen: 0.9 },
+    { archivo: "sfx/memes/boing.mp3", t: 6.3, volumen: 0.3 },
+    { archivo: "sfx/memes/voz-f3.wav", t: 6.5, volumen: 1 },
+    { archivo: "sfx/memes/trombon.mp3", t: 8.1, volumen: 0.75 },
+  ],
+};
