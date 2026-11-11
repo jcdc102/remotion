@@ -119,3 +119,20 @@ export const MEME_QUINCENA: MemeProps = {
     { archivo: "sfx/memes/trombon.mp3", t: 6.7, volumen: 0.8 },
   ],
 };
+
+export const MEME_COFRE: MemeProps = {
+  musica: "sfx/memes/musica.mp3",
+  corte: 2.7,
+  tomas: [
+    { archivo: "real/v6-cofre.mp4", desde: 0.2, dur: 2.7, zoom: [1.0, 1.08], texto: "Cuando abren el cofre\nde tu carro..." },
+    { archivo: "real/a3-conductor.mp4", desde: 0.3, dur: 4.4, zoom: [1.0, 1.4], texto: "...y nadie dice nada 😶" },
+  ],
+  sonidos: [
+    { archivo: "sfx/memes/boing.mp3", t: 0.05, volumen: 0.3 },
+    { archivo: "sfx/memes/voz-e1.wav", t: 0.3, volumen: 1 },
+    { archivo: "sfx/memes/scratch.mp3", t: 2.45, volumen: 0.8 },
+    { archivo: "sfx/memes/voz-e2.wav", t: 2.95, volumen: 1 },
+    { archivo: "sfx/memes/grillos-largo.wav", t: 3.6, volumen: 0.9 },
+    { archivo: "sfx/memes/boom.mp3", t: 6.3, volumen: 0.8 },
+  ],
+};
