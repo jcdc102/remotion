@@ -1,4 +1,5 @@
 import { Composition } from "remotion";
+import { Meme, MEME_QUINCENA, MEME_RUIDITO, duracionMeme } from "./memes/Meme";
 import { Calaveritas } from "./Calaveritas";
 import { Prueba3D } from "./pruebas/Prueba3D";
 import { DURACION, FPS } from "./estructura8/datos";
@@ -14,6 +15,8 @@ import { Estructura8, type TemaEstructura8 } from "./estructura8/Estructura8";
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition id="MemeRuidito" component={Meme} defaultProps={MEME_RUIDITO} durationInFrames={duracionMeme(MEME_RUIDITO.tomas)} fps={30} width={1080} height={1920} />
+      <Composition id="MemeQuincena" component={Meme} defaultProps={MEME_QUINCENA} durationInFrames={duracionMeme(MEME_QUINCENA.tomas)} fps={30} width={1080} height={1920} />
       <Composition id="Prueba3D" component={Prueba3D} durationInFrames={60} fps={30} width={1080} height={1920} />
       <Composition
         id="Calaveritas"
