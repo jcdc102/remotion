@@ -147,3 +147,15 @@ Público: conductores mexicanos de 25 a 55 años (dueños de auto de uso diario,
 - Ritmo entretenido: un cambio visual cada 1–2 s, humor ligero y frases del día a día, ganchos y re-enganches claros.
 - El estilo puede variar entre videos (cinemático, show de juego, documental, etc.), siempre pro.
 - Voz: la voz "DOCTOR AUTO" de ElevenLabs (voice_id m4FLfO3mc8RTRVJVmA9C, modelo eleven_v3), toma única cortada por palabras con scripts/cortar-por-palabras.py.
+
+---
+
+## REGLAS DEL CLIENTE (briefing 10 nov, mandan sobre lo anterior)
+
+Ver BRIEFING.md.
+- La mascota solo explica; nunca comete errores. Nunca burlas a mecánicos.
+- No desalentar buscar la falla en Google o ChatGPT.
+- Copy: corto, no repite el texto del video, CTA al final, luego "🔧🐔 El Doctor de tu auto", luego máximo 7 hashtags. Sin rayas ni tríadas forzadas.
+- Datos técnicos validados por el mecánico del taller antes de publicar.
+- Dirección: 3 videos por semana (1 novela con IA y 2 memes o videos reales). Consejos con clips reales del taller y voz real de un mecánico cuando se pueda.
+- Taller en CDMX: mencionar la ciudad para atraer clientes locales.
