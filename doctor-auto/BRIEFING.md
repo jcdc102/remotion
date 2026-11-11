@@ -44,3 +44,10 @@ Resumen del briefing que entregó Julio. Fuente de verdad para estrategia y regl
 - Hoja de una página con estadísticas para Fernando.
 - Voz: confirmar uso comercial del plan de ElevenLabs y activar la etiqueta de contenido con IA en TikTok.
 - Licencia comercial de Remotion: no verificada.
+
+## Historial de campañas (documentos de Julio)
+- Julio: base de 15,200 espectadores nuevos y 10 seguidores nuevos.
+- Agosto (reporte en Canva): 5 videos/semana, 100% IA. 8.4K vistas, 4.7K espectadores nuevos, +168 seguidores (salto que después se aclaró que no fue orgánico), 555 seguidores al 31 ago. Búsqueda 20.6% del tráfico. Top 5: 3 de Primer Auto y #ElAutoHabla. Pico lunes 4-5 pm.
+- Septiembre (campaña en Canva): 22 videos, 5 series fijas (meme externo con SnapTik + CapCut, Primer Auto, #ElAutoHabla, dato curioso, noticias globales con Gemini + CapCut), temas desde búsquedas reales, ~3.6 h de producción por semana. Regla: Spark Ads solo si un video orgánico llega a 15%+ de retención o 50+ guardados en 48 h. Resultado: 53.7K vistas, +589 seguidores, 86% con pago.
+- Octubre (campaña en PDF): objetivo crecer 18-24, 5 series, $700 MXN en Spark Ads. Resultado: 342.2K vistas, 72% de un meme de Primer Auto, +72 seguidores. Espectadores 18-24 28.2% (meta 15% cumplida), seguidores 18-24 8.7% (meta 13% no cumplida).
+- Constantes: Primer Auto y los memes son lo que mejor funciona desde agosto; noticias globales y datos curiosos con IA rinden poco; el problema de fondo es convertir alcance en seguidores orgánicos.
