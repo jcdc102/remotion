@@ -159,3 +159,7 @@ Ver BRIEFING.md.
 - Datos técnicos validados por el mecánico del taller antes de publicar.
 - Dirección: 3 videos por semana (1 novela con IA y 2 memes o videos reales). Consejos con clips reales del taller y voz real de un mecánico cuando se pueda.
 - Taller en CDMX: mencionar la ciudad para atraer clientes locales.
+
+## Clips sin reciclar (regla de Julio, 11 nov 2026)
+- Cada video usa clips nuevos: no se repite ninguno dentro del video ni entre videos.
+- Antes de armar un video, revisar doctor-auto/clips-usados.md y agregar ahí los clips que se usen.
