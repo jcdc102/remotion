@@ -111,3 +111,42 @@ Todos los cierres son a las 23:59 h, hora del centro de México.
 - **Plantilla y lineamientos:** aparecen como "[POR DEFINIR]". Se necesitan antes de que abra la recepción de extensos (11 de febrero).
 - **Página de Facebook:** el título dice "Pachuca".
 - **Faltan nombres:** de los conferencistas magistrales y de los talleres. Son el contenido fuerte para redes.
+
+## Plan de marketing del equipo (presentación, noviembre de 2026)
+
+- **Meta:** 350 ponencias en 2027.
+- **Redes:** Instagram, YouTube, Facebook y WhatsApp Business. Se trabajan las de RIDMAE y las del congreso.
+- **Objetivos:** crecer seguidores, promover el congreso, aumentar ponencias y automatizar respuestas en redes y correo.
+- **Lo que ya funcionó:** la publicación de la convocatoria en Facebook tuvo 2,810 visualizaciones, 1,300 espectadores, 354 interacciones y 24 seguidores nuevos en 18 horas (12.6 % de interacción). El 92.9 % de las vistas vino del feed y solo el 4 % de la página, es decir, de la gente que compartió.
+- **Resúmenes esperados por fuente (total 440):**
+  - Ponentes anteriores que regresan: 115.
+  - Universidades aliadas: 100.
+  - Círculo de difusores y referidos: 90.
+  - Contenido orgánico y pauta: 85.
+  - Lives, WhatsApp y otros: 50.
+- **Las 6 líneas de estrategia:**
+  1. Tu ponencia, paso a paso.
+  2. La red que comparte.
+  3. Universidades aliadas.
+  4. Vallarta te espera.
+  5. IA en el aula.
+  6. Contenido sobre RIDMAE.
+- **Hashtags:** #CIENU2027 · #YoPresentoEnCIENU · #RIDMAE · #IAenEducación
+- **Paleta oficial:**
+  - Rojo #D21F2A (urgencia, fechas).
+  - Verde #0E7C5A (lema, botones).
+  - Naranja #EE7D1F.
+  - Oro #F5B400.
+  - Texto #1E2430.
+  - Fondo #F4F5F6.
+- **Tipografía:** Montserrat ExtraBold y Medium, más IBM Plex Mono para etiquetas y URL.
+- **Logos:** siempre transparentes, sin recuadros.
+- **Formatos:**
+  - Post 1080×1350.
+  - Carrusel 1080×1350 (6 a 8 láminas).
+  - Reel o Short 1080×1920 (15 a 45 s, gancho en los primeros 2 s, tarjeta final de 3 s con fecha y QR).
+  - Historia 1080×1920.
+  - Post de Facebook 1080×1350 o 1200×630.
+  - YouTube 1920×1080.
+  - Miniatura 1280×720.
+  - Portada de live 1080×1350 y 1920×1080, con «EN VIVO» y la hora de México y de España.

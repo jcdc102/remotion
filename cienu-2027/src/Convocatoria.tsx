@@ -24,12 +24,12 @@ const {fontFamily: mono} = loadMono('normal', {
 	subsets: ['latin'],
 });
 
-const RED = '#C8202F';
-const GREEN = '#137A57';
-const ORANGE = '#E9802A';
-const YELLOW = '#F2B11B';
-const INK = '#1C2230';
-const BG = '#FBFDFC';
+const RED = '#D21F2A';
+const GREEN = '#0E7C5A';
+const ORANGE = '#EE7D1F';
+const YELLOW = '#F5B400';
+const INK = '#1E2430';
+const BG = '#F4F5F6';
 
 const URL = 'cienu.cuc.udg.mx/convocatoria';
 
