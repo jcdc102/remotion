@@ -124,3 +124,6 @@ Tema: del marketing de masas al marketing de nichos. Voz: clon «Julio». Logos:
 ## Frase «No todos los finales son tristes…» (12 nov 2026)
 - Toma propia de Julio (IMG_0417, atardecer en la playa, 4K vertical). Se usaron los primeros 4 s en cámara lenta (0.28x, interpolada a 30 fps) y se dejó fuera la persona que entra al final. No se nombra el lugar porque el video no lo indica.
 - Frase original. Sin datos.
+
+## Frase irónica «…que a mí me sale gratis» (12 nov 2026)
+- Misma toma propia de Julio (IMG_0417). Frase original, sin datos.
