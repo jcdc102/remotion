@@ -1,4 +1,5 @@
 import { Composition } from "remotion";
+import { TakaAnimado, DURACION_TAKA_ANIMADO } from "./memes/TakaAnimado";
 import { TakaPremium, DURACION_TAKA_PREMIUM } from "./memes/TakaPremium";
 import { Taka3D, DURACION_TAKA3D } from "./memes/Taka3D";
 import { AudioMeme, AUDIO_LLORAR, AUDIO_TAKA, duracionAudioMeme } from "./memes/AudioMeme";
@@ -30,6 +31,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="AudioTaka" component={AudioMeme} defaultProps={AUDIO_TAKA} durationInFrames={duracionAudioMeme(AUDIO_TAKA)} fps={30} width={1080} height={1920} />
       <Composition id="Taka3D" component={Taka3D} durationInFrames={DURACION_TAKA3D} fps={30} width={1080} height={1920} />
       <Composition id="TakaPremium" component={TakaPremium} durationInFrames={DURACION_TAKA_PREMIUM} fps={30} width={1080} height={1920} />
+      <Composition id="TakaAnimado" component={TakaAnimado} durationInFrames={DURACION_TAKA_ANIMADO} fps={30} width={1080} height={1920} />
       <Composition id="Prueba3D" component={Prueba3D} durationInFrames={60} fps={30} width={1080} height={1920} />
       <Composition
         id="Calaveritas"
