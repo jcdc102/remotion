@@ -15,4 +15,5 @@ Todos se usaron en los videos de la mascota (viaje, mitos, calor, adivina) o en 
 Mixkit (mixkit.co/free-stock-video/...): videos reales gratis, sin marca de agua, licencia libre para redes. Descarga: https://assets.mixkit.co/videos/{id}/{id}-1080.mp4 (o -720). Pexels suspendió las claves nuevas de su API.
 
 ## Mixkit ya usados
-4521, 24815, 4716, 13270, 17675, 13260, 41937, 64, 1960, 72
+4521, 24815, 4716, 13270, 17675, 13260, 41937, 64, 1960, 72, 42113, 2074, 26656
+- Vocho (en revisión): fotos de Wikimedia Commons (taxi-cdmx: Mattes, dominio público; taxco: Carlos Adampol Galindo, CC BY-SA 2.0; taxis-taxco: AlejandroLinaresGarcia, CC BY-SA 4.0; vocho-mexico: Gzzz, CC BY-SA 4.0; ultima-1: Alfacevedoa, dominio público; cozumel: Sharon Hahn Darlin, CC BY 2.0) + mixkit 42113, 2074, 26656
