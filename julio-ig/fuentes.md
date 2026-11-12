@@ -127,3 +127,8 @@ Tema: del marketing de masas al marketing de nichos. Voz: clon «Julio». Logos:
 
 ## Frase irónica «…que a mí me sale gratis» (12 nov 2026)
 - Misma toma propia de Julio (IMG_0417). Frase original, sin datos.
+
+## «Algodones es más que dentistas» / «Los Algodones is more than dentists» (12 nov 2026)
+Serie bilingüe para promover el destino. Voz «Julio» en español e inglés.
+- ✅ 311 consultorios dentales: INEGI, DENUE (consulta del 7 nov 2026).
+- ✅ 81 tiendas de artesanías, 89 restaurantes y cafeterías (SCIAN 7225), 36 negocios de lentes, ópticas y optometría, 29 farmacias, y 995 negocios en total: INEGI, DENUE (consulta del 11 nov 2026, archivo INEGI_DENUE_11112026). Detalle en investigacion/los-algodones.md.
