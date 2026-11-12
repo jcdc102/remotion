@@ -120,3 +120,7 @@ Tema: del marketing de masas al marketing de nichos. Voz: clon «Julio». Logos:
 - Se quitó el caso Fenty Beauty (voz y pantalla) y la voz ya no dice «McKinsey»: ahora dice «un estudio de 2021». La fuente sigue en letra chica en pantalla, porque cada dato lleva su fuente.
 - Escena nueva en lugar de Fenty: «Cuando le hablas a alguien en específico… te escucha» (sin datos).
 - Versión horizontal 1920x1080 (RadarPromoHorizontal).
+
+## Frase «No todos los finales son tristes…» (12 nov 2026)
+- Toma propia de Julio (IMG_0417, atardecer en la playa, 4K vertical). Se usaron los primeros 4 s en cámara lenta (0.28x, interpolada a 30 fps) y se dejó fuera la persona que entra al final. No se nombra el lugar porque el video no lo indica.
+- Frase original. Sin datos.
