@@ -9,4 +9,10 @@ Todos se usaron en los videos de la mascota (viaje, mitos, calor, adivina) o en 
 
 ## Por video
 - AudioLlorar (aprobado): k5-fuga, m4-fuga, k4-radiador, v8-parabrisas, v1-varado
-- AudioTaka (en revisión): a3-conductor, a1-banda, a2-homocinetica, k6-bomba, k1-medidor, v4-freno, v6-cofre, k4-radiador*, v1-varado* (*repetidos de AudioLlorar)
+- AudioTaka (en revisión, rehecho con clips nuevos de Mixkit): mixkit 4521, 24815, 4716, 13270, 17675, 13260, 41937, 64, 1960, 72 (fondo del remate)
+
+## Fuente de clips nuevos
+Mixkit (mixkit.co/free-stock-video/...): videos reales gratis, sin marca de agua, licencia libre para redes. Descarga: https://assets.mixkit.co/videos/{id}/{id}-1080.mp4 (o -720). Pexels suspendió las claves nuevas de su API.
+
+## Mixkit ya usados
+4521, 24815, 4716, 13270, 17675, 13260, 41937, 64, 1960, 72

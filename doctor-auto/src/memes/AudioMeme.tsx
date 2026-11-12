@@ -4,7 +4,7 @@ import { AbsoluteFill, Audio, Img, interpolate, OffthreadVideo, Sequence, spring
 const { fontFamily } = loadFont("normal", { weights: ["700", "800"], subsets: ["latin"] });
 
 // Audio viral completo + tomas cortadas sobre las palabras + subtítulos del audio + remate.
-type Toma = { archivo: string; desde: number; t0: number; t1: number; zoom: [number, number] };
+type Toma = { archivo: string; desde: number; t0: number; t1: number; zoom: [number, number]; pos?: string };
 type Sub = { t0: number; t1: number; texto: string };
 export type AudioMemeProps = { audio: string; durAudio: number; titulo: string; tomas: Toma[]; subs: Sub[]; remate: string; subremate: string; fondoRemate: string };
 
@@ -34,7 +34,7 @@ export const AudioMeme: React.FC<AudioMemeProps> = ({ audio, durAudio, titulo, t
         return (
           <Sequence key={i} from={de} durationInFrames={largo}>
             <AbsoluteFill style={{ transform: `translate(${Math.sin(l * 2.7) * temblor}px, ${Math.cos(l * 3.3) * temblor}px) scale(${escala})` }}>
-              <OffthreadVideo src={staticFile(toma.archivo)} muted startFrom={Math.round(toma.desde * fps)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <OffthreadVideo src={staticFile(toma.archivo)} muted startFrom={Math.round(toma.desde * fps)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: toma.pos ?? "50% 50%" }} />
             </AbsoluteFill>
           </Sequence>
         );
@@ -98,15 +98,15 @@ export const AUDIO_TAKA: AudioMemeProps = {
   durAudio: 7.65,
   titulo: "Yo explicándole al mecánico el ruido que hace mi carro:",
   tomas: [
-    { archivo: "real/a3-conductor.mp4", desde: 0.3, t0: 0, t1: 1.92, zoom: [1.0, 1.1] },
-    { archivo: "real/a1-banda.mp4", desde: 0.5, t0: 1.92, t1: 2.42, zoom: [1.15, 1.25] },
-    { archivo: "real/a2-homocinetica.mp4", desde: 1.0, t0: 2.42, t1: 2.74, zoom: [1.2, 1.3] },
-    { archivo: "real/k6-bomba.mp4", desde: 1.0, t0: 2.74, t1: 3.3, zoom: [1.15, 1.25] },
-    { archivo: "real/k1-medidor.mp4", desde: 1.5, t0: 3.3, t1: 3.78, zoom: [1.2, 1.3] },
-    { archivo: "real/v4-freno.mp4", desde: 0, t0: 3.78, t1: 4.68, zoom: [1.1, 1.25] },
-    { archivo: "real/v6-cofre.mp4", desde: 1.0, t0: 4.68, t1: 5.5, zoom: [1.05, 1.15] },
-    { archivo: "real/k4-radiador.mp4", desde: 0.5, t0: 5.5, t1: 6.5, zoom: [1.1, 1.25] },
-    { archivo: "real/v1-varado.mp4", desde: 1.0, t0: 6.5, t1: 7.65, zoom: [1.1, 1.25] },
+    { archivo: "mixkit/4521.mp4", desde: 2.0, t0: 0, t1: 1.92, zoom: [1.0, 1.08], pos: "30% 50%" },
+    { archivo: "mixkit/24815.mp4", desde: 1.0, t0: 1.92, t1: 2.42, zoom: [1.1, 1.2], pos: "18% 50%" },
+    { archivo: "mixkit/4716.mp4", desde: 2.0, t0: 2.42, t1: 2.74, zoom: [1.1, 1.2], pos: "40% 50%" },
+    { archivo: "mixkit/13270.mp4", desde: 1.0, t0: 2.74, t1: 3.3, zoom: [1.1, 1.2], pos: "45% 50%" },
+    { archivo: "mixkit/17675.mp4", desde: 12.0, t0: 3.3, t1: 3.78, zoom: [1.1, 1.2], pos: "60% 50%" },
+    { archivo: "mixkit/13260.mp4", desde: 1.0, t0: 3.78, t1: 4.68, zoom: [1.05, 1.15], pos: "35% 50%" },
+    { archivo: "mixkit/41937.mp4", desde: 1.0, t0: 4.68, t1: 5.5, zoom: [1.05, 1.15], pos: "60% 50%" },
+    { archivo: "mixkit/64.mp4", desde: 3.0, t0: 5.5, t1: 6.5, zoom: [1.1, 1.25], pos: "45% 50%" },
+    { archivo: "mixkit/1960.mp4", desde: 2.0, t0: 6.5, t1: 7.65, zoom: [1.0, 1.15] },
   ],
   subs: [
     { t0: 0, t1: 1.9, texto: "Resulta que de repente oímos..." },
@@ -116,5 +116,5 @@ export const AUDIO_TAKA: AudioMemeProps = {
   ],
   remate: "Tranqui 😎\nEn Doctor Auto sí\nentendemos el\n\"taka taka\"",
   subremate: "Diagnóstico por escáner · CDMX 🔧",
-  fondoRemate: "real/k3-fin.jpg",
+  fondoRemate: "mixkit/72-fin.jpg",
 };
