@@ -132,3 +132,6 @@ Tema: del marketing de masas al marketing de nichos. Voz: clon «Julio». Logos:
 Serie bilingüe para promover el destino. Voz «Julio» en español e inglés.
 - ✅ 311 consultorios dentales: INEGI, DENUE (consulta del 7 nov 2026).
 - ✅ 81 tiendas de artesanías, 89 restaurantes y cafeterías (SCIAN 7225), 36 negocios de lentes, ópticas y optometría, 29 farmacias, y 995 negocios en total: INEGI, DENUE (consulta del 11 nov 2026, archivo INEGI_DENUE_11112026). Detalle en investigacion/los-algodones.md.
+### Versión de 1 minuto (12 nov 2026, pedido de Julio)
+- ✅ 995 negocios en total, 29 joyerías, 47 salones de belleza, 12 lugares para hospedarse (11 hoteles y 1 motel), 6 centros cambiarios, 4 bares y cantinas: INEGI, DENUE (11 nov 2026).
+- ✅ 48 cantinas en los años 60 (testimonio), temporada alta de octubre a abril con unas 6,000 personas al día (COTUDEAL) y Yuma a 10 minutos: Zermeño Flores y Cuevas Contreras (2020), Revista Cenário 8(14), pp. 115 y 121.
