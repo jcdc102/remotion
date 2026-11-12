@@ -46,3 +46,18 @@ Revisado el 7 nov 2026. ✅ = confirmado en fuente primaria (leída) · 🟡 = f
 - Zermeño Flores, S. G. y Cuevas Contreras, T. J. (2020). «Vocación en el turismo de salud: caso Los Algodones, Baja California, México». *Cenário*, 8(14), 110-129. DOI: 10.26512/revistacenario.v8i14.31173.
 - Rodríguez Blanco, A. (2020). «Turismo dental en Molar City: un análisis cualitativo desde sus trabajadores». *Contexto Odontológico*, 10(19), 50-58.
 - Capó Valdivia, Z. V. (2014). *El rechazo simbólico, la tolerancia pragmática y los sistemas institucionalizados de evasión: análisis del discurso oficial sobre el opio en Mexicali, 1900-1935*. Tesis de maestría, UABC.
+
+## DENUE, segunda descarga de Julio (INEGI_DENUE_11112026, consulta del 11 nov 2026)
+Localidad 0111 Vicente Guerrero (Algodones), Mexicali. 684 unidades económicas, sin los consultorios dentales (esos son los 311 de la primera descarga): en total, 995 negocios registrados.
+Agrupado por clase SCIAN:
+- Tiendas de artesanías: 81 (la clase con más negocios después de los dentistas).
+- Restaurantes y cafeterías (SCIAN 7225): 89, entre ellos 22 de tacos y tortas y 10 de pescados y mariscos.
+- Salones de belleza y peluquerías: 47.
+- Lentes, ópticas y optometría: 36 (24 tiendas de lentes, 7 consultorios de optometría y 5 de fabricación de artículos oftálmicos).
+- Farmacias: 29 (21 sin minisúper y 8 con minisúper).
+- Joyería y relojes: 29.
+- Fabricación de equipo médico, dental y de laboratorio: 28.
+- Hospedaje: 12 (8 hoteles sin otros servicios, 3 con otros servicios y 1 motel).
+- Estacionamientos: 11. Laboratorios médicos: 8. Centros cambiarios: 6.
+- Bares y cantinas: 4 (en los 60 había 48 cantinas, según el testimonio en Zermeño y Cuevas, 2020).
+Ojo: el DENUE registra los negocios que tienen domicilio físico; puede no incluir a los informales.
