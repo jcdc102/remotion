@@ -27,6 +27,11 @@ Piezas listas en `src/edicion.tsx`.
 5. **Revela el texto desde una máscara:** los títulos aparecen subiendo desde detrás de una línea invisible (`TextoMascara`), no con un simple fundido.
 Estas indicaciones se combinan con el ritmo pausado: movimiento continuo pero sin prisa.
 
+## Estilo de cada video (pedido de Julio, 12 nov 2026)
+- **Cada video lleva un fondo y una paleta distintos**: no repetir el mismo fondo (por ejemplo, el desierto) en videos seguidos.
+- Que se vea llamativo: estilo de sus referencias de TikTok (tipografía en movimiento). Una pantalla nueva por frase (cada 1.5 a 3 s), con un fondo que cambia entre escenas (claro con retícula, negro y un color fuerte), letras grandes y gruesas con la palabra clave de color, y un objeto o ícono animado que represente lo que se dice. Cortes rápidos con destello o deslizamiento y su efecto de sonido.
+- El ritmo lo pide el contenido: datos e historias con energía y pausas cortas; reflexiones, lentas.
+
 ## Datos y fuentes (regla obligatoria)
 - Cada dato se verifica antes de usarlo y se anota en `fuentes.md`, con la fuente y la fecha en que se revisó.
 - Orden de preferencia de las fuentes:

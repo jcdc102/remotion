@@ -135,3 +135,11 @@ Serie bilingüe para promover el destino. Voz «Julio» en español e inglés.
 ### Versión de 1 minuto (12 nov 2026, pedido de Julio)
 - ✅ 995 negocios en total, 29 joyerías, 47 salones de belleza, 12 lugares para hospedarse (11 hoteles y 1 motel), 6 centros cambiarios, 4 bares y cantinas: INEGI, DENUE (11 nov 2026).
 - ✅ 48 cantinas en los años 60 (testimonio), temporada alta de octubre a abril con unas 6,000 personas al día (COTUDEAL) y Yuma a 10 minutos: Zermeño Flores y Cuevas Contreras (2020), Revista Cenário 8(14), pp. 115 y 121.
+
+## Historia de Los Algodones, parte 2: «¿Por qué Molar City está aquí?» (12 nov 2026)
+Estilo nuevo: tipografía en movimiento según las referencias de Julio.
+- ✅ Pegado a la frontera, junto a la garita de Andrade (California), y Yuma a 10 minutos: Zermeño Flores y Cuevas Contreras (2020), p. 115, y los mapas de Julio.
+- ✅ En los años 70, un dentista del pueblo empezó a promocionar sus servicios en EE. UU.; auge desde los 80: Rodríguez Blanco (2020), p. 52.
+- ✅ Verano de 35 a 40 °C; en invierno, con menos de 20 °C, llegan los «pájaros de la nieve»: Rodríguez Blanco (2020), p. 57.
+- ✅ Visitantes desde Alaska y Columbia Británica: Zermeño Flores y Cuevas Contreras (2020), p. 115.
+- ✅ Más de la mitad de los consultorios en 5 manzanas (173 de 311): INEGI, DENUE (7 nov 2026).

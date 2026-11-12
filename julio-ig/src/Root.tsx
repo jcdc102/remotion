@@ -9,6 +9,7 @@ import { AtardecerFrase, DURACION_ATARDECER } from "./AtardecerFrase";
 import { AtardecerGratis, DURACION_GRATIS } from "./AtardecerGratis";
 import { AlgodonesMas } from "./AlgodonesMas";
 import { DURACION_MAS_EN, DURACION_MAS_ES } from "./algodones-mas-tiempos";
+import { AlgodonesParte2, DURACION_PARTE2 } from "./AlgodonesParte2";
 import { RadarPromo, DURACION_RADAR } from "./RadarPromo";
 import { HistoriaAlgodones, DURACION_HISTORIA_ALGODONES } from "./HistoriaAlgodones";
 
@@ -35,6 +36,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="AtardecerGratis" component={AtardecerGratis} durationInFrames={DURACION_GRATIS} fps={30} width={1080} height={1920} />
       <Composition id="AlgodonesMasEs" component={AlgodonesMas} durationInFrames={DURACION_MAS_ES} fps={30} width={1080} height={1920} defaultProps={{ idioma: "es" as const }} />
       <Composition id="AlgodonesMasEn" component={AlgodonesMas} durationInFrames={DURACION_MAS_EN} fps={30} width={1080} height={1920} defaultProps={{ idioma: "en" as const }} />
+      <Composition id="AlgodonesParte2" component={AlgodonesParte2} durationInFrames={DURACION_PARTE2} fps={30} width={1080} height={1920} />
     </>
   );
 };
