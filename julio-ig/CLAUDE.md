@@ -32,6 +32,17 @@ Estas indicaciones se combinan con el ritmo pausado: movimiento continuo pero si
 - Que se vea llamativo: estilo de sus referencias de TikTok (tipografía en movimiento). Una pantalla nueva por frase (cada 1.5 a 3 s), con un fondo que cambia entre escenas (claro con retícula, negro y un color fuerte), letras grandes y gruesas con la palabra clave de color, y un objeto o ícono animado que represente lo que se dice. Cortes rápidos con destello o deslizamiento y su efecto de sonido.
 - El ritmo lo pide el contenido: datos e historias con energía y pausas cortas; reflexiones, lentas.
 
+## Reglas de guion y edición (de los videos de referencia que mandó Julio, 13 nov 2026)
+- **Estructura:** 4 ganchos → promesa abierta → introducción → bloque 1 → pregunta abierta → bloque 2 → pregunta abierta → solución → CTA.
+- **Los 4 ganchos, todos en los primeros 1 a 3 s:** hablado (la primera frase), texto (el título en pantalla), visual (algo que se mueve o sorprende desde el fotograma 0) y sonido (un golpe o whoosh al arrancar). Si no impacta desde el segundo cero, se pierde al espectador.
+- **Promesa abierta:** decir qué va a entender o ganar en los próximos segundos («en 50 segundos te explico…»).
+- **Preguntas abiertas** entre bloques, para crear curiosidad y que se quede («pero la segunda razón es la que nadie imagina…»).
+- **Solución:** entregar todo lo prometido; que sienta que valió la pena.
+- **CTA:** pedir que comente una palabra para recibir un recurso (una guía, un mapa o la siguiente parte). Sólo prometer recursos que existan.
+- **Claridad e intención:** mensaje claro y directo, y cada video con un objetivo: educar, posicionar o vender.
+- **Zona segura (vertical):** nada importante en la franja de arriba (15%), en la de abajo (25%) ni en el lado derecho, donde van los botones (unos 140 px). El gancho de texto va en el tercio superior, los subtítulos en medio y los objetos que describen van en los huecos libres. Dejar espacio para el zoom de entrada y de salida.
+- **Barra de progreso por secciones** (gancho, bloques, solución, CTA), como en la referencia.
+
 ## Datos y fuentes (regla obligatoria)
 - Cada dato se verifica antes de usarlo y se anota en `fuentes.md`, con la fuente y la fecha en que se revisó.
 - Orden de preferencia de las fuentes:
