@@ -40,14 +40,27 @@ const TomaCine: React.FC<{ toma: Toma; t: number }> = ({ toma, t }) => {
   );
 };
 
-const Sello: React.FC<{ texto: string; frame: number; fps: number; t0: number; t1: number; color: string }> = ({ texto, frame, fps, t0, t1, color }) => {
-  const t = frame / fps;
+// Lo que dice la voz viral, como pensamiento: sale de una máscara abajo; los gritos, más grandes.
+const VOZ = [
+  { texto: "¡Dale bien recio!", t0: 5.14, t1: 6.9, grande: true },
+  { texto: "¡Que no te importe nada!", t0: 7.08, t1: 8.9, grande: false },
+  { texto: "Tu cuerpo y tu rostro...", t0: 10.66, t1: 12.7, grande: false },
+  { texto: "Tallados a mano", t0: 12.86, t1: 13.9, grande: false },
+  { texto: "¡Apocalíptica!", t0: 13.96, t1: 15.6, grande: true },
+  { texto: "Auténtica...", t0: 17.66, t1: 18.85, grande: false },
+  { texto: "¡Apocalíptica!", t0: 18.94, t1: 20.4, grande: true },
+  { texto: "¡Dale bien recio!", t0: 20.52, t1: 23.9, grande: true },
+];
+
+const Voz: React.FC<{ texto: string; t0: number; t1: number; grande: boolean; t: number; frame: number; fps: number }> = ({ texto, t0, t1, grande, t, frame, fps }) => {
   if (t < t0 || t > t1) return null;
-  const e = resorte(frame, fps, t0, 11, 220);
+  const e = resorte(frame, fps, t0, 13, 240);
+  const sale = interpolate(t, [t1 - 0.12, t1], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const ab = grande ? Math.exp(-(t - t0) * 7) * 12 : 0;
   return (
-    <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", paddingTop: 120 }}>
-      <div style={{ transform: `scale(${0.6 + 0.4 * e}) rotate(-3deg)`, opacity: e, background: color, padding: "18px 44px 24px", borderRadius: 16, boxShadow: "0 20px 60px rgba(0,0,0,0.5)" }}>
-        <div style={{ fontFamily: ANTON, fontSize: 120, color: "#fff", lineHeight: 1 }}>{texto}</div>
+    <AbsoluteFill style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: 320 }}>
+      <div style={{ overflow: "hidden", padding: "0.1em 0.2em 0" }}>
+        <div style={{ fontFamily: ANTON, fontSize: grande ? 140 : 96, lineHeight: 1, color: "#fff", textAlign: "center", padding: "0 40px", transform: `translateY(${(1 - e) * 105 - sale * 105}%)`, textShadow: `${ab}px 0 0 rgba(255,40,60,0.85), ${-ab}px 0 0 rgba(40,220,255,0.75), 0 14px 40px rgba(0,0,0,0.7)` }}>{texto}</div>
       </div>
     </AbsoluteFill>
   );
@@ -81,26 +94,24 @@ export const DaleRecio: React.FC = () => {
             <div style={{ transform: `translateY(${(1 - resorte(frame, fps, 0.15)) * 110}%)`, fontFamily: POPPINS, fontWeight: 700, fontSize: 30, letterSpacing: "0.35em", color: "rgba(255,255,255,0.85)" }}>POV</div>
           </div>
           <div style={{ width: 960 }}>
-            <TituloMascara texto="Yo en Periférico con esta canción" resaltar={["Periférico"]} t={t} t0={0.25} t1={99} tamano={78} />
+            <TituloMascara texto="Lo que pasa por mi mente cuando voy a 20 km/h en Periférico" resaltar={["mente"]} t={t} t0={0.25} t1={99} tamano={70} />
           </div>
         </AbsoluteFill>
       ) : null}
 
-      <Sello texto="EN MI MENTE" frame={frame} fps={fps} t0={0.6} t1={2.2} color="rgba(20,20,26,0.75)" />
-      <Sello texto="LA REALIDAD" frame={frame} fps={fps} t0={5.14} t1={6.9} color={ROJO_DA} />
+      {VOZ.map((v) => (
+        <Voz key={v.t0} {...v} t={t} frame={frame} fps={fps} />
+      ))}
 
       {/* velocímetro de mentira: 20 km/h */}
       {t >= 7.08 && t < 9.64 ? (
-        <AbsoluteFill style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: 330 }}>
+        <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", paddingTop: 80 }}>
           <div style={{ display: "flex", alignItems: "baseline", gap: 18, opacity: resorte(frame, fps, 7.1), transform: `scale(${0.7 + 0.3 * resorte(frame, fps, 7.1)})` }}>
             <div style={{ fontFamily: ANTON, fontSize: 260, color: "#fff", lineHeight: 1, textShadow: "0 20px 60px rgba(0,0,0,0.6)", fontVariantNumeric: "tabular-nums" }}>{vel}</div>
             <div style={{ fontFamily: POPPINS, fontWeight: 700, fontSize: 60, color: "rgba(255,255,255,0.85)" }}>km/h</div>
           </div>
         </AbsoluteFill>
       ) : null}
-      <ChipVidrio t={t} t0={9.9} t1={12.1} texto="Hasta los peatones me rebasan 🚶" x={150} y={1450} tamano={42} />
-      <ChipVidrio t={t} t0={14.2} t1={15.7} texto="El semáforo dura más que mi avance 🚦" x={110} y={1450} tamano={40} />
-      <ChipVidrio t={t} t0={20.7} t1={24.0} texto="Velocidad crucero: 20 km/h 😎" x={185} y={1450} tamano={42} />
 
       {/* remate con dato del taller */}
       {enRemate ? (
