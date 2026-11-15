@@ -19,3 +19,10 @@ Mixkit (mixkit.co/free-stock-video/...): videos reales gratis, sin marca de agua
 - Vocho (en revisión): fotos de Wikimedia Commons (taxi-cdmx: Mattes, dominio público; taxco: Carlos Adampol Galindo, CC BY-SA 2.0; taxis-taxco: AlejandroLinaresGarcia, CC BY-SA 4.0; vocho-mexico: Gzzz, CC BY-SA 4.0; ultima-1: Alfacevedoa, dominio público; cozumel: Sharon Hahn Darlin, CC BY 2.0) + mixkit 42113, 2074, 26656
 - EncenderAuto (en revisión): mixkit 13127, 24723, 48198, 21516, 28917, 45301, 47363, 33739, 33324, 3304, 47629, 42367, 52454, 33327, 13976, 27845, 4000, 4401, 39825, 17613, 2675
 - DaleRecio (en revisión): mixkit 42367, 52454, 47629, 2675, 3304, 17613, 4401, 27845, 39825, 4000, 13976, 33327
+
+## DatoFalso (dato curioso falso con giro, 15 nov)
+Material propio de Doctor Auto (reels publicados en FB), recortado sin textos quemados. No reusar estos fragmentos:
+- motor: post 1372773811560546 (5.5–12.5 s) · mecanico: 1377703594400901 (16.6–19.6) · humo: 1336229955214932 (1.5–9.5)
+- fiebre: 1296738882497373 (20.5–25) · disco: 1383527043818556 (2.8–10.8) · escaner: 1364164739088120 (1.5–10.5)
+- calibrado: 1413671474137446 (10.6–13.6) · ppf: 1366721548832439 (11–15.5) · cortinas: 1341557204682207 (19.8–23.4)
+- recepcion: 1323434356494492 (11.5–15) · grua: 1323434356494492 (15–17.6)
