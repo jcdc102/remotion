@@ -26,3 +26,7 @@ Material propio de Doctor Auto (reels publicados en FB), recortado sin textos qu
 - fiebre: 1296738882497373 (20.5–25) · disco: 1383527043818556 (2.8–10.8) · escaner: 1364164739088120 (1.5–10.5)
 - calibrado: 1413671474137446 (10.6–13.6) · ppf: 1366721548832439 (11–15.5) · cortinas: 1341557204682207 (19.8–23.4)
 - recepcion: 1323434356494492 (11.5–15) · grua: 1323434356494492 (15–17.6)
+
+## DatoJapon (dato con giro, versión corregida, 15 nov)
+- Mixkit: 28682 (calle Nagoya), 14089 (cruce con ambulancia, video + foto fija cruce.jpg), 30137 (Shibuya), 20085 (estación de noche). 26834 descargado, sin usar.
+- Material propio Doctor Auto: cortinas y escaner (los mismos fragmentos de DatoFalso; DatoFalso NO se publica, queda reemplazado por este).
