@@ -1,4 +1,5 @@
 import { Composition, Still } from "remotion";
+import { DaleRecio, DURACION_DALE_RECIO } from "./memes/DaleRecio";
 import { EncenderAuto, DURACION_ENCENDER } from "./memes/EncenderAuto";
 import { MemeImagen } from "./memes/MemeImagen";
 import { Vocho, DURACION_VOCHO } from "./memes/Vocho";
@@ -39,6 +40,7 @@ export const RemotionRoot: React.FC = () => {
       <Still id="MemeImgRin" component={MemeImagen} defaultProps={{ archivo: "memes-img/rin.jpg" }} width={1080} height={1350} />
       <Still id="MemeImgEmbrague" component={MemeImagen} defaultProps={{ archivo: "memes-img/embrague.jpg" }} width={1080} height={1350} />
       <Composition id="EncenderAuto" component={EncenderAuto} durationInFrames={DURACION_ENCENDER} fps={30} width={1080} height={1920} />
+      <Composition id="DaleRecio" component={DaleRecio} durationInFrames={DURACION_DALE_RECIO} fps={30} width={1080} height={1920} />
       <Composition id="Prueba3D" component={Prueba3D} durationInFrames={60} fps={30} width={1080} height={1920} />
       <Composition
         id="Calaveritas"
