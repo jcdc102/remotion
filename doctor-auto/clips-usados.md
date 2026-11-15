@@ -30,3 +30,7 @@ Material propio de Doctor Auto (reels publicados en FB), recortado sin textos qu
 ## DatoJapon (dato con giro, versión corregida, 15 nov)
 - Mixkit: 28682 (calle Nagoya), 14089 (cruce con ambulancia, video + foto fija cruce.jpg), 30137 (Shibuya), 20085 (estación de noche). 26834 descargado, sin usar.
 - Material propio Doctor Auto: cortinas y escaner (los mismos fragmentos de DatoFalso; DatoFalso NO se publica, queda reemplazado por este).
+
+## DatoAnuncio (anuncio escondido, 15 nov)
+- Primera parte: animación viral de @dontotopo_la (tanques con QR), 0–9.95 s con su audio hasta 11.72 s. Marca de agua intacta; dar crédito en el copy.
+- Material propio Doctor Auto: cortinas, mecanico, escaner, disco, hojalateria (post 1357941239710470, 1–6 s, franja inferior), recepcion, grua.
