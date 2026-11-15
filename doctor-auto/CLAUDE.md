@@ -163,3 +163,11 @@ Ver BRIEFING.md.
 ## Clips sin reciclar (regla de Julio, 11 nov 2026)
 - Cada video usa clips nuevos: no se repite ninguno dentro del video ni entre videos.
 - Antes de armar un video, revisar doctor-auto/clips-usados.md y agregar ahí los clips que se usen.
+
+## Efectos de sonido (tutorial de @comoeditarvideos, 15 nov 2026)
+Kit en public/sfx/kit/:
+- fahhh.mp3: llamar la atención (gancho al inicio).
+- magic.mp3: revelar algo (dato, cifra, remate).
+- whoosh.wav: zoom in y zoom out.
+- click.wav: remarcar textos (cada texto que entra).
+- shutter.mp3: transiciones (con un flash blanco corto).

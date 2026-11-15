@@ -134,10 +134,23 @@ export const EncenderAuto: React.FC = () => {
         </div>
       </AbsoluteFill>
 
+      <AbsoluteFill style={{ backgroundColor: "white", opacity: interpolate(t, [DUR_AUDIO - 0.12, DUR_AUDIO - 0.08, DUR_AUDIO + 0.12], [0, 0.85, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) }} />
       <AcabadoPremium frame={frame} calidez={0.8} />
 
       <Sequence durationInFrames={fin}>
         <Audio src={staticFile("sfx/memes/encender-auto.wav")} />
+      </Sequence>
+      {/* kit de efectos: click en cada texto, camera shutter en la transición al remate, magic en la revelación */}
+      {[0.2, 4.4, 6.4, 11.6, 13.4, 20.4].map((k) => (
+        <Sequence key={`c${k}`} from={Math.round(k * fps)} durationInFrames={15}>
+          <Audio src={staticFile("sfx/kit/click.wav")} volume={0.35} />
+        </Sequence>
+      ))}
+      <Sequence from={fin - 4} durationInFrames={30}>
+        <Audio src={staticFile("sfx/kit/shutter.mp3")} volume={0.5} />
+      </Sequence>
+      <Sequence from={Math.round((DUR_AUDIO + 0.3) * fps)} durationInFrames={30}>
+        <Audio src={staticFile("sfx/kit/magic.mp3")} volume={0.45} />
       </Sequence>
       {CORTES.map((c) => (
         <Sequence key={c} from={Math.max(0, Math.round((c - 0.06) * fps))} durationInFrames={20}>

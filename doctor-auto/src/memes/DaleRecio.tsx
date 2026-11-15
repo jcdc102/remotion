@@ -87,6 +87,7 @@ export const DaleRecio: React.FC = () => {
       ) : null}
       {!enRemate ? <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.6) 100%)" }} /> : null}
       {!enRemate ? <Destello t={t} cortes={CORTES} /> : null}
+      <AbsoluteFill style={{ backgroundColor: "white", opacity: interpolate(t, [5.08, 5.12, 5.3], [0, 0.85, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) }} />
 
       {!enRemate ? (
         <AbsoluteFill style={{ alignItems: "center", paddingTop: 250 }}>
@@ -142,6 +143,24 @@ export const DaleRecio: React.FC = () => {
       <AcabadoPremium frame={frame} calidez={0.8} />
 
       <Audio src={staticFile("sfx/memes/dale-recio.wav")} />
+      {/* kit de efectos: fahhh para el gancho, click en cada texto, camera shutter en la transición a la realidad, magic en las revelaciones */}
+      <Sequence from={3} durationInFrames={60}>
+        <Audio src={staticFile("sfx/kit/fahhh.mp3")} volume={0.45} />
+      </Sequence>
+      {VOZ.map((v) => (
+        <Sequence key={`c${v.t0}`} from={Math.round(v.t0 * fps)} durationInFrames={15}>
+          <Audio src={staticFile("sfx/kit/click.wav")} volume={0.35} />
+        </Sequence>
+      ))}
+      <Sequence from={Math.round(5.08 * fps)} durationInFrames={30}>
+        <Audio src={staticFile("sfx/kit/shutter.mp3")} volume={0.5} />
+      </Sequence>
+      <Sequence from={Math.round(7.1 * fps)} durationInFrames={30}>
+        <Audio src={staticFile("sfx/kit/magic.mp3")} volume={0.4} />
+      </Sequence>
+      <Sequence from={Math.round((T_REMATE + 0.2) * fps)} durationInFrames={30}>
+        <Audio src={staticFile("sfx/kit/magic.mp3")} volume={0.45} />
+      </Sequence>
       <Sequence from={Math.round(5.1 * fps)} durationInFrames={30}>
         <Audio src={staticFile("sfx/mk-hit.wav")} volume={0.3} />
       </Sequence>
