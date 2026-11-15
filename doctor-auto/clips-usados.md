@@ -34,3 +34,7 @@ Material propio de Doctor Auto (reels publicados en FB), recortado sin textos qu
 ## DatoAnuncio (anuncio escondido, 15 nov)
 - Primera parte: animación viral de @dontotopo_la (tanques con QR), 0–9.95 s con su audio hasta 11.72 s. Marca de agua intacta; dar crédito en el copy.
 - Material propio Doctor Auto: cortinas, mecanico, escaner, disco, hojalateria (post 1357941239710470, 1–6 s, franja inferior), recepcion, grua.
+
+## DatoBala (anuncio escondido, video de la bala en el tubo curvo, 15 nov)
+- Primera parte: animación viral de la bala (original de una hamburguesería), 0–12.13 s; audio original hasta 12.40 s. Se respetan sus marcas.
+- Material propio Doctor Auto: cortinas, escaner, ppf, recepcion, disco, hojalateria, mecanico, grua (mismos fragmentos que DatoAnuncio: publicar solo uno de los dos, o pedir tomas nuevas del taller).
