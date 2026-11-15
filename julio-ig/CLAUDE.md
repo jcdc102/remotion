@@ -58,3 +58,4 @@ Estas indicaciones se combinan con el ritmo pausado: movimiento continuo pero si
 - 🎓 Turismo (mar y jue), sin etiqueta «Turismo explicado #N» en pantalla (Julio la quitó): tipos de turismo, planificación turística, datos con fuente en pantalla y recomendaciones de profesional.
 - ✈️ Tips de viaje (vie): consejos prácticos y verificables.
 - «Siempre explorando»: descartada por ahora.
+- Humor: el formato de chat animado («POV: estudias Turismo») se descartó porque no le dio gracia. Su humor que sí funciona es una frase irónica corta sobre sí mismo, sobre un video suyo y con audio de moda («Mis enemigos imaginarios no tienen presupuesto para París», «Ser foráneo es vivir en modo supervivencia desde el martes»).
