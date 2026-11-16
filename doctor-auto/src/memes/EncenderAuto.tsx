@@ -75,7 +75,7 @@ export const EncenderAuto: React.FC = () => {
             <div style={{ transform: `translateY(${(1 - resorte(frame, fps, 0.15)) * 110}%)`, fontFamily: POPPINS, fontWeight: 700, fontSize: 30, letterSpacing: "0.35em", color: "rgba(255,255,255,0.85)" }}>POV</div>
           </div>
           <div style={{ width: 960 }}>
-            <TituloMascara texto="Cuando tu carro no arranca si no le hablas fuerte" resaltar={["fuerte"]} t={t} t0={0.25} t1={99} tamano={72} />
+            <TituloMascara texto="Cuando tu auto no arranca si no le hablas fuerte" resaltar={["fuerte"]} t={t} t0={0.25} t1={99} tamano={72} />
           </div>
         </AbsoluteFill>
       ) : null}

@@ -134,8 +134,8 @@ export const Vocho: React.FC = () => {
         <AbsoluteFill style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: 330 }}>
           <div style={{ width: 980, display: "flex", justifyContent: "center" }}>
             {t < 11.9 ? <TituloMascara texto="Fue taxi" resaltar={["taxi"]} t={t} t0={10.4} t1={11.75} tamano={130} /> : null}
-            {t >= 11.9 && t < 13.3 ? <TituloMascara texto="Carro de la familia" resaltar={["familia"]} t={t} t0={11.95} t1={13.15} tamano={110} /> : null}
-            {t >= 13.3 ? <TituloMascara texto="El primer auto de millones de mexicanos" resaltar={["mexicanos"]} t={t} t0={13.4} t1={16.0} tamano={92} /> : null}
+            {t >= 11.9 && t < 13.3 ? <TituloMascara texto="El auto de la familia" resaltar={["familia"]} t={t} t0={11.95} t1={13.15} tamano={110} /> : null}
+            {t >= 13.3 ? <TituloMascara texto="El primero de millones de mexicanos" resaltar={["mexicanos"]} t={t} t0={13.4} t1={16.0} tamano={92} /> : null}
           </div>
         </AbsoluteFill>
       ) : null}

@@ -171,3 +171,7 @@ Kit en public/sfx/kit/:
 - whoosh.wav: zoom in y zoom out.
 - click.wav: remarcar textos (cada texto que entra).
 - shutter.mp3: transiciones (con un flash blanco corto).
+
+## Regla de lenguaje (Axel, 16 nov)
+- NUNCA usar la palabra "carro" (ni "carros"): siempre "auto". Aplica a títulos, subtítulos, voces, copys y remates.
+- Antes de entregar, buscar "carro" en el código, en la transcripción de la voz y en el copy.
