@@ -3,13 +3,20 @@
 120 BPM so one beat = 15 frames at 30 fps. The drop lands on beat 8 (frame 120),
 right after "Convocatoria" is revealed. Run: python3 scripts/make-audio.py
 """
+import sys
 import wave
 import numpy as np
 
+# "ejes" mode: music for the 52 s "ejes temáticos" video. At 96 BPM every
+# 5 s scene is exactly 2 bars; the track starts 0.5 s early so bar lines
+# land on the scene changes (4.5 s, 9.5 s, 14.5 s...).
+EJES = len(sys.argv) > 1 and sys.argv[1] == 'ejes'
+
 SR = 44100
-BPM = 120
+BPM = 96 if EJES else 120
 BEAT = 60 / BPM
-DUR = 16.0
+PREROLL = 0.5 if EJES else 0.0
+DUR = (52.0 if EJES else 16.0) + PREROLL
 N = int(SR * DUR)
 rng = np.random.default_rng(7)
 
@@ -144,7 +151,11 @@ drm = np.zeros(N)
 pds = np.zeros(N)
 side = np.ones(N)  # sidechain pump for pads and lead
 
-DROP = 8 * BEAT  # frame 120
+DROP = 8 * BEAT  # frame 120 (in ejes mode: 4.5 s, with the first wipe)
+if EJES:
+    loop = prog[:4]
+    nbars = int(round(DUR / (4 * BEAT)))
+    prog = [loop[i % 4] for i in range(nbars - 1)] + [prog[-1]]
 
 
 def pump(t):
@@ -222,6 +233,7 @@ music = 0.32 * mel_p + 0.45 * bas + 0.6 * drm + 0.16 * pds
 t = np.arange(N) / SR
 music *= np.clip((DUR - t) / 1.0, 0, 1)
 music = np.tanh(music * 1.4) / 1.4  # gentle saturation / glue
+music = music[int(PREROLL * SR) :]
 
 
 def save(name, x, peak=0.9):
@@ -235,6 +247,9 @@ def save(name, x, peak=0.9):
         w.writeframes(stereo.tobytes())
 
 
+if EJES:
+    save('public/ejes/music.wav', music, 0.9)
+    sys.exit()
 save('public/music.wav', music, 0.9)
 
 # Riser: noise + rising tone over 1.2 s, ending at the drop
