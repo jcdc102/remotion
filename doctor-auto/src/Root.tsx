@@ -5,6 +5,7 @@ import { DatoJapon, DURACION_DATO_JAPON } from "./memes/DatoJapon";
 import { DatoAnuncio, DURACION_DATO_ANUNCIO } from "./memes/DatoAnuncio";
 import { DatoBala, DURACION_DATO_BALA } from "./memes/DatoBala";
 import { HoyNoCircula, DURACION_HOY_NO_CIRCULA } from "./memes/HoyNoCircula";
+import { TuAuto, DURACION_TU_AUTO } from "./memes/TuAuto";
 import { EncenderAuto, DURACION_ENCENDER } from "./memes/EncenderAuto";
 import { MemeImagen } from "./memes/MemeImagen";
 import { Vocho, DURACION_VOCHO } from "./memes/Vocho";
@@ -51,6 +52,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="DatoAnuncio" component={DatoAnuncio} durationInFrames={DURACION_DATO_ANUNCIO} fps={30} width={1080} height={1920} />
       <Composition id="DatoBala" component={DatoBala} durationInFrames={DURACION_DATO_BALA} fps={30} width={1080} height={1920} />
       <Composition id="HoyNoCircula" component={HoyNoCircula} durationInFrames={DURACION_HOY_NO_CIRCULA} fps={30} width={1080} height={1920} />
+      <Composition id="TuAuto" component={TuAuto} durationInFrames={DURACION_TU_AUTO} fps={30} width={1080} height={1920} />
       <Composition id="Prueba3D" component={Prueba3D} durationInFrames={60} fps={30} width={1080} height={1920} />
       <Composition
         id="Calaveritas"

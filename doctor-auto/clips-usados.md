@@ -38,3 +38,7 @@ Material propio de Doctor Auto (reels publicados en FB), recortado sin textos qu
 ## DatoBala (anuncio escondido, video de la bala en el tubo curvo, 15 nov)
 - Primera parte: animación viral de la bala (original de una hamburguesería), 0–12.13 s; audio original hasta 12.40 s. Se respetan sus marcas.
 - Material propio Doctor Auto: cortinas, escaner, ppf, recepcion, disco, hojalateria, mecanico, grua (mismos fragmentos que DatoAnuncio: publicar solo uno de los dos, o pedir tomas nuevas del taller).
+
+## HoyNoCircula (20 nov) y TuAuto (21 nov)
+- HoyNoCircula: fotos Wikimedia smog1985 (NASA, dominio público), insurgentes (osdarin, CC BY-SA 3.0), cielo2019 (Wotancito, CC BY-SA 4.0). Música de la serie = la del Vocho (a propósito).
+- TuAuto (Flickr vía Openverse): tsuru JLaw45 CC BY 2.0 · vocho stevecadman CC BY-SA 2.0 · aveo crash71100 CC0 · jetta Slambox RoleModel#1 CC BY 2.0 · pickup vetaturfumare CC BY-SA 2.0 · bmw photobeppus CC BY-SA 2.0.
