@@ -6,27 +6,27 @@ const f = (s: number) => Math.round(s * FPS);
 
 // Voz en off (public/tutorial/vo/NN.wav): segundo de inicio y duración
 const voice: [number, number][] = [
-	[0.3, 4.34], // ¡Hola! Así te registras…
-	[6.0, 3.94], // Paso 1: entra al gestor
-	[10.3, 5.48], // Paso 2: nombre y apellidos
-	[22.2, 2.32], // fecha de nacimiento
-	[25.2, 2.39], // correo
-	[27.7, 6.76], // contraseña
-	[34.6, 2.87], // confírmala
-	[37.6, 6.36], // Paso 3: código
-	[45.2, 3.81], // Paso 4: inicia sesión
-	[49.3, 4.31], // Paso 5: datos generales
-	[53.8, 3.45], // sexo, país, institución
-	[62.2, 2.31], // campus
-	[65.3, 1.57], // celular
-	[71.1, 3.86], // presencial o virtual
-	[75.4, 6.41], // Paso 6: perfil académico
-	[82.2, 7.11], // PRODEP y SNII
-	[94.2, 3.97], // RIDMAE
-	[99.4, 2.59], // ORCID
-	[102.3, 6.34], // Paso 7: cómo participar
-	[110.2, 8.76], // Paso 8: envía tu resumen
-	[120.4, 6.08], // ¡No lo olvides!
+	[0.3, 4.17], // ¡Hola! Así te registras…
+	[6.0, 3.77], // Paso 1: entra al gestor
+	[10.3, 5.59], // Paso 2: nombre y apellidos
+	[22.2, 2.3], // fecha de nacimiento
+	[25.2, 2.3], // correo
+	[27.7, 6.53], // contraseña
+	[34.6, 2.52], // confírmala
+	[37.6, 6.25], // Paso 3: código
+	[45.2, 3.61], // Paso 4: inicia sesión
+	[49.3, 4.16], // Paso 5: datos generales
+	[53.8, 3.35], // sexo, país, institución
+	[62.2, 2.25], // campus
+	[65.3, 1.59], // celular
+	[71.1, 3.68], // presencial o virtual
+	[75.4, 6.24], // Paso 6: perfil académico
+	[82.2, 6.67], // PRODEP y SNII
+	[94.2, 3.76], // RIDMAE
+	[99.4, 2.37], // ORCID
+	[102.3, 5.68], // Paso 7: cómo participar
+	[110.2, 8.38], // Paso 8: envía tu resumen
+	[120.4, 5.73], // ¡No lo olvides!
 ];
 
 // Efectos: [segundo, archivo, volumen]
