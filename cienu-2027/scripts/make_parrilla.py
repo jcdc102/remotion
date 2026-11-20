@@ -6,6 +6,7 @@ import openpyxl
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.datavalidation import DataValidation
+from openpyxl.formatting.rule import CellIsRule
 
 files = json.load(open(sys.argv[1]))
 OUT = sys.argv[2]
@@ -288,7 +289,7 @@ border = Border(left=thin, right=thin, top=thin, bottom=thin)
 wrap_top = Alignment(wrap_text=True, vertical='top')
 center = Alignment(horizontal='center', vertical='center', wrap_text=True)
 
-HEAD = ['Fecha', 'Día', 'Hora', 'Arte', 'Formato', 'Eje (estrategia)', 'Tipo', 'Copy', 'Estado', 'Publicación',
+HEAD = ['Fecha', 'Día', 'Hora', 'Arte', 'Formato', 'Eje (estrategia)', 'Tipo', 'Copy', 'Estado (aprobación)', 'Publicación',
         'Total Reactions', 'Like', 'Love', 'Haha', 'Wow', 'Sad', 'Angry', 'Post Reach', 'Shares', 'Comments',
         'Interactions', 'Engagement Rate*', '# of plays', 'Notas / producción']
 WIDTH = [12, 10, 7, 34, 14, 20, 11, 60, 13, 14, 9, 6, 6, 6, 6, 6, 6, 10, 8, 10, 11, 11, 9, 46]
@@ -333,7 +334,7 @@ for (y, m) in [(2026, 11), (2026, 12), (2027, 1), (2027, 2)]:
 
 # --- Monthly sheets ---
 dv_tipo = '"Orgánico,Pagado"'
-dv_estado = '"Entregado,Pendiente,No entregado,Descartado"'
+dv_estado = '"Aprobado,Pendiente,No aprobado,Descartado"'
 dv_pub = '"Publicada,Pendiente,No publicada,Descartada"'
 dv_formato = '"Reel,Reel + Historia,Carrusel,Imagen,Historia,Live,Video"'
 dv_eje = f'"{E1},{E2},{E3},{E4},{E5},{E6}"'
@@ -394,6 +395,26 @@ for m, sheet in MESES.items():
         ws.add_data_validation(dv)
         dv.add(f'{col}4:{col}{last}')
 
+    # Colores automáticos según la opción elegida
+    def paint(col, mapping):
+        for value, (bg, fg) in mapping.items():
+            ws.conditional_formatting.add(
+                f'{col}4:{col}{last}',
+                CellIsRule(operator='equal', formula=[f'"{value}"'],
+                           fill=PatternFill('solid', start_color=bg, end_color=bg),
+                           font=Font(bold=True, color=fg)))
+
+    GREEN = ('B7E1CD', '0B5D3B')
+    YELLOW = ('FCE8B2', '7F5F00')
+    RED = ('F4C7C3', '990000')
+    GRAY = ('D9D9D9', '434343')
+    paint('G', {'Orgánico': ('CFE2F3', '0B5394'), 'Pagado': ('D9D2E9', '5B2C83')})
+    paint('I', {'Aprobado': GREEN, 'Pendiente': YELLOW, 'No aprobado': RED, 'Descartado': GRAY})
+    paint('J', {'Publicada': GREEN, 'Pendiente': YELLOW, 'No publicada': RED, 'Descartada': GRAY})
+    paint('E', {'Reel': ('FDE2CF', '8A3B00'), 'Reel + Historia': ('FDE2CF', '8A3B00'),
+                'Carrusel': ('E8EAF6', '283593'), 'Imagen': ('E0F2F1', '00695C'),
+                'Historia': ('FCE4EC', 'AD1457'), 'Live': ('F4C7C3', '990000'), 'Video': ('FDE2CF', '8A3B00')})
+
 # --- Guía ---
 g = wb.create_sheet('Guía')
 guide = [
@@ -408,6 +429,7 @@ guide = [
     ('Ejes (estrategias)', f'{E1} · {E2} · {E3} · {E4} · {E5} · {E6}'),
     ('Pendientes de arte', '1) S10 feed: texto encimado. 2) «Detrás de cada ponencia»: dice #CIENU2026. 3) «La IA responde»: foto con «CIENU 2026 · Pachuca». '
      '4) Testimonio con textos guía. 5) Por diseñar: portada de los lives, «HOY CIERRA», «Abre recepción de extensos». 6) Universidades aliadas: no hay artes todavía.'),
+    ('Colores', 'Tipo: Orgánico = azul, Pagado = morado. Estado (aprobación) y Publicación: verde = Aprobado/Publicada, amarillo = Pendiente, rojo = No aprobado/No publicada, gris = Descartado(a). Formato: cada tipo de contenido tiene su color.'),
     ('Métricas', 'Llenar las columnas de Performance cada lunes con los datos de Meta Business Suite (7 días después de publicar). Engagement = Interactions / Post Reach.'),
     ('Material', dlink('raiz')),
 ]
