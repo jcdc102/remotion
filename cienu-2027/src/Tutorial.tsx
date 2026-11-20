@@ -50,7 +50,7 @@ const musicVolume = (frame: number) => {
 			}),
 		);
 	}
-	return 0.42 - duck * 0.27;
+	return 0.26 - duck * 0.18;
 };
 
 export const Tutorial: React.FC = () => {
