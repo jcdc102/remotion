@@ -12,6 +12,7 @@ import { DURACION_MAS_EN, DURACION_MAS_ES } from "./algodones-mas-tiempos";
 import { AlgodonesParte2, DURACION_PARTE2 } from "./AlgodonesParte2";
 import { PovTurismo, DURACION_POV } from "./PovTurismo";
 import { ChineseNewYear, DURACION_CNY } from "./ChineseNewYear";
+import { BrazilCarnival, DURACION_CARNAVAL } from "./BrazilCarnival";
 import { RadarPromo, DURACION_RADAR } from "./RadarPromo";
 import { HistoriaAlgodones, DURACION_HISTORIA_ALGODONES } from "./HistoriaAlgodones";
 
@@ -41,6 +42,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="AlgodonesParte2" component={AlgodonesParte2} durationInFrames={DURACION_PARTE2} fps={30} width={1080} height={1920} />
       <Composition id="PovTurismo" component={PovTurismo} durationInFrames={DURACION_POV} fps={30} width={1080} height={1920} />
       <Composition id="ChineseNewYear" component={ChineseNewYear} durationInFrames={DURACION_CNY} fps={30} width={1920} height={1080} />
+      <Composition id="BrazilCarnival" component={BrazilCarnival} durationInFrames={DURACION_CARNAVAL} fps={30} width={1920} height={1080} />
     </>
   );
 };
