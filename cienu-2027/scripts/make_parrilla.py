@@ -273,6 +273,25 @@ rows = [
      DISENAR),
 ]
 
+# Pregunta de la semana: los viernes (historias + publicación en Facebook).
+# Empieza hoy, viernes 20 de nov, con la S04 (decisión del equipo).
+FRIDAY = {4: D(2026, 11, 20), 1: D(2026, 11, 27), 2: D(2026, 12, 4), 3: D(2026, 12, 11),
+          5: D(2026, 12, 18), 6: D(2026, 12, 25), 7: D(2027, 1, 8), 8: D(2027, 1, 15),
+          9: D(2027, 1, 22), 10: D(2027, 1, 29), 11: D(2027, 2, 5), 12: D(2027, 2, 12)}
+MOVE = {(D(2026, 11, 27), '13:00'): D(2026, 11, 25), (D(2026, 12, 4), '13:00'): D(2026, 12, 3)}
+new_rows = []
+for (fecha, hora, arte, fmt, eje, copy, notas) in rows:
+    if notas.startswith('S') and notas[1:3].isdigit():
+        n = int(notas[1:3])
+        fecha = FRIDAY[n]
+        copy = copy.replace('las mejores respuestas el viernes', 'las mejores respuestas el próximo viernes')
+        notas = (f'S{n:02d} · Viernes de preguntas: historia con sticker de preguntas + publicación en Facebook. '
+                 'OJO: el arte trae impresa otra fecha; quitarla o actualizarla. ' + VIDEO)
+    elif (fecha, hora) in MOVE and fmt == 'Historia':
+        fecha = MOVE[(fecha, hora)]
+    new_rows.append((fecha, hora, arte, fmt, eje, copy, notas))
+rows = sorted(new_rows, key=lambda x: (x[0], x[1]))
+
 DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
 MESES = {11: 'Noviembre 2026', 12: 'Diciembre 2026', 1: 'Enero 2027', 2: 'Febrero 2027'}
 
@@ -421,7 +440,7 @@ guide = [
     ('GUÍA DE LA PARRILLA', ''),
     ('Horarios', '13:00 (pausa de comida) y 19:00 (después de clases), hora del centro de México. Historias entre 9:00 y 13:00.'),
     ('Frecuencia', '5-6 publicaciones por semana hasta el 16 de enero; 3 por semana en vacaciones (21 dic-3 ene); 1-2 por semana después del cierre.'),
-    ('Pregunta de la semana', 'Todos los lunes (las fechas de los artes caen en lunes, no en miércoles). Feed + historia con sticker de preguntas. Compartir respuestas el viernes en historias.'),
+    ('Pregunta de la semana', 'Todos los viernes: historia con sticker de preguntas + publicación en Facebook. Empezó el 20 de nov con la S04. Las mejores respuestas se comparten el viernes siguiente, junto con la nueva pregunta. Los artes traen impresa otra fecha (lunes): quitarla o actualizarla.'),
     ('Formato', 'Todo se plantea como Reel (video). Mientras el video no esté listo, publicar el arte original como imagen o carrusel.'),
     ('Instagram', 'Publicar también en @cienuridmae desde Meta Business Suite (misma pieza y copy). El Instagram no publica desde junio de 2026.'),
     ('Hashtags base', '#CIENU2027 #IAenEducación #RIDMAE · Campañas: #YoPresentoEnCIENU #PreguntaCIENU #VallartaTeEspera'),
