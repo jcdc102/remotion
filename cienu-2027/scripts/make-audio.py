@@ -10,13 +10,14 @@ import numpy as np
 # "ejes" mode: music for the 52 s "ejes temáticos" video. At 96 BPM every
 # 5 s scene is exactly 2 bars; the track starts 0.5 s early so bar lines
 # land on the scene changes (4.5 s, 9.5 s, 14.5 s...).
-EJES = len(sys.argv) > 1 and sys.argv[1] == 'ejes'
+MODE = sys.argv[1] if len(sys.argv) > 1 else ''
+EJES = MODE in ('ejes', 'tutorial')
 
 SR = 44100
-BPM = 96 if EJES else 120
+BPM = 112 if MODE == 'tutorial' else 96 if EJES else 120
 BEAT = 60 / BPM
-PREROLL = 0.5 if EJES else 0.0
-DUR = (52.0 if EJES else 16.0) + PREROLL
+PREROLL = 0.5 if MODE == 'ejes' else 0.0
+DUR = (128.5 if MODE == 'tutorial' else 52.0 if EJES else 16.0) + PREROLL
 N = int(SR * DUR)
 rng = np.random.default_rng(7)
 
@@ -248,7 +249,7 @@ def save(name, x, peak=0.9):
 
 
 if EJES:
-    save('public/ejes/music.wav', music, 0.9)
+    save(f'public/{MODE}/music.wav', music, 0.9)
     sys.exit()
 save('public/music.wav', music, 0.9)
 

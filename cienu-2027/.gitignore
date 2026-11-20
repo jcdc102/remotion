@@ -2,3 +2,5 @@ node_modules
 out
 public/ejes/video.mp4
 public/ejes/music.wav
+public/tutorial/video.mp4
+public/tutorial/music.wav
