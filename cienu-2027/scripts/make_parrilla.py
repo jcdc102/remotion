@@ -292,6 +292,28 @@ for (fecha, hora, arte, fmt, eje, copy, notas) in rows:
     new_rows.append((fecha, hora, arte, fmt, eje, copy, notas))
 rows = sorted(new_rows, key=lambda x: (x[0], x[1]))
 
+# Qué se hace video y qué se queda como foto/carrusel (acordado con el equipo)
+VIDEO_KEYS = [FOLDER[k] for k in ('quees', '3pasos', '5pasos', 'tutorial', 'mitos', 'resumen5preg', 'noia', 'modalidad')]
+VIDEO_KEYS += [files[i]['id'] for i in (79, 84, 85, 88, 89, 90)]
+FOTO = 'Se publica como imagen (el arte ya está listo).'
+final_rows = []
+for (fecha, hora, arte, fmt, eje, copy, notas) in rows:
+    is_video = arte.startswith('Video «') or any(k in arte for k in VIDEO_KEYS)
+    if fmt in ('Historia', 'Live'):
+        pass
+    elif is_video:
+        fmt = 'Reel'
+    else:
+        if fmt == 'Reel + Historia':
+            fmt = 'Imagen + Historia'
+        elif FOLDER['glosario'] in arte:
+            fmt = 'Carrusel'
+        else:
+            fmt = 'Imagen'
+        notas = notas.replace(VIDEO, FOTO)
+    final_rows.append((fecha, hora, arte, fmt, eje, copy, notas))
+rows = final_rows
+
 DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
 MESES = {11: 'Noviembre 2026', 12: 'Diciembre 2026', 1: 'Enero 2027', 2: 'Febrero 2027'}
 
@@ -355,7 +377,7 @@ for (y, m) in [(2026, 11), (2026, 12), (2027, 1), (2027, 2)]:
 dv_tipo = '"Orgánico,Pagado"'
 dv_estado = '"Aprobado,Pendiente,No aprobado,Descartado"'
 dv_pub = '"Publicada,Pendiente,No publicada,Descartada"'
-dv_formato = '"Reel,Reel + Historia,Carrusel,Imagen,Historia,Live,Video"'
+dv_formato = '"Reel,Imagen,Imagen + Historia,Carrusel,Historia,Live"'
 dv_eje = f'"{E1},{E2},{E3},{E4},{E5},{E6}"'
 
 for m, sheet in MESES.items():
@@ -432,7 +454,7 @@ for m, sheet in MESES.items():
     paint('J', {'Publicada': GREEN, 'Pendiente': YELLOW, 'No publicada': RED, 'Descartada': GRAY})
     paint('E', {'Reel': ('FDE2CF', '8A3B00'), 'Reel + Historia': ('FDE2CF', '8A3B00'),
                 'Carrusel': ('E8EAF6', '283593'), 'Imagen': ('E0F2F1', '00695C'),
-                'Historia': ('FCE4EC', 'AD1457'), 'Live': ('F4C7C3', '990000'), 'Video': ('FDE2CF', '8A3B00')})
+                'Historia': ('FCE4EC', 'AD1457'), 'Imagen + Historia': ('E0F2F1', '00695C'), 'Live': ('F4C7C3', '990000'), 'Video': ('FDE2CF', '8A3B00')})
 
 # --- Guía ---
 g = wb.create_sheet('Guía')
@@ -441,7 +463,7 @@ guide = [
     ('Horarios', '13:00 (pausa de comida) y 19:00 (después de clases), hora del centro de México. Historias entre 9:00 y 13:00.'),
     ('Frecuencia', '5-6 publicaciones por semana hasta el 16 de enero; 3 por semana en vacaciones (21 dic-3 ene); 1-2 por semana después del cierre.'),
     ('Pregunta de la semana', 'Todos los viernes: historia con sticker de preguntas + publicación en Facebook. Empezó el 20 de nov con la S04. Las mejores respuestas se comparten el viernes siguiente, junto con la nueva pregunta. Los artes traen impresa otra fecha (lunes): quitarla o actualizarla.'),
-    ('Formato', 'Todo se plantea como Reel (video). Mientras el video no esté listo, publicar el arte original como imagen o carrusel.'),
+    ('Formato', 'Reel = se convierte en video (16 piezas: convocatoria, ejes, tutoriales y explicativos, Vallarta, reels de ponencias y cuenta regresiva de 7, 3 y 1 día). Imagen / Carrusel = se publica el arte tal cual. Si un video no está listo a tiempo, publicar su arte como imagen o carrusel.'),
     ('Instagram', 'Publicar también en @cienuridmae desde Meta Business Suite (misma pieza y copy). El Instagram no publica desde junio de 2026.'),
     ('Hashtags base', '#CIENU2027 #IAenEducación #RIDMAE · Campañas: #YoPresentoEnCIENU #PreguntaCIENU #VallartaTeEspera'),
     ('Liga', f'{URL} (en Facebook va completa en el copy).'),
