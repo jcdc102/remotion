@@ -42,3 +42,8 @@ Material propio de Doctor Auto (reels publicados en FB), recortado sin textos qu
 ## HoyNoCircula (20 nov) y TuAuto (21 nov)
 - HoyNoCircula: fotos Wikimedia smog1985 (NASA, dominio público), insurgentes (osdarin, CC BY-SA 3.0), cielo2019 (Wotancito, CC BY-SA 4.0). Música de la serie = la del Vocho (a propósito).
 - TuAuto (Flickr vía Openverse): tsuru JLaw45 CC BY 2.0 · vocho stevecadman CC BY-SA 2.0 · aveo crash71100 CC0 · jetta Slambox RoleModel#1 CC BY 2.0 · pickup vetaturfumare CC BY-SA 2.0 · bmw photobeppus CC BY-SA 2.0.
+
+## DatoGas (anuncio escondido, viral de las gotas de gasolina, dom 22 nov)
+- Viral original (colchonería) 0–26.4 s con su audio.
+- Material Doctor Auto NUEVO (no usado en La bala): motor (1372773811560546), calibrado (1413671474137446 10.6–13.6), guantes (1413671474137446 32.2–34.7), caliper (1413671474137446 29.2–30.6), alinea (1427461379425122 0–0.9), manejo (1401945571976703 8.2–9.9), logos aseguradoras (1323434356494492 5.3–7.0), llegada sucursal (1323434356494492 8.0–10.4).
+- Ya casi no queda material propio limpio: pedir tomas nuevas del taller.
