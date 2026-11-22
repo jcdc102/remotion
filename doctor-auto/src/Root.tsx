@@ -7,6 +7,7 @@ import { DatoBala, DURACION_DATO_BALA } from "./memes/DatoBala";
 import { HoyNoCircula, DURACION_HOY_NO_CIRCULA } from "./memes/HoyNoCircula";
 import { TuAuto, DURACION_TU_AUTO } from "./memes/TuAuto";
 import { DatoGas, DURACION_DATO_GAS } from "./memes/DatoGas";
+import { DUR_TIPS, TipFrio, TipGasolina, TipLlanta, TipPonchada, TipUsado } from "./memes/TipsVideos";
 import { EncenderAuto, DURACION_ENCENDER } from "./memes/EncenderAuto";
 import { MemeImagen } from "./memes/MemeImagen";
 import { Vocho, DURACION_VOCHO } from "./memes/Vocho";
@@ -55,6 +56,11 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="HoyNoCircula" component={HoyNoCircula} durationInFrames={DURACION_HOY_NO_CIRCULA} fps={30} width={1080} height={1920} />
       <Composition id="TuAuto" component={TuAuto} durationInFrames={DURACION_TU_AUTO} fps={30} width={1080} height={1920} />
       <Composition id="DatoGas" component={DatoGas} durationInFrames={DURACION_DATO_GAS} fps={30} width={1080} height={1920} />
+      <Composition id="TipFrio" component={TipFrio} durationInFrames={DUR_TIPS.frio} fps={30} width={1080} height={1920} />
+      <Composition id="TipLlanta" component={TipLlanta} durationInFrames={DUR_TIPS.llanta} fps={30} width={1080} height={1920} />
+      <Composition id="TipGasolina" component={TipGasolina} durationInFrames={DUR_TIPS.gasolina} fps={30} width={1080} height={1920} />
+      <Composition id="TipPonchada" component={TipPonchada} durationInFrames={DUR_TIPS.ponchada} fps={30} width={1080} height={1920} />
+      <Composition id="TipUsado" component={TipUsado} durationInFrames={DUR_TIPS.usado} fps={30} width={1080} height={1920} />
       <Composition id="Prueba3D" component={Prueba3D} durationInFrames={60} fps={30} width={1080} height={1920} />
       <Composition
         id="Calaveritas"
