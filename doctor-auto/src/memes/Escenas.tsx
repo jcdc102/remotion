@@ -274,6 +274,65 @@ const Svg: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </svg>
 );
 
+// ---------- New Beetle ----------
+// k = 0: New Beetle (cúpula alta) · k = 1: Beetle 2011 (techo más bajo).
+const Beetle: React.FC<{ x: number; y: number; s: number; giro: number; k: number; color: string }> = ({ x, y, s, giro, k, color }) => {
+  const h = (a: number, b: number) => a + (b - a) * k;
+  const cuerpo = `M70,300 Q72,236 150,222 Q${h(195, 210)},${h(118, 150)} ${h(340, 330)},${h(78, 112)} Q520,${h(30, 84)} ${h(700, 730)},${h(78, 118)} Q${h(850, 860)},${h(118, 160)} 900,222 Q968,236 970,300 L842,305 A72,72 0 0 0 698,305 L332,305 A72,72 0 0 0 188,305 Z`;
+  const vidrio = `M${h(245, 265)},218 Q${h(320, 330)},${h(118, 146)} 520,${h(96, 124)} Q${h(710, 720)},${h(104, 130)} ${h(795, 805)},218 Z`;
+  return (
+    <g transform={`translate(${x} ${y}) scale(${s})`}>
+      <ellipse cx={520} cy={385} rx={470} ry={34} fill="url(#sombra)" />
+      <path d={cuerpo} fill={color} />
+      <path d={cuerpo} fill="url(#sombra)" opacity={0.25} />
+      <path d={vidrio} fill="url(#vidrio)" />
+      <path d={`M520,${h(96, 124)} L520,218`} stroke={color} strokeWidth="12" />
+      <rect x={918} y={238} width={36} height={22} rx={10} fill="#fff7cc" />
+      <rect x={76} y={242} width={28} height={22} rx={8} fill="#c21c22" />
+      <Rueda cx={260} cy={305} r={68} giro={giro} />
+      <Rueda cx={770} cy={305} r={68} giro={giro} />
+    </g>
+  );
+};
+
+const Globo: React.FC<{ l: number; rutas?: boolean }> = ({ l, rutas }) => {
+  const destinos = [[760, 700], [860, 860], [700, 1080], [430, 1160], [880, 1010]];
+  const mx = 330;
+  const my = 880;
+  return (
+    <Svg>
+      <g transform={`rotate(${l * 4} 540 900)`}>
+        <circle cx={540} cy={900} r={420} fill="#0f2a4a" stroke="#3f8cff" strokeWidth={6} />
+        {[0.3, 0.6, 0.9].map((e) => (
+          <ellipse key={e} cx={540} cy={900} rx={420 * e} ry={420} fill="none" stroke="rgba(120,180,255,0.3)" strokeWidth={4} />
+        ))}
+        {[-280, -140, 0, 140, 280].map((y) => (
+          <line key={y} x1={540 - Math.sqrt(420 ** 2 - y ** 2)} x2={540 + Math.sqrt(420 ** 2 - y ** 2)} y1={900 + y} y2={900 + y} stroke="rgba(120,180,255,0.3)" strokeWidth={4} />
+        ))}
+      </g>
+      {rutas
+        ? destinos.map(([x, y], i) => {
+            const e = p(l, 0.3 + i * 0.3, 1.0 + i * 0.3);
+            const cx = (mx + x) / 2;
+            const cy = Math.min(my, y) - 260;
+            return (
+              <g key={i}>
+                <path d={`M${mx},${my} Q${cx},${cy} ${x},${y}`} fill="none" stroke={AMARILLO} strokeWidth={8} strokeDasharray={`${900 * e} 900`} strokeLinecap="round" />
+                <circle cx={x} cy={y} r={14 * e} fill={AMARILLO} />
+              </g>
+            );
+          })
+        : null}
+      <g transform={`translate(${mx} ${my - 10 * Math.abs(Math.sin(l * 3))})`}>
+        <circle r={40} cy={-70} fill={ROJO} opacity={0.5} filter="url(#brillo)" />
+        <path d="M0 0 C -60 -70 -50 -130 0 -130 C 50 -130 60 -70 0 0 Z" fill={ROJO} />
+        <circle cy={-90} r={18} fill={BLANCO} />
+      </g>
+      <Etiqueta x={mx} y={my + 90} texto="MÉXICO" o={p(l, 0.2, 0.6)} tam={50} />
+    </Svg>
+  );
+};
+
 const ESCENAS: Record<string, React.FC<E>> = {
   // ----- calentar motor -----
   frio: ({ l }) => (
@@ -706,6 +765,350 @@ const ESCENAS: Record<string, React.FC<E>> = {
           <path d="M-18 -110 L18 -110 L18 90 L-18 90 Z" fill={BLANCO} />
           <path d="M-56 -140 Q-56 -90 0 -90 Q56 -90 56 -140 L26 -140 L26 -116 L-26 -116 L-26 -140 Z" fill={BLANCO} />
         </g>
+      </g>
+    </Svg>
+  ),
+  // ===== Funciones escondidas =====
+  ocultas: ({ l }) => (
+    <Svg>
+      <Auto x={20} y={820} s={1.0} giro={0} />
+      {[[300, 650], [560, 560], [820, 660], [180, 780], [930, 800]].map(([x, y], k) => {
+        const e = p(l, 0.2 + k * 0.25, 0.6 + k * 0.25);
+        return (
+          <g key={k} transform={`translate(${x} ${y - 20 * Math.sin(l * 3 + k)}) scale(${e})`}>
+            <circle r={58} fill={k % 2 ? AMARILLO : ROJO} />
+            <text y={30} textAnchor="middle" fontFamily={ANTON} fontSize={86} fill={BLANCO}>?</text>
+          </g>
+        );
+      })}
+    </Svg>
+  ),
+  tablero: ({ l }) => {
+    const parpadeo = 0.55 + 0.45 * Math.abs(Math.sin(l * 5));
+    return (
+      <Svg>
+        <rect x={110} y={600} width={860} height={560} rx={60} fill="#101218" stroke="#2c303a" strokeWidth={8} />
+        <Medidor cx={540} cy={930} r={230} v={0.18 + 0.02 * Math.sin(l * 2)} etiqueta="E          F" color={AMARILLO} />
+        <g transform="translate(540 1010) scale(1.6)">
+          <rect x={-26} y={-34} width={36} height={56} rx={6} fill={BLANCO} />
+          <rect x={-20} y={-28} width={24} height={16} rx={3} fill="#101218" />
+          <path d="M10 -20 L22 -10 L22 14 Q22 22 16 22" stroke={BLANCO} strokeWidth={5} fill="none" />
+        </g>
+        <g transform={`translate(${640 + 10 * Math.sin(l * 6)} 1010) scale(${1 + 0.25 * p(l, 0.8, 1.2)})`} opacity={p(l, 0.6, 1.0)}>
+          <circle r={70} fill={ROJO} opacity={0.35 * parpadeo} filter="url(#brillo)" />
+          <path d="M-26 -30 L-26 30 L30 0 Z" fill={ROJO} transform="rotate(180)" opacity={parpadeo} />
+        </g>
+        <Etiqueta x={540} y={1320} texto="◀ TANQUE DE ESTE LADO" o={p(l, 1.4, 1.8)} tam={48} />
+      </Svg>
+    );
+  },
+  gasolinera: ({ l }) => (
+    <Svg>
+      <Bomba x={150} y={760} l={l} />
+      <Auto x={300 - 220 * (1 - p(l, 0, 1.2))} y={900} s={0.74} giro={(1 - p(l, 0, 1.2)) * 300} />
+      <g transform={`translate(${300 + 0.74 * 210} ${900 + 0.74 * 235})`}>
+        <circle r={34} fill="none" stroke={AMARILLO} strokeWidth={8} opacity={p(l, 1.2, 1.5) * (0.6 + 0.4 * Math.sin(l * 8))} />
+      </g>
+      <g transform="translate(800 640)" opacity={p(l, 1.6, 2.0)}>
+        <path d="M-70 0 A70 70 0 1 1 0 70" fill="none" stroke={BLANCO} strokeWidth={14} />
+        <path d="M-10 50 L10 70 L-10 92" fill="none" stroke={BLANCO} strokeWidth={14} />
+        <path d="M-95 -95 L95 95" stroke={ROJO} strokeWidth={20} strokeLinecap="round" />
+      </g>
+    </Svg>
+  ),
+  control: ({ l }) => {
+    const presion = p(l, 1.9, 3.6);
+    return (
+      <Svg>
+        <g transform={`translate(540 900) rotate(${-8 + 3 * Math.sin(l * 2)})`}>
+          <rect x={-150} y={-260} width={300} height={500} rx={130} fill="#1c1f26" stroke="#3a3f4a" strokeWidth={8} />
+          <circle cx={0} cy={-120} r={62} fill="#2b2f38" />
+          <path d="M-22 -120 a22 22 0 1 1 44 0 v10 h-44 Z" fill="none" stroke={BLANCO} strokeWidth={8} transform="translate(0 -6)" />
+          <circle cx={0} cy={30} r={62 - 6 * (presion > 0 && presion < 1 ? 1 : 0)} fill={presion > 0 ? ROJO : "#2b2f38"} />
+          <path d="M-22 30 a22 22 0 1 1 44 0 v10 h-44 Z M-14 20 v-20" fill="none" stroke={BLANCO} strokeWidth={8} transform="translate(0 -6)" />
+          <circle cx={0} cy={30} r={96} fill="none" stroke={AMARILLO} strokeWidth={12} strokeDasharray={`${603 * presion} 603`} transform="rotate(-90 0 30)" strokeLinecap="round" />
+          <circle cx={0} cy={170} r={40} fill="#2b2f38" />
+        </g>
+        <g transform={`translate(${700 + 30 * p(l, 1.6, 1.9)} 760)`} opacity={p(l, 1.3, 1.6)}>
+          <path d="M0 0 Q30 -10 60 10 L120 70 Q130 90 110 100 L60 110 Z" fill="#f2c9a0" />
+        </g>
+        <Etiqueta x={540} y={1330} texto="MANTÉN PRESIONADO" o={p(l, 2.0, 2.4)} color="#1f6fe0" tam={50} />
+      </Svg>
+    );
+  },
+  calor: ({ l }) => (
+    <Svg>
+      <g transform={`translate(860 520) rotate(${l * 20})`}>
+        <circle r={90} fill={AMARILLO} />
+        {Array.from({ length: 10 }).map((_, k) => (
+          <rect key={k} x={-8} y={-150} width={16} height={40} rx={8} fill={AMARILLO} transform={`rotate(${k * 36})`} />
+        ))}
+      </g>
+      {Array.from({ length: 5 }).map((_, k) => (
+        <path key={k} d={`M${200 + k * 160} ${760 - ((l * 120 + k * 40) % 160)} q 20 -30 0 -60 q -20 -30 0 -60`} stroke="rgba(255,120,60,0.6)" strokeWidth={10} fill="none" />
+      ))}
+      <Auto x={20} y={840} s={1.0} giro={0} ventanaAbierta={p(l, 0.3, 1.4)} />
+      <Etiqueta x={540} y={1330} texto="TODAS ABAJO ✓" o={p(l, 1.4, 1.8)} color="#1f9d55" />
+    </Svg>
+  ),
+  espejo: ({ l }) => {
+    const noche = p(l, 4.0, 4.4);
+    return (
+      <Svg>
+        <rect x={0} y={0} width={1080} height={1920} fill="#04050a" opacity={0.5} />
+        <rect x={500} y={560} width={80} height={120} rx={20} fill="#1c1f26" />
+        <g transform="translate(540 820)">
+          <rect x={-420} y={-140} width={840} height={280} rx={120} fill="#1c1f26" stroke="#3a3f4a" strokeWidth={10} />
+          <rect x={-390} y={-112} width={780} height={224} rx={100} fill="#0b1220" />
+          {[-150, 150].map((x) => (
+            <g key={x}>
+              <circle cx={x} cy={0} r={140 - 90 * noche} fill="#fff6d8" opacity={0.9 - 0.6 * noche} filter="url(#brillo)" />
+              <circle cx={x} cy={0} r={46 - 22 * noche} fill="#fffdf2" opacity={1 - 0.5 * noche} />
+            </g>
+          ))}
+          <g transform={`translate(0 160) rotate(${noche * 50} 0 0)`}>
+            <rect x={-46} y={-12} width={92} height={40} rx={14} fill={ROJO} />
+          </g>
+        </g>
+        <g transform={`translate(${600 + 20 * Math.sin(l * 3)} ${1040 - 30 * p(l, 3.4, 4.0)})`} opacity={p(l, 2.8, 3.2) * (1 - p(l, 4.8, 5.2))}>
+          <path d="M0 0 Q20 -20 40 -10 L70 40 Q70 70 40 70 L-10 60 Z" fill="#f2c9a0" />
+        </g>
+        <Etiqueta x={540} y={1270} texto={noche > 0.5 ? "MODO NOCHE" : "DESLUMBRE"} o={p(l, 0.3, 0.6)} color={noche > 0.5 ? "#1f6fe0" : ROJO} />
+      </Svg>
+    );
+  },
+  // ===== La cajuela de todo mexicano =====
+  cajuelaAbre: ({ l }) => {
+    const abre = p(l, 0.3, 1.2);
+    return (
+      <Svg>
+        <ellipse cx={540} cy={1330} rx={460} ry={40} fill="url(#sombra)" />
+        <path d="M120 1300 L120 980 Q130 900 220 890 L860 890 Q950 900 960 980 L960 1300 Q960 1320 940 1320 L140 1320 Q120 1320 120 1300 Z" fill="url(#carroc)" />
+        <rect x={190} y={930} width={700} height={260} rx={30} fill="#0a0b0f" />
+        {[["#b9824a", 260, 1060], ["#2a8f4a", 420, 1080], [ROJO, 590, 1050], ["#3f8cff", 740, 1070]].map(([c, x, y], k) => (
+          <rect key={k} x={Number(x) - 60} y={Number(y) - 40 * abre + Math.sin(l * 4 + k) * 6} width={120} height={110} rx={14} fill={String(c)} opacity={abre} />
+        ))}
+        <g>
+          <path d={`M170 930 L910 930 L${910 - 40 * abre} ${930 - 330 * abre} L${170 + 40 * abre} ${930 - 330 * abre} Z`} fill="#b81e24" stroke={ROJO_OSC} strokeWidth={8} />
+        </g>
+        <rect x={150} y={1220} width={220} height={60} rx={14} fill="#ff4b4f" />
+        <rect x={710} y={1220} width={220} height={60} rx={14} fill="#ff4b4f" />
+        <rect x={430} y={1225} width={220} height={60} rx={8} fill={BLANCO} />
+        <text x={540} y={1268} textAnchor="middle" fontFamily={ANTON} fontSize={40} fill="#111">CDMX</text>
+        {abre > 0.9 ? Array.from({ length: 8 }).map((_, k) => <circle key={k} cx={200 + k * 95} cy={600 - ((l * 80 + k * 50) % 200)} r={6} fill={AMARILLO} opacity={0.7} />) : null}
+      </Svg>
+    );
+  },
+  gato: ({ l }) => (
+    <Svg>
+      <g transform="translate(540 1000)">
+        <rect x={-260} y={160} width={520} height={50} rx={12} fill="#6c727d" />
+        {[-1, 1].map((s) => (
+          <g key={s}>
+            <path d={`M${s * 230} 170 L0 0 L${s * 230} -170`} stroke={AMARILLO} strokeWidth={34} fill="none" strokeLinejoin="round" />
+          </g>
+        ))}
+        <rect x={-150} y={-200} width={300} height={40} rx={10} fill="#6c727d" />
+        <rect x={-300} y={-8} width={600} height={16} rx={8} fill="#9aa0ab" />
+        <circle cx={0} cy={0} r={22} fill="#c9ced6" />
+      </g>
+      <path d="M150 640 L330 820 M150 640 L190 900 M150 640 L380 690 M210 700 Q260 720 270 760 M190 760 Q240 780 300 760" stroke="rgba(255,255,255,0.45)" strokeWidth={4} fill="none" opacity={p(l, 0.5, 1.0)} />
+      {Array.from({ length: 14 }).map((_, k) => (
+        <circle key={k} cx={300 + random(`pg${k}`) * 480} cy={780 + random(`ph${k}`) * 420 - l * 10} r={4 + random(`pr${k}`) * 6} fill="rgba(200,190,170,0.5)" />
+      ))}
+      <Etiqueta x={760} y={660} texto="0 USOS" o={p(l, 1.8, 2.2)} tam={60} />
+    </Svg>
+  ),
+  cables: ({ l }) => (
+    <Svg>
+      {[[ROJO, -1], ["#202228", 1]].map(([c, s], k) => {
+        const sg = Number(s);
+        const w = Math.sin(l * 2 + k) * 30;
+        return (
+          <g key={k}>
+            <path d={`M${540 + sg * 340} 640 C ${540 + sg * 340} ${900 + w}, ${540 - sg * 200} ${900 - w}, ${540 - sg * 60} 1250`} stroke={String(c)} strokeWidth={30} fill="none" strokeLinecap="round" />
+            <g transform={`translate(${540 + sg * 340} 620) rotate(${sg * 12 + Math.sin(l * 3) * 6})`}>
+              <rect x={-36} y={-110} width={72} height={150} rx={18} fill={String(c)} stroke="#555" strokeWidth={4} />
+              <path d="M-36 -110 L-50 -160 M36 -110 L50 -160" stroke="#c9ced6" strokeWidth={14} strokeLinecap="round" />
+            </g>
+          </g>
+        );
+      })}
+      <g transform={`translate(780 1160) rotate(${8 + 4 * Math.sin(l * 2)})`} opacity={p(l, 2.9, 3.3)}>
+        <rect x={-120} y={-60} width={240} height={120} rx={12} fill="#f3e6c4" />
+        <circle cx={-90} cy={0} r={12} fill="#07080c" />
+        <text x={14} y={22} textAnchor="middle" fontFamily={ANTON} fontSize={66} fill="#8f1418">2015</text>
+      </g>
+    </Svg>
+  ),
+  franela: ({ l }) => {
+    const ola = (x: number) => Math.sin(x / 80 - l * 8) * 30 * (x / 600);
+    const pts = Array.from({ length: 13 }).map((_, i) => i * 50);
+    const arriba = pts.map((x) => `${300 + x},${700 + ola(x)}`).join(" L");
+    const abajo = pts.slice().reverse().map((x) => `${300 + x},${1100 + ola(x)}`).join(" L");
+    return (
+      <Svg>
+        <rect x={270} y={640} width={34} height={720} rx={12} fill="#c9ced6" />
+        <path d={`M${arriba} L${abajo} Z`} fill={ROJO} />
+        {[0, 1, 2, 3].map((k) => (
+          <path key={`h${k}`} d={pts.map((x, i) => `${i ? "L" : "M"}${300 + x},${780 + k * 90 + ola(x)}`).join(" ")} stroke="rgba(255,255,255,0.5)" strokeWidth={14} fill="none" />
+        ))}
+        {[0, 1, 2, 3].map((k) => (
+          <path key={`v${k}`} d={`M${400 + k * 130},${700 + ola(100 + k * 130)} L${400 + k * 130},${1100 + ola(100 + k * 130)}`} stroke="rgba(0,0,0,0.25)" strokeWidth={16} />
+        ))}
+        <Etiqueta x={560} y={1330} texto="¡VIENE, VIENE!" o={p(l, 2.5, 2.9)} color="#1f6fe0" />
+      </Svg>
+    );
+  },
+  garrafon: ({ l }) => (
+    <Svg>
+      <g transform={`translate(540 980) rotate(${Math.sin(l * 3) * 8} 0 260)`}>
+        <rect x={-210} y={-240} width={420} height={520} rx={90} fill="rgba(120,190,255,0.22)" stroke="rgba(170,220,255,0.8)" strokeWidth={10} />
+        <rect x={-70} y={-330} width={140} height={100} rx={20} fill="rgba(120,190,255,0.3)" stroke="rgba(170,220,255,0.8)" strokeWidth={10} />
+        <rect x={-90} y={-360} width={180} height={50} rx={16} fill="#3f8cff" />
+        {[-120, 0, 120].map((y) => (
+          <rect key={y} x={-210} y={y - 6} width={420} height={12} fill="rgba(170,220,255,0.5)" />
+        ))}
+        <path d="M-160 -170 Q-180 0 -160 180" stroke="rgba(255,255,255,0.6)" strokeWidth={16} fill="none" strokeLinecap="round" />
+      </g>
+      <Etiqueta x={540} y={560} texto="VACÍO" o={p(l, 1.3, 1.7)} tam={70} />
+    </Svg>
+  ),
+  bolsas: ({ l }) => (
+    <Svg>
+      {Array.from({ length: 9 }).map((_, k) => {
+        const f = lim((l - 0.4 - k * 0.22) / 1.4);
+        const ang = -70 + k * 18;
+        const r = 520 * suave(f);
+        return (
+          <g key={k} transform={`translate(${540 + Math.sin((ang * Math.PI) / 180) * r} ${1050 - Math.cos((ang * Math.PI) / 180) * r * 0.8}) rotate(${ang + l * 40}) scale(${0.5 + 0.3 * f})`} opacity={f > 0 ? 1 : 0}>
+            <path d="M-70 -60 L70 -60 L90 90 L-90 90 Z" fill={["#f5f5f5", "#ffd84a", "#4ac16b"][k % 3]} />
+            <path d="M-40 -60 Q-40 -120 0 -120 Q40 -120 40 -60" stroke={["#f5f5f5", "#ffd84a", "#4ac16b"][k % 3]} strokeWidth={14} fill="none" />
+          </g>
+        );
+      })}
+      <g transform={`translate(540 1060) scale(${1 + 0.05 * Math.sin(l * 10)})`}>
+        <path d="M-200 -170 L200 -170 L250 230 L-250 230 Z" fill="#f2f2f2" />
+        <path d="M-110 -170 Q-110 -320 0 -320 Q110 -320 110 -170" stroke="#f2f2f2" strokeWidth={30} fill="none" />
+        <text y={60} textAnchor="middle" fontFamily={ANTON} fontSize={90} fill={ROJO}>SÚPER</text>
+      </g>
+    </Svg>
+  ),
+  refaccion: ({ l }) => {
+    const sale = p(l, 2.4, 3.0);
+    return (
+      <Svg>
+        <g transform="translate(540 1000)">
+          <g transform={`scale(1 ${1 - 0.22 * sale}) translate(0 ${70 * sale})`}>
+            <Llanta cx={0} cy={0} r={300} giro={0} />
+          </g>
+        </g>
+        {Array.from({ length: 6 }).map((_, k) => {
+          const f = (l * 1.2 + k / 6) % 1;
+          return <path key={k} d="M0 0 q 30 -20 60 0 q 30 20 60 0" stroke="rgba(255,255,255,0.7)" strokeWidth={8} fill="none" transform={`translate(${820 + f * 120} ${1180 - f * 140}) rotate(-20)`} opacity={sale > 0.05 ? 1 - f : 0} />;
+        })}
+        <Etiqueta x={540} y={620} texto="PONCHADA" o={p(l, 2.6, 3.0)} tam={70} />
+      </Svg>
+    );
+  },
+  // ===== New Beetle =====
+  beetleMundo: ({ l }) => <Globo l={l} />,
+  beetle: ({ l }) => (
+    <Svg>
+      {Array.from({ length: 10 }).map((_, k) => (
+        <rect key={k} x={((k * 230 - l * 900) % 1300) + 1100 - 1300} y={1240 + (k % 3) * 40} width={160} height={8} rx={4} fill="rgba(255,255,255,0.3)" />
+      ))}
+      <Beetle x={20} y={820} s={1.0} giro={l * 500} k={0} color={AMARILLO} />
+      <Etiqueta x={540} y={640} texto="1998" o={p(l, 0.4, 0.8)} tam={90} />
+    </Svg>
+  ),
+  florero: ({ l }) => {
+    const crece = p(l, 0.5, 2.0);
+    return (
+      <Svg>
+        <path d="M0 1260 Q540 1080 1080 1260 L1080 1920 L0 1920 Z" fill="#1a1c22" />
+        <g transform="translate(540 1200) scale(1.5)">
+          <path d="M-30 0 L30 0 L20 -150 Q40 -190 0 -200 Q-40 -190 -20 -150 Z" fill="rgba(170,220,255,0.5)" stroke="rgba(220,240,255,0.9)" strokeWidth={6} />
+          <path d={`M0 -190 Q ${-20 * crece} ${-260 * crece - 190} 0 ${-190 - 380 * crece}`} stroke="#2fa35a" strokeWidth={12} fill="none" />
+          <path d={`M0 ${-190 - 170 * crece} q -80 -30 -110 -90 q 70 0 110 90`} fill="#2fa35a" opacity={crece} />
+          <g transform={`translate(0 ${-190 - 380 * crece}) scale(${p(l, 1.6, 2.4)}) rotate(${l * 15})`}>
+            {[0, 60, 120, 180, 240, 300].map((a) => (
+              <ellipse key={a} cx={0} cy={-62} rx={36} ry={62} fill={ROJO} transform={`rotate(${a})`} />
+            ))}
+            <circle r={36} fill={AMARILLO} />
+          </g>
+        </g>
+      </Svg>
+    );
+  },
+  planta: ({ l }) => (
+    <Svg>
+      <g transform="translate(100 640)">
+        <path d="M0 520 L0 220 L140 120 L140 220 L280 120 L280 220 L420 120 L420 220 L560 120 L560 520 Z" fill="#2c303a" stroke="#4a505c" strokeWidth={8} />
+        <rect x={600} y={20} width={70} height={500} fill="#3a3f4a" />
+        {Array.from({ length: 4 }).map((_, k) => {
+          const f = (l * 0.5 + k * 0.25) % 1;
+          return <circle key={k} cx={635 + Math.sin(f * 6) * 20} cy={0 - f * 260} r={30 + f * 40} fill="rgba(200,200,210,0.35)" />;
+        })}
+        {[0, 1, 2, 3].map((k) => (
+          <rect key={k} x={40 + k * 130} y={300} width={90} height={70} rx={10} fill={AMARILLO} opacity={0.75 + 0.25 * Math.sin(l * 3 + k)} />
+        ))}
+        <rect x={160} y={420} width={240} height={100} fill="#15161a" />
+      </g>
+      <Etiqueta x={380} y={590} texto="PUEBLA" o={p(l, 0.3, 0.7)} tam={60} />
+      {Array.from({ length: 4 }).map((_, k) => {
+        const f = (l * 0.35 + k * 0.25) % 1;
+        return <Beetle key={k} x={360 + f * 900} y={1140} s={0.28} giro={l * 600} k={0} color={[AMARILLO, ROJO, AZUL, "#2fa35a"][k]} />;
+      })}
+    </Svg>
+  ),
+  exporta: ({ l }) => <Globo l={l} rutas />,
+  beetle2011: ({ l }) => (
+    <Svg>
+      <Beetle x={20} y={820} s={1.0} giro={l * 300} k={p(l, 0.4, 1.4)} color={p(l, 0.4, 1.4) > 0.5 ? "#1c1f26" : AMARILLO} />
+      <Etiqueta x={540} y={640} texto="2011" o={p(l, 0.6, 1.0)} tam={90} />
+    </Svg>
+  ),
+  ultimo: ({ l }) => (
+    <Svg>
+      <path d="M440 0 L640 0 L1000 1300 L80 1300 Z" fill="rgba(255,240,200,0.10)" />
+      <ellipse cx={540} cy={1240} rx={460} ry={60} fill="rgba(255,240,200,0.12)" />
+      <Beetle x={20} y={900} s={1.0} giro={0} k={1} color="#e9eef5" />
+      {["10", "07", "2019"].map((x, i) => {
+        const e = p(l, 0.3 + i * 0.2, 0.6 + i * 0.2);
+        return (
+          <g key={x} transform={`translate(${300 + i * 230} 640) scale(${e})`}>
+            <rect x={-100} y={-90} width={200} height={170} rx={24} fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.35)" strokeWidth={4} />
+            <text y={40} textAnchor="middle" fontFamily={ANTON} fontSize={i === 2 ? 84 : 110} fill={BLANCO}>{x}</text>
+          </g>
+        );
+      })}
+    </Svg>
+  ),
+  mariachi: ({ l }) => (
+    <Svg>
+      <Beetle x={20} y={960} s={1.0} giro={0} k={1} color="#e9eef5" />
+      <g transform={`translate(540 600) rotate(${Math.sin(l * 3) * 6})`}>
+        <ellipse cx={0} cy={60} rx={330} ry={70} fill="#15161a" stroke={AMARILLO} strokeWidth={10} />
+        <path d="M-120 60 Q-120 -150 0 -160 Q120 -150 120 60 Z" fill="#15161a" stroke={AMARILLO} strokeWidth={10} />
+        <path d="M-300 70 Q0 130 300 70" stroke={AMARILLO} strokeWidth={8} fill="none" strokeDasharray="20 16" />
+      </g>
+      {Array.from({ length: 8 }).map((_, k) => {
+        const f = (l * 0.6 + k / 8) % 1;
+        return (
+          <text key={k} x={140 + k * 110 + Math.sin(f * 8) * 30} y={1300 - f * 700} fontSize={90} fill={k % 2 ? AMARILLO : BLANCO} opacity={Math.sin(f * Math.PI)} fontFamily={ANTON}>
+            {k % 2 ? "♪" : "♫"}
+          </text>
+        );
+      })}
+    </Svg>
+  ),
+  nombre: ({ l }) => (
+    <Svg>
+      <Beetle x={20} y={940} s={1.0} giro={0} k={0} color={AMARILLO} />
+      <g transform={`translate(700 700) scale(${p(l, 0.2, 0.6)})`}>
+        <path d="M-230 -110 L230 -110 Q260 -110 260 -80 L260 60 Q260 90 230 90 L-60 90 L-120 160 L-110 90 L-230 90 Q-260 90 -260 60 L-260 -80 Q-260 -110 -230 -110 Z" fill={BLANCO} />
+        <text y={20} textAnchor="middle" fontFamily={ANTON} fontSize={80} fill="#111">{["¿LA BURBUJA?", "¿EL GÜERO?", "¿LA ABEJA?"][Math.min(2, Math.floor(l / 0.9))]}</text>
       </g>
     </Svg>
   ),

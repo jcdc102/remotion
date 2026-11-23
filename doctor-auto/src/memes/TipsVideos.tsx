@@ -222,3 +222,124 @@ export const TipLlanta: React.FC = () => <Tips8 tip={TIP_LLANTA} />;
 export const TipGasolina: React.FC = () => <Tips8 tip={TIP_GASOLINA} />;
 export const TipPonchada: React.FC = () => <Tips8 tip={TIP_PONCHADA} />;
 export const TipUsado: React.FC = () => <Tips8 tip={TIP_USADO} />;
+
+// ---- tanda 2: funciones escondidas, cajuela, New Beetle (todo animado) ----
+export const TIP_FUNCIONES: Tip = {
+  voz: "audio/tips/funciones.wav",
+  dur: 37.78,
+  planos: [
+    { t0: 0, t1: 3.66, escena: "ocultas" },
+    { t0: 3.66, t1: 6.44 },
+    { t0: 6.44, t1: 11.34, escena: "tablero" },
+    { t0: 11.34, t1: 13.46, escena: "gasolinera" },
+    { t0: 13.46, t1: 16.86 },
+    { t0: 16.86, t1: 21.42, escena: "control" },
+    { t0: 21.42, t1: 25.54, escena: "calor" },
+    { t0: 25.54, t1: 26.2 },
+    { t0: 26.2, t1: 33.24, escena: "espejo" },
+    { t0: 33.24, t1: 39.2, escena: "cta" },
+  ],
+  titulos: [
+    { t0: 0.05, t1: 3.5, texto: "Funciones escondidas de tu auto", resaltar: ["escondidas"], tam: 100, lugar: "centro" },
+    { t0: 3.66, t1: 6.3, texto: "La 3ª te salva en la noche", resaltar: ["noche"], lugar: "centro" },
+    { t0: 6.5, t1: 9.3, texto: "La flechita junto a la gasolina", resaltar: ["flechita"] },
+    { t0: 9.38, t1: 11.2, texto: "Te dice de qué lado está el tanque", resaltar: ["lado"] },
+    { t0: 11.34, t1: 13.3, texto: "Adiós vueltas en la gasolinera", resaltar: ["vueltas"] },
+    { t0: 13.46, t1: 16.7, texto: "La siguiente casi nadie la conoce", resaltar: ["nadie"], lugar: "centro" },
+    { t0: 16.86, t1: 21.3, texto: "En muchos autos: deja presionado ABRIR", resaltar: ["presionado"] },
+    { t0: 21.42, t1: 23.4, texto: "Se bajan todas las ventanas", resaltar: ["todas"] },
+    { t0: 23.5, t1: 25.4, texto: "Ideal con el auto hirviendo", resaltar: ["hirviendo"] },
+    { t0: 25.54, t1: 26.15, texto: "Y la tercera…", resaltar: ["tercera…"], tam: 120, lugar: "centro" },
+    { t0: 26.3, t1: 30.0, texto: "La palanquita del retrovisor", resaltar: ["palanquita"] },
+    { t0: 30.12, t1: 33.1, texto: "Quita el deslumbre de atrás", resaltar: ["deslumbre"] },
+    { t0: 33.24, t1: 34.5, texto: "¿Cuál no conocías?", resaltar: ["conocías?"], lugar: "centro" },
+    { t0: 34.62, t1: 99, texto: "Si no te funciona, el Doctor la revisa", resaltar: ["Doctor"], lugar: "centro" },
+  ],
+  numeros: [
+    { t: 6.44, n: 1 },
+    { t: 16.86, n: 2 },
+    { t: 26.2, n: 3 },
+  ],
+  bucles: [13.46, 25.54],
+  graficos: [],
+  cta: { t: 33.24, chip: "Diagnóstico eléctrico en CDMX 🔧" },
+  tDato: 30.3,
+};
+
+export const TIP_CAJUELA: Tip = {
+  voz: "audio/cajuela/voz.wav",
+  dur: 29.9,
+  planos: [
+    { t0: 0, t1: 2.56, escena: "cajuelaAbre" },
+    { t0: 2.56, t1: 5.54, escena: "gato" },
+    { t0: 5.54, t1: 9.7, escena: "cables" },
+    { t0: 9.7, t1: 13.26, escena: "franela" },
+    { t0: 13.26, t1: 16.64, escena: "garrafon" },
+    { t0: 16.64, t1: 20.6, escena: "bolsas" },
+    { t0: 20.6, t1: 24.16, escena: "refaccion" },
+    { t0: 24.16, t1: 28.1, escena: "mecanico" },
+    { t0: 28.1, t1: 31.3, escena: "cta" },
+  ],
+  titulos: [
+    { t0: 0.05, t1: 2.45, texto: "Lo que hay en la cajuela de todo mexicano", resaltar: ["cajuela"], tam: 96, lugar: "centro" },
+    { t0: 2.56, t1: 5.4, texto: "El gato… que nunca has usado", resaltar: ["nunca"] },
+    { t0: 5.54, t1: 9.6, texto: "Cables que te prestaron en 2015", resaltar: ["2015"] },
+    { t0: 9.7, t1: 13.1, texto: "La franela para el viene viene", resaltar: ["franela"] },
+    { t0: 13.26, t1: 16.5, texto: "Un garrafón vacío… por si acaso", resaltar: ["acaso"] },
+    { t0: 16.64, t1: 20.5, texto: "La bolsa llena de más bolsas", resaltar: ["bolsas"] },
+    { t0: 20.6, t1: 24.0, texto: "La refacción… ponchada", resaltar: ["ponchada"] },
+    { t0: 24.16, t1: 28.0, texto: "Que el Doctor revise lo de bajo el cofre", resaltar: ["Doctor"], lugar: "centro" },
+    { t0: 28.1, t1: 99, texto: "¿Qué más traes en la tuya?", resaltar: ["tuya?"], lugar: "centro" },
+  ],
+  numeros: [
+    { t: 2.56, n: 1 },
+    { t: 5.54, n: 2 },
+    { t: 9.7, n: 3 },
+    { t: 13.26, n: 4 },
+    { t: 16.64, n: 5 },
+    { t: 20.6, n: 6 },
+  ],
+  bucles: [],
+  graficos: [],
+  cta: { t: 24.16, chip: "Cuéntanos en los comentarios 👇" },
+  tDato: 23.14,
+};
+
+export const TIP_BEETLE: Tip = {
+  voz: "audio/beetle/voz.wav",
+  dur: 28.4,
+  planos: [
+    { t0: 0, t1: 4.7, escena: "beetleMundo" },
+    { t0: 4.7, t1: 8.04, escena: "beetle" },
+    { t0: 8.04, t1: 10.4, escena: "florero" },
+    { t0: 10.4, t1: 12.34, escena: "planta" },
+    { t0: 12.34, t1: 14.52, escena: "exporta" },
+    { t0: 14.52, t1: 18.8, escena: "beetle2011" },
+    { t0: 18.8, t1: 23.54, escena: "ultimo" },
+    { t0: 23.54, t1: 25.3, escena: "mariachi" },
+    { t0: 25.3, t1: 29.8, escena: "nombre" },
+  ],
+  titulos: [
+    { t0: 0.05, t1: 2.6, texto: "Todos los New Beetle del mundo…", resaltar: ["Beetle"], tam: 100, lugar: "centro" },
+    { t0: 2.7, t1: 4.6, texto: "…se hicieron en México", resaltar: ["México"], tam: 110, lugar: "centro" },
+    { t0: 4.7, t1: 7.9, texto: "1998: el regreso del Vocho", resaltar: ["Vocho"] },
+    { t0: 8.04, t1: 10.3, texto: "Con su florerito en el tablero", resaltar: ["florerito"] },
+    { t0: 10.4, t1: 12.2, texto: "Hecho en Puebla", resaltar: ["Puebla"], tam: 110 },
+    { t0: 12.34, t1: 14.4, texto: "Para todo el mundo", resaltar: ["mundo"], tam: 110 },
+    { t0: 14.52, t1: 18.7, texto: "2011: más bajito y deportivo", resaltar: ["deportivo"] },
+    { t0: 18.8, t1: 23.4, texto: "Sale el último de Puebla", resaltar: ["último"] },
+    { t0: 23.54, t1: 25.2, texto: "Lo despidieron con mariachi", resaltar: ["mariachi"] },
+    { t0: 25.3, t1: 27.0, texto: "¿Le pusiste nombre al tuyo?", resaltar: ["nombre"], lugar: "centro" },
+    { t0: 27.1, t1: 99, texto: "Tu Beetle merece al Doctor", resaltar: ["Doctor"], lugar: "centro" },
+  ],
+  numeros: [],
+  bucles: [],
+  graficos: [],
+  cta: { t: 27.1, chip: "Sucursales en CDMX 🔧" },
+  tDato: 24.4,
+};
+
+export const DUR_TIPS2 = { funciones: dur(TIP_FUNCIONES), cajuela: dur(TIP_CAJUELA), beetle: dur(TIP_BEETLE) };
+export const TipFunciones: React.FC = () => <Tips8 tip={TIP_FUNCIONES} />;
+export const TipCajuela: React.FC = () => <Tips8 tip={TIP_CAJUELA} />;
+export const NewBeetle: React.FC = () => <Tips8 tip={TIP_BEETLE} />;

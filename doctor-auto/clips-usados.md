@@ -47,3 +47,7 @@ Material propio de Doctor Auto (reels publicados en FB), recortado sin textos qu
 - Viral original (colchonería) 0–26.4 s con su audio.
 - Material Doctor Auto NUEVO (no usado en La bala): motor (1372773811560546), calibrado (1413671474137446 10.6–13.6), guantes (1413671474137446 32.2–34.7), caliper (1413671474137446 29.2–30.6), alinea (1427461379425122 0–0.9), manejo (1401945571976703 8.2–9.9), logos aseguradoras (1323434356494492 5.3–7.0), llegada sucursal (1323434356494492 8.0–10.4).
 - Ya casi no queda material propio limpio: pedir tomas nuevas del taller.
+
+## Tanda 23 nov: Tsuru, Funciones escondidas, La cajuela, New Beetle
+- Tsuru (serie #3): fotos Flickr tsuru/b (dave_7, CC BY-SA 2.0), tsuru/c, d, e, f (JLaw45, CC BY 2.0). No usar tsuru/a: es la misma foto que tuauto/tsuru (ya publicada en TuAuto).
+- TipFunciones, TipCajuela, NewBeetle: 100% motion graphics (Escenas.tsx). No usan clips de stock ni de la empresa.
