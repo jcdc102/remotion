@@ -51,3 +51,8 @@ Material propio de Doctor Auto (reels publicados en FB), recortado sin textos qu
 ## Tanda 23 nov: Tsuru, Funciones escondidas, La cajuela, New Beetle
 - Tsuru (serie #3): fotos Flickr tsuru/b (dave_7, CC BY-SA 2.0), tsuru/c, d, e, f (JLaw45, CC BY 2.0). No usar tsuru/a: es la misma foto que tuauto/tsuru (ya publicada en TuAuto).
 - TipFunciones, TipCajuela, NewBeetle: 100% motion graphics (Escenas.tsx). No usan clips de stock ni de la empresa.
+
+## ModoGTA (tendencia GTA VI, 24 nov)
+- Material propio Doctor Auto (fragmentos no usados antes): entrada CESVI 1323434356494492 (3.0–4.4), motor 1377703594400901 (15.0–16.5), frenos 1413671474137446 (10.8–12.7), disco 1413671474137446 (27.9–29.15), pintura 1357941239710470 (6.0–11.6), ppf 1366721548832439 (7.0–10.6), resultado PPF 1366721548832439 (15.8–18.9).
+- Música: Mixkit 738 (instrumental hip hop, licencia libre).
+- Con esto ya no queda material propio limpio: hacen falta tomas nuevas del taller.
