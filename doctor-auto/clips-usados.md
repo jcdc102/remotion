@@ -56,3 +56,8 @@ Material propio de Doctor Auto (reels publicados en FB), recortado sin textos qu
 - Material propio Doctor Auto (fragmentos no usados antes): entrada CESVI 1323434356494492 (3.0–4.4), motor 1377703594400901 (15.0–16.5), frenos 1413671474137446 (10.8–12.7), disco 1413671474137446 (27.9–29.15), pintura 1357941239710470 (6.0–11.6), ppf 1366721548832439 (7.0–10.6), resultado PPF 1366721548832439 (15.8–18.9).
 - Música: Mixkit 738 (instrumental hip hop, licencia libre).
 - Con esto ya no queda material propio limpio: hacen falta tomas nuevas del taller.
+
+## AguaBendita y OtraFalla (memes de referencia, 24 nov)
+- AguaBendita: viral TikTok @lomejordelared (señora con agua bendita para su Renault 12), recorte 0–14.85 s + 31.5–38.32 s. Marcas de agua intactas, dar crédito.
+- OtraFalla: viral TikTok @patyperez650 ("cuando no es una cosa es otra"), 0–14.3 s. Marcas intactas; se tapó el texto original que decía "carro"; groserías tapadas con claxon (refs2/claxon.wav, sintetizado).
+- ModoGTA v2: estilo GTA VI (atardecer violeta/rosa/naranja, palmeras, Titan One con contorno negro).

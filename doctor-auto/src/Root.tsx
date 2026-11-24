@@ -10,6 +10,8 @@ import { DatoGas, DURACION_DATO_GAS } from "./memes/DatoGas";
 import { DUR_TIPS, DUR_TIPS2, NewBeetle, TipCajuela, TipFrio, TipFunciones, TipGasolina, TipLlanta, TipPonchada, TipUsado } from "./memes/TipsVideos";
 import { Tsuru, DURACION_TSURU } from "./memes/Tsuru";
 import { ModoGTA, DURACION_GTA } from "./memes/ModoGTA";
+import { AguaBendita, DURACION_AGUA } from "./memes/AguaBendita";
+import { OtraFalla, DURACION_FALLA } from "./memes/OtraFalla";
 import { EncenderAuto, DURACION_ENCENDER } from "./memes/EncenderAuto";
 import { MemeImagen } from "./memes/MemeImagen";
 import { Vocho, DURACION_VOCHO } from "./memes/Vocho";
@@ -68,6 +70,8 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="NewBeetle" component={NewBeetle} durationInFrames={DUR_TIPS2.beetle} fps={30} width={1080} height={1920} />
       <Composition id="Tsuru" component={Tsuru} durationInFrames={DURACION_TSURU} fps={30} width={1080} height={1920} />
       <Composition id="ModoGTA" component={ModoGTA} durationInFrames={DURACION_GTA} fps={30} width={1080} height={1920} />
+      <Composition id="AguaBendita" component={AguaBendita} durationInFrames={DURACION_AGUA} fps={30} width={1080} height={1920} />
+      <Composition id="OtraFalla" component={OtraFalla} durationInFrames={DURACION_FALLA} fps={30} width={1080} height={1920} />
       <Composition id="Prueba3D" component={Prueba3D} durationInFrames={60} fps={30} width={1080} height={1920} />
       <Composition
         id="Calaveritas"

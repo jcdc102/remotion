@@ -1,11 +1,63 @@
 import { AbsoluteFill, Audio, interpolate, OffthreadVideo, Sequence, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { ANTON, DEGRADADO, POPPINS, ROJO_DA } from "../doctor-auto/constantes";
-import { AcabadoPremium, Estudio, TituloMascara } from "../doctor-auto/premium";
+import { loadFont as cargarTitan } from "@remotion/google-fonts/TitanOne";
+import { ANTON, POPPINS, ROJO_DA } from "../doctor-auto/constantes";
+import { AcabadoPremium, TituloMascara } from "../doctor-auto/premium";
 import { ChipVidrio, Destello } from "../doctor-auto/pro";
 
 // Tendencia GTA VI: el taller de Doctor Auto como el taller de modificaciones de un videojuego.
-// HUD y menú propios (colores Doctor Auto, Anton/Poppins); sin logos, tipografía, música ni
-// clips del juego. Tomas reales del taller (reels de FB no publicados en otros videos).
+// Estética GTA VI investigada: atardecer violeta-rosa neón-naranja de Vice City, palmeras y
+// letras gruesas blancas con contorno negro (el juego usa Pricedown; aquí Titan One de Google
+// Fonts, parecida pero libre). HUD y menú propios: sin logo, música ni clips del juego. Tomas reales del taller (reels de FB no publicados en otros videos).
+const { fontFamily: TITAN } = cargarTitan("normal", { weights: ["400"], subsets: ["latin"] });
+const MAGENTA = "#ff2d87";
+const TEAL = "#22d3c5";
+const ATARDECER = "linear-gradient(120deg, #ff2d87 0%, #ff5e5b 50%, #ffa53b 100%)";
+const PANEL = "#1c082c";
+const BORDE = "rgba(255,45,135,0.6)";
+const TXT: React.CSSProperties = { fontFamily: TITAN, WebkitTextStroke: "3px #000", paintOrder: "stroke fill", textShadow: "0 5px 0 #000" };
+
+// Fondo de atardecer de Vice: cielo violeta→rosa→naranja, sol rayado, mar y palmeras.
+const Palmera: React.FC<{ x: number; y: number; s: number; flip?: boolean; t: number }> = ({ x, y, s, flip, t }) => (
+  <g transform={`translate(${x} ${y}) scale(${flip ? -s : s} ${s})`} fill="#12041f">
+    <path d="M0 0 Q-30 -300 30 -620 L46 -616 Q-10 -300 22 0 Z" />
+    {[-70, -30, 10, 50, 95, 140].map((a, i) => (
+      <path key={i} d="M38 -618 q120 -40 230 60 q-110 -50 -230 -40 Z" transform={`rotate(${a + Math.sin(t * 1.5 + i) * 3} 38 -618)`} />
+    ))}
+  </g>
+);
+const Atardecer: React.FC<{ t: number }> = ({ t }) => (
+  <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: "absolute", inset: 0 }}>
+    <defs>
+      <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#14052b" />
+        <stop offset="0.35" stopColor="#4a1470" />
+        <stop offset="0.58" stopColor="#ff2d87" />
+        <stop offset="0.68" stopColor="#ff8a3d" />
+      </linearGradient>
+      <linearGradient id="sol" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#ffe06b" />
+        <stop offset="1" stopColor="#ff2d87" />
+      </linearGradient>
+      <clipPath id="rayas">
+        {Array.from({ length: 12 }).map((_, i) => (
+          <rect key={i} x={0} y={880 + i * 34} width={1080} height={34 - Math.max(0, i - 4) * 3} />
+        ))}
+      </clipPath>
+    </defs>
+    <rect width={1080} height={1300} fill="url(#cielo)" />
+    <circle cx={540} cy={1160} r={300} fill="url(#sol)" clipPath="url(#rayas)" />
+    <rect y={1300} width={1080} height={620} fill="#1a0630" />
+    {Array.from({ length: 9 }).map((_, i) => (
+      <rect key={i} x={540 - (260 - i * 22) + Math.sin(t * 2 + i) * 14} y={1320 + i * 34} width={(260 - i * 22) * 2} height={8} rx={4} fill="#ff6aa8" opacity={0.55 - i * 0.05} />
+    ))}
+    {Array.from({ length: 12 }).map((_, i) => (
+      <line key={`g${i}`} x1={540} y1={1300} x2={-600 + i * 205} y2={1920} stroke={TEAL} strokeOpacity={0.25} strokeWidth={3} />
+    ))}
+    <Palmera x={120} y={1330} s={1.15} t={t} />
+    <Palmera x={960} y={1360} s={0.95} flip t={t} />
+  </svg>
+);
+
 const DUR = 25;
 export const DURACION_GTA = DUR * 30;
 
@@ -45,8 +97,8 @@ const PlanoClip: React.FC<{ c: Clip; t: number }> = ({ c, t }) => {
 };
 
 const Llave: React.FC<{ on: number }> = ({ on }) => (
-  <svg width={54} height={54} viewBox="0 0 24 24" style={{ transform: `scale(${1 + 0.4 * on * (1 - on)})`, filter: on > 0.5 ? "drop-shadow(0 0 8px rgba(255,80,80,0.9))" : "none" }}>
-    <path d="M21 6.5a5 5 0 0 1-6.8 4.7L7 18.4a2 2 0 0 1-2.8-2.8l7.2-7.2A5 5 0 0 1 17.5 3l-3 3 .9 2.6 2.6.9 3-3z" fill={on > 0.5 ? "#ff3b42" : "rgba(255,255,255,0.18)"} stroke="rgba(0,0,0,0.6)" strokeWidth={1} />
+  <svg width={54} height={54} viewBox="0 0 24 24" style={{ transform: `scale(${1 + 0.4 * on * (1 - on)})`, filter: on > 0.5 ? "drop-shadow(0 0 8px rgba(255,45,135,0.95))" : "none" }}>
+    <path d="M21 6.5a5 5 0 0 1-6.8 4.7L7 18.4a2 2 0 0 1-2.8-2.8l7.2-7.2A5 5 0 0 1 17.5 3l-3 3 .9 2.6 2.6.9 3-3z" fill={on > 0.5 ? MAGENTA : "rgba(255,255,255,0.18)"} stroke="rgba(0,0,0,0.6)" strokeWidth={1} />
   </svg>
 );
 
@@ -58,8 +110,8 @@ const PanelMejora: React.FC<{ t: number; t0: number; t1: number; titulo: string;
   const ok = resorte(frame, fps, tCompra, 9, 260);
   return (
     <AbsoluteFill style={{ justifyContent: "flex-start", alignItems: "center", paddingTop: 1100 }}>
-      <div style={{ width: 920, transform: `translateY(${(1 - e) * 60}px)`, opacity: e, background: "#0b0c10", border: "2px solid rgba(255,255,255,0.14)", borderRadius: 26, overflow: "hidden", boxShadow: "0 30px 80px rgba(0,0,0,0.6)" }}>
-        <div style={{ background: DEGRADADO, padding: "12px 30px 16px", fontFamily: ANTON, fontSize: 62, color: "#fff", display: "flex", justifyContent: "space-between" }}>
+      <div style={{ width: 920, transform: `translateY(${(1 - e) * 60}px)`, opacity: e, background: PANEL, border: `3px solid ${BORDE}`, borderRadius: 26, overflow: "hidden", boxShadow: "0 30px 80px rgba(0,0,0,0.6)" }}>
+        <div style={{ background: ATARDECER, padding: "12px 30px 16px", ...TXT, fontSize: 62, color: "#fff", display: "flex", justifyContent: "space-between" }}>
           <span>{titulo}</span>
           <span style={{ fontSize: 40, alignSelf: "center", opacity: 0.85 }}>MEJORA</span>
         </div>
@@ -67,12 +119,12 @@ const PanelMejora: React.FC<{ t: number; t0: number; t1: number; titulo: string;
           <div style={{ fontFamily: POPPINS, fontWeight: 700, fontSize: 36, color: "rgba(255,255,255,0.88)" }}>{detalle}</div>
           <div style={{ display: "flex", gap: 10 }}>
             {[0, 1, 2, 3].map((i) => (
-              <div key={i} style={{ flex: 1, height: 26, borderRadius: 6, background: barra * 4 > i ? "#ff3b42" : "rgba(255,255,255,0.12)", boxShadow: barra * 4 > i ? "0 0 14px rgba(255,59,66,0.7)" : "none" }} />
+              <div key={i} style={{ flex: 1, height: 26, borderRadius: 6, background: barra * 4 > i ? MAGENTA : "rgba(255,255,255,0.12)", boxShadow: barra * 4 > i ? "0 0 14px rgba(255,45,135,0.8)" : "none" }} />
             ))}
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", height: 60 }}>
             <div style={{ fontFamily: POPPINS, fontWeight: 800, fontSize: 34, color: "rgba(255,255,255,0.6)" }}>NIVEL {Math.min(4, Math.max(1, Math.ceil(barra * 4)))}/4</div>
-            <div style={{ transform: `scale(${ok})`, background: "#1f9d55", borderRadius: 14, padding: "6px 22px 10px", fontFamily: ANTON, fontSize: 44, color: "#fff" }}>{costo ? `✓ -$${costo.toLocaleString("es-MX")}` : "✓ LISTO"}</div>
+            <div style={{ transform: `scale(${ok})`, background: "#1f9d55", borderRadius: 14, padding: "6px 22px 10px", ...TXT, fontSize: 44, color: "#fff" }}>{costo ? `✓ -$${costo.toLocaleString("es-MX")}` : "✓ LISTO"}</div>
           </div>
         </div>
       </div>
@@ -101,29 +153,25 @@ export const ModoGTA: React.FC = () => {
           <PlanoClip c={c} t={t} />
         </Sequence>
       ))}
-      {enMenu ? <Estudio t={t} tono={["#2a0c12", "#050507"]} acento={ROJO_DA} /> : null}
-      {t >= 20.0 ? (
-        <AbsoluteFill style={{ filter: "blur(22px) brightness(0.4)", transform: "scale(1.25)", transformOrigin: "50% 0%" }}>
-          <OffthreadVideo src={staticFile("gta/resultado.mp4")} muted startFrom={60} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-        </AbsoluteFill>
-      ) : null}
-      {t >= 20.0 ? <AbsoluteFill style={{ background: "radial-gradient(ellipse at 50% 45%, rgba(204,35,40,0.4) 0%, rgba(0,0,0,0) 60%)" }} /> : null}
-
+      {enMenu ? <Atardecer t={t} /> : null}
+      {t >= 20.0 ? <Atardecer t={t} /> : null}
+      {t >= 22.0 ? <AbsoluteFill style={{ background: "rgba(10,2,20,0.45)" }} /> : null}
       <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 24%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.6) 100%)" }} />
       <Destello t={t} cortes={CORTES} />
 
       {/* gancho */}
       {t < 2.6 ? (
         <AbsoluteFill style={{ alignItems: "center", paddingTop: 250 }}>
-          <div style={{ width: 960 }}>
-            <TituloMascara texto="Doctor Auto en modo GTA 🎮" resaltar={["GTA"]} t={t} t0={0.1} t1={2.5} tamano={100} />
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", transform: `scale(${resorte(frame, fps, 0.1, 10, 220)}) rotate(-3deg)` }}>
+            <div style={{ ...TXT, fontSize: 92, color: "#fff" }}>Doctor Auto</div>
+            <div style={{ ...TXT, fontSize: 150, lineHeight: 1, color: "#fff", background: ATARDECER, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", WebkitTextStroke: "4px #000", textShadow: "none", filter: "drop-shadow(0 6px 0 #000) drop-shadow(0 0 30px rgba(255,45,135,0.7))" }}>modo GTA</div>
           </div>
         </AbsoluteFill>
       ) : null}
       {t >= 0.9 && t < 2.6 ? (
         <AbsoluteFill style={{ justifyContent: "flex-start", alignItems: "center", paddingTop: 1300 }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 22, width: 900, background: "#0b0c10", borderRadius: 20, padding: "26px 34px", transform: `scale(${resorte(frame, fps, 0.9, 12, 240)})`, border: "2px solid rgba(255,255,255,0.15)" }}>
-            <div style={{ width: 74, height: 74, borderRadius: 14, background: t > 2.25 ? ROJO_DA : "#fff", color: t > 2.25 ? "#fff" : "#111", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: ANTON, fontSize: 52, transform: `scale(${t > 2.25 && t < 2.4 ? 0.85 : 1})` }}>E</div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 22, width: 900, background: PANEL, borderRadius: 20, padding: "26px 34px", transform: `scale(${resorte(frame, fps, 0.9, 12, 240)})`, border: `3px solid ${BORDE}` }}>
+            <div style={{ width: 74, height: 74, borderRadius: 14, background: t > 2.25 ? MAGENTA : "#fff", color: t > 2.25 ? "#fff" : "#111", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: TITAN, fontSize: 52, transform: `scale(${t > 2.25 && t < 2.4 ? 0.85 : 1})` }}>E</div>
             <div style={{ fontFamily: POPPINS, fontWeight: 800, fontSize: 42, color: "#fff" }}>Entrar al taller</div>
           </div>
         </AbsoluteFill>
@@ -132,12 +180,12 @@ export const ModoGTA: React.FC = () => {
       {/* menú del taller */}
       {enMenu ? (
         <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", paddingTop: 120 }}>
-          <div style={{ width: 860, transform: `translateX(${(1 - resorte(frame, fps, 2.62, 14, 200)) * -900}px)`, background: "rgba(8,9,12,0.92)", borderRadius: 26, overflow: "hidden", border: "2px solid rgba(255,255,255,0.14)", boxShadow: "0 30px 90px rgba(0,0,0,0.7)" }}>
-            <div style={{ background: DEGRADADO, padding: "16px 34px 20px", fontFamily: ANTON, fontSize: 70, color: "#fff" }}>TALLER DOCTOR AUTO</div>
+          <div style={{ width: 860, transform: `translateX(${(1 - resorte(frame, fps, 2.62, 14, 200)) * -900}px)`, background: "rgba(8,9,12,0.92)", borderRadius: 26, overflow: "hidden", border: `3px solid ${BORDE}`, boxShadow: "0 30px 90px rgba(0,0,0,0.7)" }}>
+            <div style={{ background: ATARDECER, padding: "16px 34px 20px", ...TXT, fontSize: 70, color: "#fff" }}>TALLER DOCTOR AUTO</div>
             {OPCIONES.map((o, i) => {
               const sel = Math.round(cursor) === i && t >= 3.0;
               return (
-                <div key={o} style={{ padding: "18px 34px", fontFamily: POPPINS, fontWeight: 800, fontSize: 46, background: sel ? "#fff" : "transparent", color: sel ? "#111" : "rgba(255,255,255,0.85)", borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between" }}>
+                <div key={o} style={{ padding: "18px 34px", fontFamily: POPPINS, fontWeight: 800, fontSize: 46, background: sel ? ATARDECER : "transparent", color: "#fff", borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between" }}>
                   <span>{o}</span>
                   <span style={{ opacity: 0.5 }}>›</span>
                 </div>
@@ -152,8 +200,8 @@ export const ModoGTA: React.FC = () => {
       <PanelMejora t={t} t0={6.7} t1={10.35} titulo="FRENOS" detalle="Balatas y discos nuevos" tCompra={8.0} costo={1800} frame={frame} fps={fps} />
       {t >= 10.4 && t < 14.4 ? (
         <AbsoluteFill style={{ justifyContent: "flex-start", alignItems: "center", paddingTop: 590 }}>
-          <div style={{ width: 960, background: "#0b0c10", borderRadius: 26, overflow: "hidden", border: "2px solid rgba(255,255,255,0.14)", transform: `scale(${0.9 + 0.1 * resorte(frame, fps, 10.45)})`, opacity: resorte(frame, fps, 10.45) }}>
-            <div style={{ background: DEGRADADO, padding: "12px 30px 16px", fontFamily: ANTON, fontSize: 62, color: "#fff" }}>PINTURA</div>
+          <div style={{ width: 960, background: PANEL, borderRadius: 26, overflow: "hidden", border: `3px solid ${BORDE}`, transform: `scale(${0.9 + 0.1 * resorte(frame, fps, 10.45)})`, opacity: resorte(frame, fps, 10.45) }}>
+            <div style={{ background: ATARDECER, padding: "12px 30px 16px", ...TXT, fontSize: 62, color: "#fff" }}>PINTURA</div>
             <div style={{ padding: "30px 30px 60px", display: "flex", flexDirection: "column", gap: 22 }}>
               <div style={{ display: "flex", gap: 18, justifyContent: "center" }}>
                 {["#f2f2f2", "#16171c", "#2f6fe0", "#9aa0ab", "#1f9d55", "#d7262c"].map((c, i) => {
@@ -163,7 +211,7 @@ export const ModoGTA: React.FC = () => {
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", height: 64 }}>
                 <div style={{ fontFamily: POPPINS, fontWeight: 800, fontSize: 38, color: "#fff" }}>Hojalatería y pintura</div>
-                <div style={{ transform: `scale(${resorte(frame, fps, 12.2, 9, 260)})`, background: "#1f9d55", borderRadius: 14, padding: "6px 22px 10px", fontFamily: ANTON, fontSize: 44, color: "#fff" }}>✓ -$6,400</div>
+                <div style={{ transform: `scale(${resorte(frame, fps, 12.2, 9, 260)})`, background: "#1f9d55", borderRadius: 14, padding: "6px 22px 10px", ...TXT, fontSize: 44, color: "#fff" }}>✓ -$6,400</div>
               </div>
               <div style={{ height: 100, display: "flex", flexDirection: "column", justifyContent: "center", gap: 12 }}>
                 <div style={{ fontFamily: POPPINS, fontWeight: 700, fontSize: 30, color: "rgba(255,255,255,0.65)" }}>{t < 13.2 ? "Aplicando color…" : "Acabado de agencia ✓"}</div>
@@ -180,14 +228,14 @@ export const ModoGTA: React.FC = () => {
       {/* estadísticas finales */}
       {t >= 17.4 && t < 20.0 ? (
         <AbsoluteFill style={{ justifyContent: "flex-start", alignItems: "center", paddingTop: 1000 }}>
-          <div style={{ width: 920, background: "rgba(8,9,12,0.9)", borderRadius: 26, padding: "26px 34px", border: "2px solid rgba(255,255,255,0.14)", display: "flex", flexDirection: "column", gap: 16, opacity: resorte(frame, fps, 17.45) }}>
+          <div style={{ width: 920, background: "rgba(8,9,12,0.9)", borderRadius: 26, padding: "26px 34px", border: `3px solid ${BORDE}`, display: "flex", flexDirection: "column", gap: 16, opacity: resorte(frame, fps, 17.45) }}>
             {[["MOTOR", 0.35], ["FRENOS", 0.3], ["ESTILO", 0.4], ["PROTECCIÓN", 0.2]].map(([n, a], i) => {
               const v = interpolate(t, [17.6 + i * 0.15, 18.4 + i * 0.15], [Number(a), 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
               return (
                 <div key={String(n)} style={{ display: "flex", alignItems: "center", gap: 20 }}>
                   <div style={{ width: 300, fontFamily: POPPINS, fontWeight: 800, fontSize: 36, color: "#fff" }}>{n}</div>
                   <div style={{ flex: 1, height: 26, borderRadius: 13, background: "rgba(255,255,255,0.12)", overflow: "hidden" }}>
-                    <div style={{ width: `${v * 100}%`, height: "100%", background: v > 0.99 ? "#1f9d55" : DEGRADADO }} />
+                    <div style={{ width: `${v * 100}%`, height: "100%", background: v > 0.99 ? "#1f9d55" : ATARDECER }} />
                   </div>
                 </div>
               );
@@ -200,7 +248,7 @@ export const ModoGTA: React.FC = () => {
       {hud > 0.01 ? (
         <>
           <AbsoluteFill style={{ alignItems: "flex-end", paddingTop: 230, paddingRight: 44, opacity: hud }}>
-            <div style={{ fontFamily: ANTON, fontSize: 70, color: "#fff", textShadow: "0 4px 0 #000, 0 0 20px rgba(0,0,0,0.8)", fontVariantNumeric: "tabular-nums" }}>${dinero.toLocaleString("es-MX")}</div>
+            <div style={{ ...TXT, fontSize: 70, color: "#fff", textShadow: "0 4px 0 #000, 0 0 20px rgba(0,0,0,0.8)", fontVariantNumeric: "tabular-nums" }}>${dinero.toLocaleString("es-MX")}</div>
             <div style={{ display: "flex", gap: 4, marginTop: 4 }}>
               {llaves.map((v, i) => (
                 <Llave key={i} on={v} />
@@ -214,7 +262,7 @@ export const ModoGTA: React.FC = () => {
                   <circle cx={120} cy={120} r={112} />
                 </clipPath>
               </defs>
-              <circle cx={120} cy={120} r={116} fill="rgba(10,14,20,0.85)" stroke="rgba(255,255,255,0.5)" strokeWidth={4} />
+              <circle cx={120} cy={120} r={116} fill="rgba(28,8,44,0.88)" stroke={MAGENTA} strokeWidth={4} />
               <g clipPath="url(#mapa)" transform={`rotate(${-t * 6} 120 120)`}>
                 {[30, 80, 130, 180, 230].map((x) => (
                   <path key={`v${x}`} d={`M${x} -20 L${x + 30} 260`} stroke="rgba(255,255,255,0.22)" strokeWidth={8} />
@@ -222,8 +270,8 @@ export const ModoGTA: React.FC = () => {
                 {[40, 100, 160, 220].map((y) => (
                   <path key={`h${y}`} d={`M-20 ${y} L260 ${y - 20}`} stroke="rgba(255,255,255,0.22)" strokeWidth={8} />
                 ))}
-                <path d="M-20 150 Q120 90 260 140" stroke="#f5c518" strokeWidth={10} fill="none" opacity={0.7} />
-                <circle cx={160} cy={70} r={14} fill={ROJO_DA} />
+                <path d="M-20 150 Q120 90 260 140" stroke={TEAL} strokeWidth={10} fill="none" opacity={0.7} />
+                <circle cx={160} cy={70} r={14} fill={MAGENTA} />
                 <text x={160} y={77} textAnchor="middle" fontFamily={ANTON} fontSize={18} fill="#fff">DA</text>
               </g>
               <path d="M120 104 L132 134 L120 128 L108 134 Z" fill="#fff" />
@@ -235,12 +283,12 @@ export const ModoGTA: React.FC = () => {
       {/* auto mejorado */}
       {t >= 20.0 && t < 22.0 ? (
         <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", gap: 24 }}>
-          <div style={{ transform: `scale(${interpolate(banner, [0, 1], [2.2, 1])})`, opacity: lim(banner * 3), fontFamily: ANTON, fontSize: 150, color: "#fff", textAlign: "center", lineHeight: 0.95, textShadow: "0 8px 0 #8f1418, 0 0 40px rgba(204,35,40,0.8)" }}>
+          <div style={{ transform: `scale(${interpolate(banner, [0, 1], [2.2, 1])}) rotate(-3deg)`, opacity: lim(banner * 3), ...TXT, fontSize: 150, textAlign: "center", lineHeight: 1, background: ATARDECER, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", WebkitTextStroke: "5px #000", textShadow: "none", filter: "drop-shadow(0 8px 0 #000) drop-shadow(0 0 40px rgba(255,45,135,0.8))" }}>
             ¡AUTO
             <br />
             MEJORADO!
           </div>
-          <div style={{ fontFamily: ANTON, fontSize: 70, color: "#f5c518", opacity: resorte(frame, fps, 20.6), transform: `translateY(${(1 - resorte(frame, fps, 20.6)) * 30}px)` }}>+ RESPETO</div>
+          <div style={{ ...TXT, fontSize: 80, color: TEAL, opacity: resorte(frame, fps, 20.6), transform: `translateY(${(1 - resorte(frame, fps, 20.6)) * 30}px)` }}>+ RESPETO</div>
         </AbsoluteFill>
       ) : null}
 
